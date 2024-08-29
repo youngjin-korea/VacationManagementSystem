@@ -1,0 +1,36 @@
+/* sidebar.css */
+#leftSidebar-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 1000;
+  background-color: white;
+  transition: width 0.3s ease-in-out;
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+#leftSidebar-wrapper.open {
+  width: 450px;
+}
+
+#leftSidebar-wrapper.closed {
+  width: 50px;
+}
+
+#leftSidebarBtn {
+  position: absolute;
+  top: 50%;
+  right: -35px;
+  transform: translateY(-50%);
+  background-color: white;
+  border: none;
+  border-radius: 0 10px 10px 0;
+  height: 20%;
+  color: black;
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1); /* 버튼 그림자 추가 */
+}
+
+#leftSidebarBtn.btn {
+  /* 버튼 관련 추가 스타일 정의 */
+}
