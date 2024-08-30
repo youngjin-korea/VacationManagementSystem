@@ -1,4 +1,4 @@
-package com.kcc.vacation.domain.valicationrequest.mapper;
+package com.kcc.vacation.domain.vacationrequest.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 

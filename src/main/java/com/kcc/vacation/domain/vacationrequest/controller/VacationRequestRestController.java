@@ -1,8 +1,7 @@
-package com.kcc.vacation.domain.valicationrequest.controller;
+package com.kcc.vacation.domain.vacationrequest.controller;
 
-import com.kcc.vacation.domain.valicationrequest.service.VacationRequestService;
+import com.kcc.vacation.domain.vacationrequest.service.VacationRequestService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

@@ -1,6 +1,6 @@
-package com.kcc.vacation.domain.valicationrequest.service;
+package com.kcc.vacation.domain.vacationrequest.service;
 
-import com.kcc.vacation.domain.valicationrequest.mapper.VacationRequestMapper;
+import com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
