@@ -1,20 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="EUC-KR">
+  <head>
+    <meta charset="UTF-8" />
     <title>Header Example</title>
-    <link rel="stylesheet" type="text/css" href="/resources/css/header.css">
-</head>
+    <link rel="stylesheet" type="text/css" href="/resources/css/header.css" />
+  </head>
 
-<body>
- <div id="customHeader">
-    <div id="imgContainer">
-        <img src="/resources/assets/logo.png" alt="Logo"/>
+  <body>
+    <div id="customHeader">
+      <div id="imgContainer">
+        <img src="/resources/assets/logo.png" alt="Logo" />
+      </div>
+      <p>Vacation Management System</p>
     </div>
-    <p>Vacation Management System</p>
-</div>
-</body>
+  </body>
 </html>
