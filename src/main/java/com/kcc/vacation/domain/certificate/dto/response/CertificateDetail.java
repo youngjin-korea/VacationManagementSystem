@@ -1,4 +1,4 @@
-package com.kcc.vacation.domain.vacationrequest.dto.response;
+package com.kcc.vacation.domain.certificate.dto.response;
 
 
 import lombok.Builder;
@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class ItemDetail {
+public class CertificateDetail {
 
     private String name;
     private String title;
 
     @Builder
-    public ItemDetail(String name, String title) {
+    public CertificateDetail(String name, String title) {
         this.name = name;
         this.title = title;
     }

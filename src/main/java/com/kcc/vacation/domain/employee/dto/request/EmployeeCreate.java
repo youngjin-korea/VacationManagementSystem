@@ -1,4 +1,4 @@
-package com.kcc.vacation.domain.vacationtype.dto.request;
+package com.kcc.vacation.domain.employee.dto.request;
 
 
 import lombok.Builder;
@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class ItemCreate {
+public class EmployeeCreate {
 
 
     private String name;
     private String title;
 
     @Builder
-    public ItemCreate(String name, String title) {
+    public EmployeeCreate(String name, String title) {
         this.name = name;
         this.title = title;
     }

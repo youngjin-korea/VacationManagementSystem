@@ -1,4 +1,4 @@
-package com.kcc.vacation.domain.promotionplan.dto.request;
+package com.kcc.vacation.domain.certificate.dto.request;
 
 
 import lombok.Builder;
@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class ItemCreate {
+public class CertificateCreate {
 
 
     private String name;
     private String title;
 
     @Builder
-    public ItemCreate(String name, String title) {
+    public CertificateCreate(String name, String title) {
         this.name = name;
         this.title = title;
     }

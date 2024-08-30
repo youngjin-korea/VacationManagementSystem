@@ -7,14 +7,16 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class ItemDetail {
+public class DepartmentDetail {
 
+    private int id;
     private String name;
-    private String title;
+    private int upperDeptId;
 
     @Builder
-    public ItemDetail(String name, String title) {
+    public DepartmentDetail(int id, String name, int upperDeptId) {
+        this.id = id;
         this.name = name;
-        this.title = title;
+        this.upperDeptId = upperDeptId;
     }
 }
