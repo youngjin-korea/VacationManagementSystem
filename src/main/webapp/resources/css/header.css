@@ -12,6 +12,7 @@
   font-style: italic;
   background-color: #073082;
   padding: 0.5rem;
+  margin-bottom: 50px;
 }
 
 #imgContainer {
@@ -27,4 +28,3 @@
   color: white;
   font-size: 28px;
 }
-
