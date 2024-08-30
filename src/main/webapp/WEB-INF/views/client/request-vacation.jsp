@@ -3,7 +3,7 @@ pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="EUC-KR" />
+    <meta charset="UTF-8" />
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <script type="importmap">
@@ -23,6 +23,7 @@ pageEncoding="UTF-8"%>
         const startDateInput = document.getElementById("start-date");
         const endDateInput = document.getElementById("end-date");
         const startTimeInput = document.getElementById("start-time");
+        const eventDetails = document.getElementById("event-details");
 
         // 오늘 날짜와 시간을 YYYY-MM-DD 형식으로 설정
         const today = new Date().toISOString().split("T")[0];
@@ -38,7 +39,6 @@ pageEncoding="UTF-8"%>
 
         const calendar = new Calendar(calendarEl, {
           plugins: [dayGridPlugin],
-          <%-- weekends: false, --%>
           headerToolbar: {
             left: "prev,next today",
             center: "title",
@@ -64,6 +64,17 @@ pageEncoding="UTF-8"%>
             startDateInput.value = startDate;
             endDateInput.value = endDate;
           },
+          eventClick: function (info) {
+            // 클릭된 이벤트의 세부 정보 표시
+            alert(info);
+            <%-- const event = info.event;
+            eventDetails.innerHTML = `
+              <h4>이벤트 상세 정보</h4>
+              <p><strong>제목:</strong> ${event.title}</p>
+              <p><strong>시작:</strong> ${event.start.toISOString().split('T')[0]}</p>
+              <p><strong>종료:</strong> ${event.end ? event.end.toISOString().split('T')[0] : '없음'}</p>
+            `; --%>
+          },
         });
         calendar.render();
       });
@@ -73,7 +84,6 @@ pageEncoding="UTF-8"%>
       .container-vac {
         display: flex;
         gap: 20px;
-        border: 1px solid black;
         padding-left: 20px;
       }
       .req-vac {
@@ -110,47 +120,54 @@ pageEncoding="UTF-8"%>
       .req-vac button:hover {
         background-color: #0056b3;
       }
+      #event-details {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f0f0f0;
+      }
     </style>
   </head>
 
   <body>
-    <%@ include file="/resources/components/header.jsp" %> <%@ include
-    file="/resources/components/sidebar.jsp" %>
+    <%@ include file="/resources/components/header.jsp" %> 
+    <%@ include file="/resources/components/sidebar.jsp" %>
 
-    <div class="container-vac">
-      <div id="calendar" style="width: 75%; padding-left: 70px"></div>
-      <div class="req-vac">
-        <h4>휴가 신청하기</h4>
-        <form action="#" method="post">
-          <label for="vacation-type">휴가 유형</label>
-          <select id="vacation-type">
-            <option value="annual">연차</option>
-            <option value="half">반차</option>
-            <option value="sick">병가</option>
-          </select>
+    <div id="mainArea">
+      <div class="container-vac">
+        <div id="calendar" style="width: 75%;"></div>
+        <div class="req-vac">
+          <form action="#" method="post">
+            <h4>휴가 신청하기</h4>
+            <label for="vacation-type">휴가 유형</label>
+            <select id="vacation-type">
+              <option value="annual">연차</option>
+              <option value="half">반차</option>
+              <option value="sick">병가</option>
+            </select>
 
-          <label for="start-date">시작 날짜</label>
-          <input type="date" id="start-date" />
+            <label for="start-date">시작 날짜</label>
+            <input type="date" id="start-date" />
 
-          <label for="end-date">마지막 날짜</label>
-          <input type="date" id="end-date" />
+            <label for="end-date">마지막 날짜</label>
+            <input type="date" id="end-date" />
 
-          <label for="start-time">시작 시간</label>
-          <input type="time" id="start-time" />
+            <label for="start-time">시작 시간</label>
+            <input type="time" id="start-time" />
 
-          <label for="approve1">승인권자 1</label>
-          <select id="approve1"></select>
+            <label for="approve1">승인권자 1</label>
+            <select id="approve1"></select>
 
-          <label for="start-time">승인권자 2</label>
-           <select id="approve2"></select>
+            <label for="approve2">승인권자 2</label>
+            <select id="approve2"></select>
 
+            <label for="approve3">승인권자 3</label>
+            <select id="approve3"></select>
 
-          <label for="start-time">승인권자 3</label>
-          <select id="approve3"></select>
-
-
-          <button id="submit-vacation" type="submit">신청하기</button>
-        </form>
+            <button id="submit-vacation" type="submit">신청하기</button>
+          </form>
+        </div>
       </div>
     </div>
   </body>
