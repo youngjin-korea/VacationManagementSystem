@@ -26,4 +26,8 @@ public class HelloController {
 	public String login() {
 		return "auth/login";
 	}
+	@GetMapping("/organizational-management")
+	public String organizationalManagement() {
+		return "admin/organizational-management";
+	}
 }
