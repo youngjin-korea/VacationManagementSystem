@@ -10,5 +10,10 @@ public class HelloController {
 	public String index() {
 		return "index";
 	}
+
+	@GetMapping("/client/request-vacation")
+	public String requestVacation(){
+		return "client/request-vacation";
+	}
 	
 }
