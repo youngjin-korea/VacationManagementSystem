@@ -20,7 +20,10 @@ public class HelloController {
 
 	@GetMapping("/auth/signup")
 	public String signup() {
-		System.out.println("aaaa");
 		return "auth/signup";
+	}
+	@GetMapping("/auth/login")
+	public String login() {
+		return "auth/login";
 	}
 }
