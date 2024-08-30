@@ -14,7 +14,7 @@ pageEncoding="UTF-8"%>
     <%@ include file="/resources/components/header.jsp" %>
     <%@ include file="/resources/components/sidebar.jsp" %>
     <div id="mainArea">
-        <h1>HELLO WORLD !</h1>
+        <h1>${test}</h1>
     </div>
   </body>
 </html>
