@@ -13,7 +13,8 @@ pageEncoding="UTF-8"%>
   <body>
     <%@ include file="/resources/components/header.jsp" %>
     <%@ include file="/resources/components/sidebar.jsp" %>
-
-    <h1>HELLO WORLD !</h1>
+    <div id="mainArea">
+        <h1>HELLO WORLD !</h1>
+    </div>
   </body>
 </html>
