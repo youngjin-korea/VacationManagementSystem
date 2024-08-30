@@ -38,7 +38,7 @@ pageEncoding="UTF-8"%>
 
         const calendar = new Calendar(calendarEl, {
           plugins: [dayGridPlugin],
-          weekends: false,
+          <%-- weekends: false, --%>
           headerToolbar: {
             left: "prev,next today",
             center: "title",
@@ -70,7 +70,7 @@ pageEncoding="UTF-8"%>
     </script>
     <style>
       /* 최외각 div */
-      .container {
+      .container-vac {
         display: flex;
         gap: 20px;
         border: 1px solid black;
@@ -117,8 +117,8 @@ pageEncoding="UTF-8"%>
     <%@ include file="/resources/components/header.jsp" %> <%@ include
     file="/resources/components/sidebar.jsp" %>
 
-    <div class="container">
-      <div id="calendar" style="width: 75%"></div>
+    <div class="container-vac">
+      <div id="calendar" style="width: 75%; padding-left: 70px"></div>
       <div class="req-vac">
         <h4>휴가 신청하기</h4>
         <form action="#" method="post">
@@ -142,10 +142,12 @@ pageEncoding="UTF-8"%>
           <select id="approve1"></select>
 
           <label for="start-time">승인권자 2</label>
-          <input type="time" id="start-time" />
+           <select id="approve2"></select>
+
 
           <label for="start-time">승인권자 3</label>
-          <input type="time" id="start-time" />
+          <select id="approve3"></select>
+
 
           <button id="submit-vacation" type="submit">신청하기</button>
         </form>
