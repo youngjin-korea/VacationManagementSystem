@@ -59,3 +59,13 @@
 .google-login-img>img {
   width: 25px;
 }
+.code-input{
+  border: none;
+  padding: 0px 20px;
+  height: 30px;
+  text-align: center;
+
+}
+input:focus {
+  outline: none;
+}
