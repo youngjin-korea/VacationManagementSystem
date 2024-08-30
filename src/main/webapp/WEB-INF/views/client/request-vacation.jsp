@@ -48,7 +48,7 @@ pageEncoding="UTF-8"%>
             {
               events: [
                 { title: "event", start: "2024-08-01" },
-                { title: "연차", start: "2024-08-14", end: "2024-08-15" },
+                { title: "연차", start: "2024-08-14", end: "2024-08-16T20:59:59"},
               ],
               color: "blue",
               textColor: "white",
@@ -67,13 +67,13 @@ pageEncoding="UTF-8"%>
           eventClick: function (info) {
             // 클릭된 이벤트의 세부 정보 표시
             alert(info);
-            <%-- const event = info.event;
+            console.log(info.event);
+            const event = info.event;
             eventDetails.innerHTML = `
               <h4>이벤트 상세 정보</h4>
               <p><strong>제목:</strong> ${event.title}</p>
               <p><strong>시작:</strong> ${event.start.toISOString().split('T')[0]}</p>
-              <p><strong>종료:</strong> ${event.end ? event.end.toISOString().split('T')[0] : '없음'}</p>
-            `; --%>
+            `;
           },
         });
         calendar.render();
