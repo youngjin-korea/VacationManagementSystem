@@ -1,39 +1,37 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="EUC-KR">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sidebar Example</title>
-    <link rel="stylesheet" href="/resources/css/sidebar.css"> <!-- Adjust the path accordingly -->
+    <link rel="stylesheet" href="/resources/css/sidebar.css" />
+    <!-- Adjust the path accordingly -->
     <script>
-        function toggleSidebar() {
-            var sidebar = document.getElementById('leftSidebar-wrapper');
-            var isOpen = sidebar.classList.contains('open');
-            if (isOpen) {
-                sidebar.classList.remove('open');
-                sidebar.classList.add('closed');
-            } else {
-                sidebar.classList.remove('closed');
-                sidebar.classList.add('open');
-            }
+      function toggleSidebar() {
+        var sidebar = document.getElementById("leftSidebar-wrapper");
+        var isOpen = sidebar.classList.contains("open");
+        if (isOpen) {
+          sidebar.classList.remove("open");
+          sidebar.classList.add("closed");
+        } else {
+          sidebar.classList.remove("closed");
+          sidebar.classList.add("open");
         }
+      }
     </script>
-</head>
-<body>
-    <div
-        id="leftSidebar-wrapper"
-        class="closed"
-    >
-        <button
-            id="leftSidebarBtn"
-            onclick="toggleSidebar()"
-            class="btn btn-primary"
-        >
-            <!-- 버튼 안의 내용 (예: 아이콘 또는 텍스트) -->
-        </button>
+  </head>
+  <body>
+    <div id="leftSidebar-wrapper" class="closed">
+      <button
+        id="leftSidebarBtn"
+        onclick="toggleSidebar()"
+        class="btn btn-primary"
+      >
+        <!-- 占쏙옙튼 占쏙옙占쏙옙 占쏙옙占쏙옙 (占쏙옙: 占쏙옙占쏙옙占쏙옙 占실댐옙 占쌔쏙옙트) -->
+      </button>
     </div>
-</body>
+  </body>
 </html>
