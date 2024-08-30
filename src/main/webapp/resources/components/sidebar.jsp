@@ -12,13 +12,16 @@ pageEncoding="UTF-8"%>
     <script>
       function toggleSidebar() {
         var sidebar = document.getElementById("leftSidebar-wrapper");
+        var mainArea = document.getElementById("mainArea");
         var isOpen = sidebar.classList.contains("open");
         if (isOpen) {
           sidebar.classList.remove("open");
           sidebar.classList.add("closed");
+          mainArea.style.paddingLeft="70px";
         } else {
           sidebar.classList.remove("closed");
           sidebar.classList.add("open");
+          mainArea.style.paddingLeft="470px";
         }
       }
     </script>
