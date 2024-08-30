@@ -30,7 +30,6 @@ pageEncoding="UTF-8"%>
         onclick="toggleSidebar()"
         class="btn btn-primary"
       >
-        <!-- ��ư ���� ���� (��: ������ �Ǵ� �ؽ�Ʈ) -->
       </button>
     </div>
   </body>
