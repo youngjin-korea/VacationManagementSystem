@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="com.sbb.domain.comment.mapper.CommentMapper">
+
+    <select id="getListByPostId" parameterType="int" resultType="Comment" >
+        select * from comments c where c.post_id = #{postId}
+    </select>
+
+<!--
+    <insert id="save" parameterType="post">
+
+        <selectKey order="BEFORE" keyProperty="id" resultType="int">
+            select post_seq.nextval from dual
+        </selectKey>
+
+        insert into post
+        values(#{id}, #{title}, #{content}, #{author} ,systimestamp, systimestamp)
+
+    </insert>
+-->
+
+</mapper>
+
