@@ -1,4 +1,14 @@
-#organization-btn-group button{
-    border-radius: 0;
+#organization-btn-group button:last-child{
+    border-radius: 2px;
     background-color: #073082;
+}
+
+.modal-footer button:last-child{
+    border-radius: 2px;
+    background-color: #073082;
+}
+
+p {
+  margin: 0;
+    font-weight: bold;
 }
