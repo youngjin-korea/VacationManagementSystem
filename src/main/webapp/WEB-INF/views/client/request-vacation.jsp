@@ -44,6 +44,8 @@ pageEncoding="UTF-8"%>
             center: "title",
             right: "",
           },
+          fixedWeekCount: false,  // 마지막 주가 비어 있으면 숨김
+          contentHeight: '100%', // 달력의 높이를 500px로 설정
           eventSources: [
             {
               events: [
@@ -89,7 +91,7 @@ pageEncoding="UTF-8"%>
       .req-vac {
         flex: 1;
         background-color: #f9f9fb;
-        padding: 63px 20px;
+        padding: 63px 20px 0px 20px;
       }
       .req-vac h4 {
         margin-bottom: 20px;
