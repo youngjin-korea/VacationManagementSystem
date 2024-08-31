@@ -155,9 +155,6 @@ pageEncoding="UTF-8"%>
             <label for="end-date">마지막 날짜</label>
             <input type="date" id="end-date" />
 
-            <label for="start-time">시작 시간</label>
-            <input type="time" id="start-time" />
-
             <label for="approve1">승인권자 1</label>
             <select id="approve1"></select>
 
