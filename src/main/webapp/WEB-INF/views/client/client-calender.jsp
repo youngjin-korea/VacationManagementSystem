@@ -55,22 +55,81 @@ pageEncoding="UTF-8"%>
 
         // 예시 데이터 (실제로는 서버에서 데이터 조회 필요)
         const vacations = [
-          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨" },
-          { type: "병가", start_date: "2024-09-01", end_date: "2024-09-03", status: "대기중" }
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id :1 },
+          { type: "병가", start_date: "2024-09-01", end_date: "2024-09-03", status: "대기중", id :2 }
         ];
 
+
+      // 취소 버튼 클릭 시 호출되는 함수 정의
+  window.cancelVacation = function (vacationId) {
+    const result = confirm("휴가를 취소 하시겠습니까?");
+    // 서버에 취소 요청 보내기
+    if(result === false){
+      return;
+    }
+    console.log("휴가 취소 요청 - ID:", vacationId);
+     <%-- fetch('/cancel-vacation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: vacationId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('휴가가 취소되었습니다.');
+            location.reload(); // 페이지를 다시 로드하여 UI를 업데이트합니다.
+        } else {
+            alert('휴가 취소에 실패했습니다.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('휴가 취소 중 오류가 발생했습니다.');
+    }); --%>
+  };
         // 테이블에 데이터 삽입
-        vacations.forEach(vacation => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${vacation.type}</td>
-            <td>${vacation.start_date}</td>
-            <td>${vacation.end_date}</td>
-            <td>${vacation.status}</td>
-          `;
-          vacationTableBody.appendChild(row);
-        });
+       vacations.forEach(function(vacation) {
+        var row = document.createElement("tr");
+        row.innerHTML = 
+          "<td>" + vacation.type + "</td>" +
+          "<td>" + vacation.start_date + "</td>" +
+          "<td>" + vacation.end_date + "</td>" +
+          "<td>" + vacation.status + "</td>" +
+          "<td>" +
+              "<button type=\"button\" class=\"btn btn-danger\" onclick=\"cancelVacation(" + vacation.id + ")\">취소</button>" +
+          "</td>";
+        vacationTableBody.appendChild(row);
       });
+
+      });
+
+     
     </script>
     <style>
       /* 최외각 div */
@@ -101,6 +160,10 @@ pageEncoding="UTF-8"%>
       .vacation-status th {
         background-color: #f2f2f2;
       }
+      #table-scroll{
+        height: 766px;
+        overflow-y: scroll;
+      }
     </style>
   </head>
 
@@ -110,22 +173,25 @@ pageEncoding="UTF-8"%>
 
     <div id="mainArea">
       <div class="container-vac">
-        <div id="calendar" style="width: 75%;"></div>
+        <div id="calendar" style="width: 70%;"></div>
         <div class="vacation-status">
           <h4>나의 휴가 신청 현황</h4>
-          <table>
+          <div id="table-scroll">
+            <table>
             <thead>
               <tr>
                 <th>휴가 유형</th>
                 <th>시작 날짜</th>
                 <th>종료 날짜</th>
                 <th>상태</th>
+                <th>취소신청</th>
               </tr>
             </thead>
             <tbody id="vacation-table-body">
               <!-- 데이터가 여기에 삽입됩니다 -->
             </tbody>
-          </table>
+           </table>
+          </div>
         </div>
       </div>
     </div>
