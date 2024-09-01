@@ -45,6 +45,7 @@ pageEncoding="UTF-8"%>
       function toggleSidebar() {
         var sidebar = document.getElementById("leftSidebar-wrapper");
         var menubar = document.getElementById("menubar");
+        var mainArea = document.getElementById("mainArea");
         var isOpen = sidebar.classList.contains("open");
 
         if (isOpen) {
@@ -56,7 +57,7 @@ pageEncoding="UTF-8"%>
           sidebar.classList.remove("closed");
           sidebar.classList.add("open");
           menubar.classList.add("show-content");
-          mainArea.style.paddingLeft = "330px";
+          mainArea.style.paddingLeft = "350px";
         }
       }
     </script>
