@@ -5,7 +5,6 @@
   top: 0;
   height: 100vh;
   z-index: 1000;
-  background-color: white;
   transition: width 0.3s ease-in-out;
   box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
   background-color: #f7f7f7;
@@ -24,7 +23,6 @@
   top: 50%;
   right: -40px;
   transform: translateY(-50%);
-  background-color: white;
   border: none;
   border-radius: 0 10px 10px 0;
   height: 20%;
@@ -54,35 +52,14 @@
   padding: 10px;
 }
 
-.sidebar-header {
-  font-size: 1.5rem;
-  text-align: center;
-}
-
-.sidebar-header h3 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
 .list-unstyled {
   padding-left: 0;
   list-style-type: none;
 }
 
-.menu li {
-  padding: 10px;
-}
-
-.dropdown-toggle {
-  margin: 10px;
-}
-
-.menu {
-  padding: 10px;
-}
 
 .list-unstyled li a {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   font-weight: bold;
   color: #757575;
   text-decoration: none;
@@ -91,7 +68,8 @@
 }
 
 .submenu li a {
-  font-size: 1.2rem;
+  font-size: 1rem;
+  font-weight: normal;
 }
 
 .list-unstyled li a:hover {
@@ -102,24 +80,28 @@
   color: #073082;
 }
 
-.list-unstyled .collapse {
-  display: none;
+.sidebarHr{
+  margin: 5px 10px 5px 10px;
 }
 
-.list-unstyled .collapse.show {
-  display: block;
+.menu{
+  margin: 10px;
 }
 
-/* 애니메이션 추가된 서브메뉴 */
-.submenu {
+.menu li {
+  margin: 10px;
+}
+
+.sidebar-submenu {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
 }
 
-.submenu.show {
+.sidebar-submenu.show {
   max-height: 500px; /* 서브메뉴의 예상 최대 높이로 설정 */
 }
+
 
 /* 기본 삼각형 아이콘 스타일 */
 .dropdown-toggle::after {
