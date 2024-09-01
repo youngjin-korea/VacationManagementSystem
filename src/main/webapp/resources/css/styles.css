@@ -6,6 +6,6 @@
 
 #mainArea {
   padding-top: 70px;
-  padding-left: 70px;
+  padding-left: 100px;
   transition: padding-left 0.3s ease-in-out; /* 패딩 애니메이션 추가 */
 }
