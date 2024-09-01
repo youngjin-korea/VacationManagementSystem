@@ -20,23 +20,9 @@ pageEncoding="UTF-8"%>
 
       document.addEventListener("DOMContentLoaded", function () {
         const calendarEl = document.getElementById("calendar");
-        const startDateInput = document.getElementById("start-date");
-        const endDateInput = document.getElementById("end-date");
-        const startTimeInput = document.getElementById("start-time");
-        const eventDetails = document.getElementById("event-details");
-
-        // 오늘 날짜와 시간을 YYYY-MM-DD 형식으로 설정
-        const today = new Date().toISOString().split("T")[0];
-        const now = new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-
-        // input 태그에 최소값 설정
-        startDateInput.min = today;
-        endDateInput.min = today;
-        startTimeInput.min = now;
-
+        const vacationTableBody = document.getElementById("vacation-table-body");
+      
+       
         const calendar = new Calendar(calendarEl, {
           plugins: [dayGridPlugin],
           headerToolbar: {
@@ -44,39 +30,47 @@ pageEncoding="UTF-8"%>
             center: "title",
             right: "",
           },
+          fixedWeekCount: false,
+          height: 840,
           eventSources: [
             {
               events: [
-                { title: "event", start: "2024-08-01" },
-                { title: "연차", start: "2024-08-14", end: "2024-08-16T20:59:59"},
+                // 여기에 실제 데이터로 대체될 예정
+                { title: "연차", start: "2024-08-14", end: "2024-08-16" },
+                { title: "병가", start: "2024-09-01", end: "2024-09-03", status:"true" }
               ],
               color: "blue",
               textColor: "white",
             },
           ],
-          selectable: true, // 드래그로 날짜 선택 가능
-          select: function (info) {
-            // 선택된 날짜 범위 처리
-            const startDate = info.startStr;
-            const endDate = info.endStr;
-
-            // 선택된 날짜를 입력란에 채우기
-            startDateInput.value = startDate;
-            endDateInput.value = endDate;
-          },
           eventClick: function (info) {
             // 클릭된 이벤트의 세부 정보 표시
-            alert(info);
             console.log(info.event);
-            const event = info.event;
-            eventDetails.innerHTML = `
-              <h4>이벤트 상세 정보</h4>
-              <p><strong>제목:</strong> ${event.title}</p>
-              <p><strong>시작:</strong> ${event.start.toISOString().split('T')[0]}</p>
-            `;
+            console.log(info.event.startStr);
+            console.log(info.event.endStr);
+            console.log(info.event.title);
+            console.log(info.event.extendedProps.status);
           },
         });
         calendar.render();
+
+        // 예시 데이터 (실제로는 서버에서 데이터 조회 필요)
+        const vacations = [
+          { type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨" },
+          { type: "병가", start_date: "2024-09-01", end_date: "2024-09-03", status: "대기중" }
+        ];
+
+        // 테이블에 데이터 삽입
+        vacations.forEach(vacation => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${vacation.type}</td>
+            <td>${vacation.start_date}</td>
+            <td>${vacation.end_date}</td>
+            <td>${vacation.status}</td>
+          `;
+          vacationTableBody.appendChild(row);
+        });
       });
     </script>
     <style>
@@ -89,7 +83,7 @@ pageEncoding="UTF-8"%>
       .req-vac {
         flex: 1;
         background-color: #f9f9fb;
-        padding: 63px 20px;
+        padding: 63px 20px 0px 20px;
       }
       .req-vac h4 {
         margin-bottom: 20px;
@@ -127,6 +121,9 @@ pageEncoding="UTF-8"%>
         border-radius: 5px;
         background-color: #f0f0f0;
       }
+      #myVac{
+        color: red;
+      }
     </style>
   </head>
 
@@ -140,11 +137,17 @@ pageEncoding="UTF-8"%>
         <div class="req-vac">
           <form action="#" method="post">
             <h4>휴가 신청하기</h4>
-            <label for="vacation-type">휴가 유형</label>
+            <label for="vacation-type">휴가 유형 | <span id="myVac">보유 연차: <span id="annual-days"></span> / 15</span></label>
             <select id="vacation-type">
-              <option value="annual">연차</option>
-              <option value="half">반차</option>
-              <option value="sick">병가</option>
+              <option value="연차 휴가" selected>연차</option>
+              <option value="오전 반차">오전 반차</option>
+              <option value="오후 반차">오후 반차</option>
+              <option value="병가">병가</option>
+              <option value="출산 휴가">출산 휴가</option>
+              <option value="육아 휴가">육아 휴가</option>
+              <option value="무급 휴가">무급 휴가</option>
+              <option value="임시 휴가">임시 휴가</option>
+              <option value="공휴일">공휴일</option>
             </select>
 
             <label for="start-date">시작 날짜</label>
@@ -152,9 +155,6 @@ pageEncoding="UTF-8"%>
 
             <label for="end-date">마지막 날짜</label>
             <input type="date" id="end-date" />
-
-            <label for="start-time">시작 시간</label>
-            <input type="time" id="start-time" />
 
             <label for="approve1">승인권자 1</label>
             <select id="approve1"></select>
@@ -170,5 +170,12 @@ pageEncoding="UTF-8"%>
         </div>
       </div>
     </div>
+    <script type="text/javascript">
+       const annual = 3;
+       
+          const annualDays = document.getElementById("annual-days");
+        annualDays.innerHTML = annual;
+        
+    </script>
   </body>
 </html>
