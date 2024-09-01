@@ -34,44 +34,47 @@
 
         </div>
         <div style="margin: 0 70px; position:relative;">
-            <table class="table table-hover">
-                <thead>
-                <tr style="border-bottom: 2px solid rgb(160, 160, 160);">
-                    <th scope="col">조직명</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>최상위 부서</td>
-                </tr>
-                <tr >
-                    <td style="padding-left: 60px;">ㄴ 영업부서</td>
-                </tr>
-                <tr>
-                    <td style="padding-left: 120px;">ㄴ 영업 1팀</td>
-                </tr>
-                <tr>
-                    <td>최상위 부서</td>
-                </tr>
-                <tr >
-                    <td style="padding-left: 60px;">ㄴ 영업부서</td>
-                </tr>
-                <tr>
-                    <td style="padding-left: 120px;">ㄴ 영업 1팀</td>
-                </tr>
-                <tr>
-                    <td>최상위 부서</td>
-                </tr>
-                <tr >
-                    <td style="padding-left: 60px;">ㄴ 영업부서</td>
-                </tr>
-                <tr>
-                    <td style="padding-left: 120px;">ㄴ 영업 1팀</td>
-                </tr>
+            <div class="s-table-container">
+                <table class="table table-hover">
+                    <thead>
+                    <tr style="border-bottom: 2px solid rgb(160, 160, 160);">
+                        <th scope="col">조직명</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>최상위 부서</td>
+                    </tr>
+                    <tr >
+                        <td style="padding-left: 60px;">ㄴ 영업부서</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 120px;">ㄴ 영업 1팀</td>
+                    </tr>
+                    <tr>
+                        <td>최상위 부서</td>
+                    </tr>
+                    <tr >
+                        <td style="padding-left: 60px;">ㄴ 영업부서</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 120px;">ㄴ 영업 1팀</td>
+                    </tr>
+                    <tr>
+                        <td>최상위 부서</td>
+                    </tr>
+                    <tr >
+                        <td style="padding-left: 60px;">ㄴ 영업부서</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 120px;">ㄴ 영업 1팀</td>
+                    </tr>
 
-                </tbody>
-            </table>
-            <div style="position:absolute; top: 3px; right: 0px;" ><input class= "col-12 code-input ps-2 border" placeholder="검색.." type="text"></div>
+                    </tbody>
+                </table>
+             </div>
+
+
         </div>
 
     </div>
@@ -120,6 +123,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function(){

@@ -35,6 +35,10 @@ public class HelloController {
 	public String organizationalManagement() {
 		return "admin/organizational-management";
 	}
+	@GetMapping("/employee-management")
+	public String employeeManagement() {
+		return "admin/employee-management";
+	}
 	@GetMapping("/client/client-calender")
 	public String client_clientcalender() {
 		return "/client/client-calender";
