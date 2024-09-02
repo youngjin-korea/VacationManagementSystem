@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper	namespace="com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper">
+<mapper namespace="com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper">
 
+    <!-- 결과 매핑을 위한 resultMap 정의 -->
+    <resultMap id="VacationRequestDetailResultMap" type="VacationRequestDetail">
+        <id column="id" property="id" />
+        <result column="reg_date" property="regDate" />
+        <result column="started_date" property="startedDate" />
+        <result column="end_date" property="endDate" />
+        <result column="file_path" property="filePath" />
+        <result column="approve_date" property="approveDate" />
+        <result column="status" property="status" />
+        <result column="comments" property="comments" />
+        <result column="type_id" property="typeId" />
+        <result column="emp_id" property="empId" />
+    </resultMap>
+
+    <!-- 모든 휴가 요청 조회 -->
+    <select id="getVacationList" resultMap="VacationRequestDetailResultMap">
+        SELECT
+            *
+        FROM Vacation_request
+    </select>
 
 </mapper>
-
