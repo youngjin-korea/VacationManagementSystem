@@ -18,10 +18,10 @@ public class HelloController {
 		return "client/request-vacation";
 	}
 
-	@GetMapping("/client/my-page")
-	public String myPage() {
-		return "client/my-page";
-	}
+//	@GetMapping("/client/my-page")
+//	public String myPage() {
+//		return "client/my-page";
+//	}
 
 	@GetMapping("/auth/signup")
 	public String signup() {
