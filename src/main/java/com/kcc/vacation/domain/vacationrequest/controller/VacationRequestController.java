@@ -16,4 +16,9 @@ public class VacationRequestController {
             model.addAttribute("vacationRequestList", vacationRequestService.getVacationList());
             return "admin/request-vacation";
         }
+
+        @GetMapping("/client/request-vacation")
+        public String getClientVacationList() {
+            return "client/request-vacation";
+        }
 }
