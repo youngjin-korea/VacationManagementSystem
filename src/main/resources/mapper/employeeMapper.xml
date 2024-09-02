@@ -21,4 +21,9 @@
         WHERE e.id = #{employeeId}
     </select>
 
+    <update id="updateMyInfo">
+        UPDATE employee SET phone_number = #{updateMyInfo.phoneNumber}, email = #{updateMyInfo.email}
+        WHERE id = #{updateMyInfo.id}
+    </update>
+
 </mapper>
