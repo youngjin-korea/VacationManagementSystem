@@ -1,5 +1,6 @@
 package com.kcc.vacation.domain.employee.service;
 
+import com.kcc.vacation.domain.employee.dto.response.MyInfo;
 import com.kcc.vacation.domain.employee.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,4 +10,8 @@ import org.springframework.stereotype.Service;
 public class EmployeeService {
 
     private final EmployeeMapper employeeMapper;
+
+    public MyInfo getMyInfo(int employeeId) {
+        return employeeMapper.getMyInfo(employeeId);
+    }
 }

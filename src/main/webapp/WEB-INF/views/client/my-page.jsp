@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,16 +57,20 @@
     }
 
     #intro {
-        padding: 0 260px;
         font-size: x-large;
         position: absolute;
-        left: 62px;
+        left: 232px;
         top: 171px;
     }
-    #submit-btn{
+
+    #submit-btn {
         display: flex;
         justify-content: end;
         padding-top: 10px;
+    }
+
+    #emp-name{
+        font-weight: bold;
     }
 </style>
 
@@ -78,7 +81,7 @@
 
     <div id="container">
         <div id="intro">
-            <div>사원정보 | <span id="emp-name"></span>님의 개인정보수정</div>
+            <div>사원정보 | <span id="emp-name">${myInfo.empName}</span>님의 개인정보수정</div>
         </div>
         <form action="" method="post">
             <div id="border-box">
@@ -86,32 +89,32 @@
                     <div class="content">
                         <label>사번</label>
                         <div>
-                            <input value="11" type="text" disabled/>
+                            <input value="${myInfo.id}" type="text" disabled/>
                         </div>
                     </div>
                     <div class="content">
                         <label>부서</label>
                         <div>
-                            <input value="11" type="text" disabled/>
+                            <input value="${myInfo.deptName}" type="text" disabled/>
                         </div>
                     </div>
                     <div class="content">
                         <label>직책</label>
-                        <div><input value="11" type="text" disabled/></div>
+                        <div><input value="${myInfo.position}" type="text" disabled/></div>
                     </div>
                 </div>
                 <div id="right-con">
                     <div class="content">
                         <label>입사일</label>
-                        <div><input value="11" type="text" disabled/></div>
+                        <div><input type="text" value="${myInfo.hireDate}" disabled/></div>
                     </div>
                     <div class="content">
-                        <label>전화번호</label>
-                        <div><input type="tel"/></div>
+                        <label>* 전화번호</label>
+                        <div><input value="${myInfo.phoneNumber}" type="tel"/></div>
                     </div>
                     <div class="content">
-                        <label>개인 메일</label>
-                        <div><input type="email"/></div>
+                        <label>* 개인 메일</label>
+                        <div><input value="${myInfo.email}" type="email"/></div>
                     </div>
                 </div>
             </div>

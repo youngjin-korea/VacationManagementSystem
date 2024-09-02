@@ -2,8 +2,23 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper	namespace="com.kcc.vacation.domain.employee.mapper.EmployeeMapper">
+<mapper namespace="com.kcc.vacation.domain.employee.mapper.EmployeeMapper">
 
+    <resultMap id="myInfoResultMap" type="com.kcc.vacation.domain.employee.dto.response.MyInfo">
+        <id column="id" property="id"/>
+        <result column="empName" property="empName"/>
+        <result column="deptName" property="deptName"/>
+        <result column="position" property="position"/>
+        <result column="hire_date" property="hireDate"/>
+        <result column="phone_number" property="phoneNumber"/>
+        <result column="email" property="email"/>
+    </resultMap>
+
+    <select id="getMyInfo" resultMap="myInfoResultMap">
+        SELECT e.id, e.name AS empName, d.name AS deptName, e.position, e.hire_date, e.phone_number, e.email
+        FROM employee e
+        JOIN department d ON e.dept_id = d.id
+        WHERE e.id = #{employeeId}
+    </select>
 
 </mapper>
-
