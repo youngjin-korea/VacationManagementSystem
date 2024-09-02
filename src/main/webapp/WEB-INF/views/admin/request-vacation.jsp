@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Insert title here</title>
+    <title>휴가 신청 목록</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
 
-    <%-- javascript 가져오기 --%>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 
@@ -39,9 +39,7 @@
     <table class="table">
         <thead class="table-light">
         <tr>
-            <th scope="col">
-                선택
-            </th>
+            <th scope="col">선택</th>
             <th scope="col">사번</th>
             <th scope="col">이름</th>
             <th scope="col">휴가 신청 기간</th>
@@ -52,41 +50,21 @@
         </thead>
 
         <tbody>
-        <tr>
-            <th scope="row">
-                <input class="form-check-input" type="checkbox" id="check1">
-            </th>
-            <td>사번1</td>
-            <td>이름1</td>
-            <td>휴가신청기간1</td>
-            <td>휴가 일수1</td>
-            <td>요청 일자1</td>
-            <td>신청 상태2</td>
-        </tr>
-        <tr>
-            <th scope="row">
-                <input class="form-check-input" type="checkbox" id="check2">
-
-            </th>
-            <td>사번2</td>
-            <td>이름2</td>
-            <td>휴가신청기간2</td>
-            <td>휴가 일수2</td>
-            <td>요청 일자2</td>
-            <td>신청 상태2</td>
-        </tr>
-        <tr>
-            <th scope="row">
-                <input class="form-check-input" type="checkbox" id="check3">
-
-            </th>
-            <td>사번3</td>
-            <td>이름3</td>
-            <td>휴가신청기간3</td>
-            <td>휴가 일수3</td>
-            <td>요청 일자3</td>
-            <td>신청 상태3</td>
-        </tr>
+        <c:forEach var="request" items="${vacationRequestList}">
+            <tr>
+                <th scope="row">
+                    <input class="form-check-input" type="checkbox" id="check${request.id}">
+                </th>
+                <td>${request.empId}</td>
+                <td>${request.startedDate} - ${request.endDate}</td>
+                <td>이름</td>
+<%--                <td>--%>
+<%--                    <c:out value="${fn:substringAfter(request.endDate, request.startedDate)}"/> <!-- 일수 계산 수정 필요 -->--%>
+<%--                </td>--%>
+                <td>${request.regDate}</td>
+                <td>${request.status}</td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>
