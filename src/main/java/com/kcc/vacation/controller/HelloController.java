@@ -23,14 +23,6 @@ public class HelloController {
 //		return "client/my-page";
 //	}
 
-	@GetMapping("/auth/signup")
-	public String signup() {
-		return "auth/signup";
-	}
-	@GetMapping("/auth/login")
-	public String login() {
-		return "auth/login";
-	}
 	@GetMapping("/organizational-management")
 	public String organizationalManagement() {
 		return "admin/organizational-management";
