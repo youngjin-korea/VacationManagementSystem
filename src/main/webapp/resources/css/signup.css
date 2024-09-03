@@ -69,3 +69,10 @@
 input:focus {
   outline: none;
 }
+
+.loginFailMessage
+{
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
