@@ -198,6 +198,13 @@
                 <label for="end-date">종료 날짜</label>
                 <input type="date" id="end-date"/>
 
+                <label for="file">첨부파일</label>
+                <input type="file" id="file"/>
+
+                <label for="reason">휴가 사유</label>
+                <textarea ></textarea>
+                <input type="date" id="reason"/>
+
                 <label for="approve1">승인권자 1</label>
                 <select id="approve1"></select>
 
