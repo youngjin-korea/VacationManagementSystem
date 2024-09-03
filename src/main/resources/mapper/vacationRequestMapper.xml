@@ -62,9 +62,17 @@
         </selectKey>
         INSERT INTO vacation_request (id, reg_date, started_date, end_date, file_path, approve_date, status, comments,
         type_id, emp_id)
-        VALUES (#{id}, sysdate, TO_DATE(#{startedDate}, 'YYYY-MM-DD'),
-        TO_DATE(#{endDate}, 'YYYY-MM-DD'), #{filePath}, TO_DATE(#{approveDate}, 'YYYY-MM-DD'),
-        #{status}, #{comments}, #{typeId}, #{empId})
+        VALUES (
+            #{id},
+            sysdate,
+            TO_DATE(#{startedDate}, 'YYYY-MM-DD'),
+            TO_DATE(#{endedDate}, 'YYYY-MM-DD'),
+            #{filePath},
+            TO_DATE(#{approveDate}, 'YYYY-MM-DD'),
+            #{status},
+            #{comments},
+            #{typeId},
+            #{empId})
     </insert>
 
 </mapper>

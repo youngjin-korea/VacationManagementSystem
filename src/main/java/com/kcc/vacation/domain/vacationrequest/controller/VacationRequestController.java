@@ -24,7 +24,7 @@ public class VacationRequestController {
         @GetMapping("/client/request-vacation/{employeeId}")
         public String getClientVacationList(@PathVariable int employeeId, Model model) {
             model.addAttribute("employeeId",employeeId);
-
+            vacationRequestService.insertVacationRequest(new MyVacationRequest());
             return "/client/request-vacation";
         }
 

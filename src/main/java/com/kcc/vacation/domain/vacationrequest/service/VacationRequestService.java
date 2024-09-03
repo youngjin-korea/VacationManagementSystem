@@ -26,8 +26,10 @@ public class VacationRequestService {
     @Transactional
     public int insertVacationRequest(MyVacationRequest myVacationRequest) {
         MyVacationRequest mvr = myVacationRequest;
+        mvr.setEmpId(1001);
+        mvr.setTypeId(1);
         int isSuccess = vacationRequestMapper.insertVacationRequest(mvr);
-
+        System.out.println(mvr.getId()+"=========================================!!!!!");
         return isSuccess;
     }
 }
