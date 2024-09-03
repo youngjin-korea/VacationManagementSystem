@@ -3,17 +3,15 @@ package com.kcc.vacation.domain.employee.controller;
 import com.kcc.vacation.domain.employee.dto.response.Employee;
 import com.kcc.vacation.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-=======
+
 import org.apache.coyote.BadRequestException;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
->>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
 
 @RestController
 @RequiredArgsConstructor
@@ -25,8 +23,6 @@ public class EmployeeRestController {
     public Employee getById(@PathVariable(value = "id") int id) {
         return employeeService.getById(id);
     }
-<<<<<<< HEAD
-=======
     @PatchMapping("api/employees/{id}/mail-send")
     public void sendEmail(@PathVariable(value = "id") int id) {
         employeeService.handleSendMail(id);
@@ -35,5 +31,4 @@ public class EmployeeRestController {
     public void certificate(@RequestParam(value = "email") String email, @RequestParam(value = "authenticationCode")String authenticationCode) {
         employeeService.certificate(email, authenticationCode);
     }
->>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
 }
