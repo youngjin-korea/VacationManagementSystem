@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -87,11 +87,7 @@
             </div>
             <div class="modal-body">
                 <form id="inputForm">
-                    <div class="form-group">
-                        <label for="vacationId">휴가 유형 ID</label>
-                        <input type="text" class="form-control" id="vacationId" name="vacationId"
-                               placeholder="여기에 입력하세요" required>
-                    </div>
+
                     <div class="form-group">
                         <label for="vacationTypeName">휴가 유형 이름</label>
                         <input type="text" class="form-control" id="vacationTypeName" name="vacationTypeName"
@@ -119,7 +115,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn quiet-btn" data-bs-dismiss="modal">닫기</button>
-                <button type="submit" class="btn quiet-btn" id="submitButton">저장</button>
+                <button type="submit" class="btn quiet-btn" id="addTypeSubmitButton">저장</button>
             </div>
         </div>
 
@@ -205,19 +201,83 @@
         var updateVacationTypeModal = new bootstrap.Modal(document.getElementById('updateVacationTypeModal'));
 
 
-        // 휴가 유형 추가 버튼 클릭 시 모달 표시
+        // 저장 모달 버튼 클릭 시 모달 표시
         document.getElementById('addVacationTypeModalBtn').addEventListener('click', function () {
 
             addVacationTypeModal.show();
         });// 휴가 추가 이벤트 끝
 
-        // 테이블 행 클릭 시 수정할 데이터 로드 및 모달 표시
+        //저장모달의 저장 클릭시 저장 함수
+        document.getElementById('addTypeSubmitButton').addEventListener('click', function () { var vacationTypeName = document.getElementById('vacationTypeName').value.trim();
+            var maxDays = document.getElementById('maxDays').value.trim();
+            var isPaid = document.querySelector('input[name="updateIsPaid"]:checked') ? document.querySelector('input[name="updateIsPaid"]:checked').value.toUpperCase() : '';
+
+            // 데이터 유효성 검사
+            if (!vacationTypeName || !maxDays || !isPaid) {
+                alert('모든 필드를 입력해 주세요.');
+                return;
+            }
+
+
+            // 데이터 전송을 위한 AJAX 요청
+            $.ajax({
+                url: '/admin/vacation-type-management/add', // 실제 데이터 전송 URL로 변경
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    name: vacationTypeName,
+                    max_days: maxDays,
+                    is_paid: isPaid
+                }),
+                success: function (response) {
+                    console.log("Data added successfully:", response);
+                    addVacationTypeModal.hide();
+                    swal({
+                        title: "성공적으로 추가되었습니다.",
+                        text: "",
+                        icon: 'success',
+                        buttons: {
+                            confirm: {
+                                text: "확인",
+                                value: true,
+                                className: "swal-button"
+                            }
+                        }
+                    }).then(() => {
+
+                        // 테이블 새로고침 등을 통해 데이터 업데이트 필요
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
+                    swal({
+                        title: "데이터 추가 실패",
+                        text: "데이터 추가에 실패했습니다.",
+                        icon: 'error',
+                        buttons: {
+                            confirm: {
+                                text: "확인",
+                                value: true,
+                                className: "swal-button"
+                            }
+                        }
+                    });
+                }
+            });
+        }); // 저장 함수 모달 끝
+
+            // 테이블 행 클릭 시 수정할 데이터 로드 및 모달 표시
         document.getElementById('vacationTableBody').addEventListener('click', function (event) {
+
             var target = event.target;
+
 
             // 클릭된 행을 찾기
             while (target && target.nodeName !== 'TR') {
                 target = target.parentNode;
+                if(target.closest('th')) {
+                    return;
+                }
             }
 
             if (target) {
@@ -254,44 +314,43 @@
             }
         });// document.getElementById('vacationTableBody').addEventListener('click' : 원하는 정보 세부사항 보여주기 모달 끝
 
-        // 업데이트 모달의 저장 버튼 클릭 시 데이터 업데이트
-        // document.getElementById('updateSubmitButton').addEventListener('click', function () {
-        //     var vacationId = document.getElementById('updateVacationId').value.trim();
-        //     var vacationTypeName = document.getElementById('updateVacationTypeName').value.trim();
-        //     var maxDays = document.getElementById('updateMaxDays').value.trim();
-        //     var isPaid = document.querySelector('input[name="updateIsPaid"]:checked') ? document.querySelector('input[name="updateIsPaid"]:checked').value : '';
-        //
-        //     // 데이터 유효성 검사
-        //     if (!vacationId || !vacationTypeName || !maxDays || !isPaid) {
-        //         alert('모든 필드를 입력해 주세요.');
-        //         return;
-        //     }
-        //
-        //     // 데이터 업데이트를 위한 AJAX 요청
-        //     $.ajax({
-        //         url: '/admin/vacation-type-management/update', // 실제 데이터 업데이트 URL로 변경
-        //         method: 'POST',
-        //         contentType: 'application/json',
-        //         data: JSON.stringify({
-        //             id: vacationId,
-        //             name: vacationTypeName,
-        //             max_days: maxDays,
-        //             is_paid: isPaid
-        //         }),
-        //         success: function (response) {
-        //             console.log("Data updated successfully:", response);
-        //             alert('데이터가 업데이트되었습니다.');
-        //
-        //             // 모달 닫기 및 데이터 새로고침
-        //             updateVacationTypeModal.hide();
-        //             // 여기에서 테이블을 새로고침하거나 다른 업데이트 작업을 수행할 수 있습니다.
-        //         },
-        //         error: function (jqXHR, textStatus, errorThrown) {
-        //             console.error('Error:', errorThrown);
-        //             alert('데이터 업데이트에 실패했습니다.');
-        //         }
-        //     });
-        // }); // document.getElementById('updateSubmitButton') : 모달 수정 버튼 클릭 이벤트 끝
+        // 수정 모달의 저장 버튼 클릭 시 데이터 업데이트
+        document.getElementById('updateSubmitButton').addEventListener('click', function () {
+            var vacationTypeName = document.getElementById('updateVacationTypeName').value.trim();
+            var maxDays = document.getElementById('updateMaxDays').value.trim();
+            var isPaid = document.querySelector('input[name="updateIsPaid"]:checked') ? document.querySelector('input[name="updateIsPaid"]:checked').value : '';
+
+            // 데이터 유효성 검사
+            if (!vacationId || !vacationTypeName || !maxDays || !isPaid) {
+                alert('모든 필드를 입력해 주세요.');
+                return;
+            }
+
+            // 데이터 업데이트를 위한 AJAX 요청
+            $.ajax({
+                url: '/admin/vacation-type-management/update', // 실제 데이터 업데이트 URL로 변경
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: vacationId,
+                    name: vacationTypeName,
+                    max_days: maxDays,
+                    is_paid: isPaid
+                }),
+                success: function (response) {
+                    console.log("Data updated successfully:", response);
+                    alert('데이터가 업데이트되었습니다.');
+
+                    // 모달 닫기 및 데이터 새로고침
+                    updateVacationTypeModal.hide();
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
+                    alert('데이터 업데이트에 실패했습니다.');
+                }
+            });
+        }); // document.getElementById('updateSubmitButton') : 모달 수정 버튼 클릭 이벤트 끝
 
     });// document.addEventListener 끝
 </script>

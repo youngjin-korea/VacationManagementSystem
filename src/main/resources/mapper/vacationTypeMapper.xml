@@ -23,5 +23,12 @@
     </select>
 
 
+    <insert id="insertVacationType" parameterType="VacationTypeDetail">
+        INSERT INTO vacation_type (id,name, created_date, updated_date, max_days, is_paid)
+        VALUES (vacation_type_seq.NEXTVAL,#{name}, sysdate,sysdate, #{max_days}, #{is_paid} )
+
+    </insert>
+
+
 </mapper>
 

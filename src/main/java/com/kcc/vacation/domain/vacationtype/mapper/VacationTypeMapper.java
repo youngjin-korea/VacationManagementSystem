@@ -12,5 +12,5 @@ public interface VacationTypeMapper {
 
    List<VacationTypeDetail> getAllVacationTypes();
    VacationTypeDetail getVacationById(int id);
-
+   int insertVacationType(VacationTypeDetail vacationType);
 }

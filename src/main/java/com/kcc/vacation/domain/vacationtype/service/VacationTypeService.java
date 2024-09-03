@@ -26,4 +26,11 @@ public class VacationTypeService {
         System.out.println( "VacationTypeDetail >>>>>>>>>>>>>"+vacationTypeMapper.getVacationById(id).getMax_days());
         return vacationTypeMapper.getVacationById(id);
     }
+
+    public int insertVacationType(VacationTypeDetail vacationType) {
+      return  vacationTypeMapper.insertVacationType(vacationType);
+
+    }
+
+
 }

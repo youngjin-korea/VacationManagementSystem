@@ -27,14 +27,19 @@ public class VacationTypeController {
 //        return "admin/vacation-type-management";
 //    }
 
-    @GetMapping("/admin/vacation-type-management")
+    @GetMapping("admin/vacation-type-management")
     public String getVacationType(Model model) {
         // 샘플 데이터 가져오기, 실제 서비스 메소드로 대체
         System.out.println("getVacationType");
         List<VacationTypeDetail> vacationTypeList = vacationTypeService.getAllVacationTypes();
         model.addAttribute("vacationTypeList", vacationTypeList);
-        return "/admin/vacation-type-management";
+        return "admin/vacation-type-management";
     }
+
+
+
+
+
 
 
 

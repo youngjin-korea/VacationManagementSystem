@@ -1,0 +1,91 @@
+#modal-main {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%; 
+  max-width: 600px; 
+  margin-top: 450px; 
+  background-color: #fff; 
+  border-radius: 0.3rem; 
+  box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+  z-index: 1050; 
+}
+ .modal-body, .modal-footer {
+  padding: 15px;
+}
+.modal-header{
+  padding : 15px 15px 0px 15px;
+}
+.modal-header {
+  border-bottom: 1px solid #e9ecef;
+}
+.modal-footer {
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: flex-end;
+}
+.modal-title {
+  margin: 0;
+}
+.btn-close {
+  font-size: 1.5rem;
+}
+
+
+
+  /* 모달 애니메이션 효과: 페이드 인/아웃 */
+.modal.fade .modal-dialog {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.modal.show .modal-dialog {
+  opacity: 1; 
+  transform: scale(1); 
+}
+
+.modal-body .form-group{
+  margin: 10px;
+}
+
+#historyModalLabel{
+  font-weight: bold;
+}
+
+
+.form-group {
+  margin: 20px;
+}
+
+
+.radio-group {
+  display: flex;  
+  align-items: center; 
+}
+
+.form-check {
+  display: flex; 
+  align-items: center; 
+}
+
+.form-check + .form-check {
+  margin-left: 20px; 
+}
+
+.quiet-btn {
+  background-color: #004DC1;
+  color: #f1f1f1;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  box-shadow: none;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.quiet-btn:hover {
+  background-color: #0059de;
+  color: #f1f1f1;
+}
+
+
