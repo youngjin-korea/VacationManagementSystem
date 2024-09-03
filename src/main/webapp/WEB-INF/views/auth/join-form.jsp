@@ -90,7 +90,7 @@ pageEncoding="UTF-8"%>
             <div class="col-4 d-flex justify-content-end ms-4 me-2 google-login-img">
               <img src="/resources/assets/google.PNG" alt="Logo" />
             </div>
-            <p style="margin: 0px; color: inherit;">Google 계정으로 로그인</p>
+            <p style="margin: 0px; color: inherit;">Google 계정으로 가입하기</p>
 
           </a>
 
@@ -98,7 +98,7 @@ pageEncoding="UTF-8"%>
             <div class="col-4 d-flex justify-content-end ms-4 me-2 login-img">
               <img src="/resources/assets/kakaotalk.png" alt="Logo" />
             </div>
-            <p style="margin:0px; color: black;">카카오 계정으로 로그인</p>
+            <p style="margin:0px; color: black;">카카오 계정으로 가입하기</p>
           </a>
           <button class="d-flex btn  mb-4 border text-color-white" style="background-color:#00BF18;" type="button">
             <div class ="col-4 d-flex justify-content-end ms-4 me-2 login-img">       

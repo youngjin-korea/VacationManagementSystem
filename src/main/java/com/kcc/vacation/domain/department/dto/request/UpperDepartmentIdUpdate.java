@@ -1,27 +1,21 @@
 package com.kcc.vacation.domain.department.dto.request;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
-@Setter
-public class DepartmentCreate {
+public class UpperDepartmentIdUpdate {
 
-
-    private int id;
-    private String name;
+    private List<Integer> updateTargetIds;
     private int upperDeptId;
 
-
     @Builder
-    public DepartmentCreate(int id, String name, int upperDeptId) {
-        this.id = id;
-        this.name = name;
+    public UpperDepartmentIdUpdate(List<Integer> updateTargetIds, int upperDeptId) {
+        this.updateTargetIds = updateTargetIds;
         this.upperDeptId = upperDeptId;
-
     }
 }
