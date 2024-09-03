@@ -13,15 +13,9 @@ public class HelloController {
 		return "index";
 	}
 
-	@GetMapping("/client/request-vacation")
-	public String requestVacation() {
-		return "client/request-vacation";
-	}
 
-//	@GetMapping("/client/my-page")
-//	public String myPage() {
-//		return "client/my-page";
-//	}
+
+
 
 	@GetMapping("/organizational-management")
 	public String organizationalManagement() {
