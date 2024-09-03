@@ -1,0 +1,48 @@
+.table {
+    max-width: 80%;
+    table-layout: auto;
+}
+
+.table > thead > tr > th {
+    text-align: center;
+}
+
+.table > tbody > tr > td,
+.table > thead > tr > th {
+    vertical-align: middle;
+    padding: 10px;
+    text-align: center;
+}
+
+.checkbox-th {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.completeSpan {
+    color: white;
+    background-color: #3391FF;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}
+
+.waitingSpan {
+    color: black;
+    background-color: #FFDA55;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}
+
+.rejectedSpan {
+    color: white;
+    background-color: #E60012;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}

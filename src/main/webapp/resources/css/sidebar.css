@@ -4,7 +4,7 @@
   left: 0;
   top: 0;
   height: 100vh;
-  z-index: 1000;
+  z-index: 5;
   transition: width 0.3s ease-in-out;
   box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
   background-color: #f7f7f7;
