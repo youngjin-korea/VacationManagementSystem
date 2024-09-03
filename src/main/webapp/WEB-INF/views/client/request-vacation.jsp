@@ -133,6 +133,8 @@
         .req-vac select,
         .req-vac input[type="date"],
         .req-vac input[type="time"],
+        .req-vac input[type="file"],
+        .req-vac textarea,
         .req-vac button {
             width: 100%;
             padding: 8px;
@@ -202,8 +204,7 @@
                 <input type="file" id="file"/>
 
                 <label for="reason">휴가 사유</label>
-                <textarea ></textarea>
-                <input type="date" id="reason"/>
+                <textarea id="reason"  rows="4" cols="50"></textarea>
 
                 <label for="approve1">승인권자 1</label>
                 <select id="approve1"></select>
