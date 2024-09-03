@@ -29,6 +29,22 @@
 
     </insert>
 
+    <delete id="deleteVacationTypes" parameterType="java.util.List">
+        DELETE FROM vacation_type
+        WHERE id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateVacationType" parameterType="VacationTypeUpdateDTO">
+        UPDATE vacation_type
+        SET
+            name = #{name},
+            max_days = #{max_days},
+            is_paid = #{is_paid}
+        WHERE id = #{id}
+    </update>
 
 </mapper>
 

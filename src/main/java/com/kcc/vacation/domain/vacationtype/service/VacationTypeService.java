@@ -1,5 +1,6 @@
 package com.kcc.vacation.domain.vacationtype.service;
 
+import com.kcc.vacation.domain.vacationtype.dto.request.VacationTypeUpdateDTO;
 import com.kcc.vacation.domain.vacationtype.dto.response.VacationTypeDetail;
 import com.kcc.vacation.domain.vacationtype.mapper.VacationTypeMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,16 @@ public class VacationTypeService {
     public int insertVacationType(VacationTypeDetail vacationType) {
       return  vacationTypeMapper.insertVacationType(vacationType);
 
+    }
+
+    public void deleteVacationTypes(List<Integer> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            vacationTypeMapper.deleteVacationTypes(ids);
+        }
+    }
+
+    public void updateVacationType(VacationTypeUpdateDTO vacationType) {
+        vacationTypeMapper.updateVacationType(vacationType);
     }
 
 
