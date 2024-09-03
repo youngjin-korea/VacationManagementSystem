@@ -1,6 +1,6 @@
 package com.kcc.vacation.domain.employee.mapper;
 
-<<<<<<< HEAD
+
 import com.kcc.vacation.domain.employee.dto.request.UpdateMyInfo;
 import com.kcc.vacation.domain.employee.dto.response.MyInfo;
 import com.kcc.vacation.domain.employee.dto.request.EmployeeCreate;
