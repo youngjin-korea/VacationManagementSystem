@@ -13,6 +13,7 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequiredArgsConstructor
 public class EmployeeRestController {
@@ -23,6 +24,7 @@ public class EmployeeRestController {
     public Employee getById(@PathVariable(value = "id") int id) {
         return employeeService.getById(id);
     }
+
     @PatchMapping("api/employees/{id}/mail-send")
     public void sendEmail(@PathVariable(value = "id") int id) {
         employeeService.handleSendMail(id);
