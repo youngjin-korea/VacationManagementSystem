@@ -4,6 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper	namespace="com.kcc.vacation.domain.vacationtype.mapper.VacationTypeMapper">
 
+    <resultMap id="VacationTypeDetailMap" type="VacationTypeDetail">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="created_date" property="created_date"/>
+        <result column="updated_date" property="updated_date"/>
+        <result column="max_days" property="max_days"/>
+        <result column="is_paid" property="is_paid"/>
+    </resultMap>
+
+    <select id="getAllVacationTypes" resultMap="VacationTypeDetailMap">
+        SELECT * FROM vacation_type
+    </select>
+
+
+    <select id="getVacationById" resultMap="VacationTypeDetailMap">
+        SELECT * from vacation_type where id = #{id}
+    </select>
+
 
 </mapper>
 
