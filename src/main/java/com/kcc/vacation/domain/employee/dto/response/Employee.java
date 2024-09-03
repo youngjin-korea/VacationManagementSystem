@@ -24,7 +24,8 @@ public class Employee {
     private String position;
     @Setter
     private String authority;
-   private String authenticationCode;
+
+    private String authenticationCode;
     private String verified;
 
     @Builder
@@ -32,7 +33,7 @@ public class Employee {
         this.id = id;
         this.name = name;
         this.password = password;
-       this.hireDate = hireDate;
+        this.hireDate = hireDate;
         this.email = email;
         this.oauthId = oauthId;
         this.phoneNumber = phoneNumber;
@@ -43,6 +44,6 @@ public class Employee {
         this.authority = authority;
         this.authenticationCode = authenticationCode;
         this.verified = verified;
-   }
+    }
 
 }

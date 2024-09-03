@@ -1,5 +1,6 @@
 package com.kcc.vacation.domain.employee.service;
 
+
 import com.kcc.vacation.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.vacation.domain.employee.dto.request.EmployeeEmailLogin;
 import com.kcc.vacation.domain.employee.dto.request.EmployeeFormLoginDataUpdate;
@@ -89,6 +90,7 @@ public class EmployeeService {
     public int updateMyInfo(UpdateMyInfo updateMyInfo) {
         return employeeMapper.updateMyInfo(updateMyInfo);
     }
+
 
 
     /**
@@ -235,4 +237,5 @@ public class EmployeeService {
 
         return htmlBuilder.toString();
     }
+
 }

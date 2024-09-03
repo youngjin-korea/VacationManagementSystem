@@ -43,11 +43,7 @@
             </div>
 
             <c:if test="${param.get('error')}">
-<<<<<<< HEAD
-                <div id="loginFailMessage">
-=======
                 <div class="loginFailMessage">
->>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
                         ${exception}
                 </div>
             </c:if>
