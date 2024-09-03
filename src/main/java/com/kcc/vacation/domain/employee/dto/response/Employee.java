@@ -24,14 +24,7 @@ public class Employee {
     private String position;
     @Setter
     private String authority;
-<<<<<<< HEAD
-
-    @Builder
-    public Employee(int id, String name, String password, Timestamp hireDate,String oauthId, String email, String phoneNumber, int vacationDays, String joinState, int deptId, String position, String authority) {
-        this.id = id;
-        this.name = name;
-=======
-    private String authenticationCode;
+   private String authenticationCode;
     private String verified;
 
     @Builder
@@ -39,8 +32,7 @@ public class Employee {
         this.id = id;
         this.name = name;
         this.password = password;
->>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
-        this.hireDate = hireDate;
+       this.hireDate = hireDate;
         this.email = email;
         this.oauthId = oauthId;
         this.phoneNumber = phoneNumber;
@@ -49,11 +41,8 @@ public class Employee {
         this.deptId = deptId;
         this.position = position;
         this.authority = authority;
-<<<<<<< HEAD
-=======
         this.authenticationCode = authenticationCode;
         this.verified = verified;
->>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
-    }
+   }
 
 }
