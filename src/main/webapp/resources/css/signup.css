@@ -69,7 +69,11 @@
 input:focus {
   outline: none;
 }
+<<<<<<< HEAD
+#loginFailMessage
+=======
 .loginFailMessage
+>>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
 {
   color: red;
   font-size: 12px;

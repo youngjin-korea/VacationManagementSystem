@@ -1,7 +1,15 @@
 package com.kcc.vacation.domain.employee.service;
 
+<<<<<<< HEAD
+import com.kcc.vacation.domain.employee.dto.request.EmployeeCreate;
+import com.kcc.vacation.domain.employee.dto.request.EmployeeEmailLogin;
+import com.kcc.vacation.domain.employee.dto.request.EmployeeFormLoginDataUpdate;
+import com.kcc.vacation.domain.employee.dto.response.Employee;
+import com.kcc.vacation.domain.employee.dto.request.UpdateMyInfo;
+=======
 import com.kcc.vacation.domain.employee.dto.request.*;
 import com.kcc.vacation.domain.employee.dto.response.Employee;
+>>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
 import com.kcc.vacation.domain.employee.dto.response.MyInfo;
 import com.kcc.vacation.domain.employee.mapper.EmployeeMapper;
 import com.kcc.vacation.global.exception.ErrorCode;
@@ -10,9 +18,16 @@ import com.kcc.vacation.global.exception.custom_exception.NotFoundException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+<<<<<<< HEAD
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+=======
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+>>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +40,11 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+<<<<<<< HEAD
+=======
     private final JavaMailSender mailSender;
    // private final SpringTemplateEngine templateEngine;
+>>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
 
     public void join(EmployeeCreate employeeCreate) {
         if(!employeeCreate.getPassword().equals(employeeCreate.getPasswordCheck()))
@@ -74,6 +92,8 @@ public class EmployeeService {
     public int updateMyInfo(UpdateMyInfo updateMyInfo) {
         return employeeMapper.updateMyInfo(updateMyInfo);
     }
+<<<<<<< HEAD
+=======
 
 
     /**
@@ -221,4 +241,5 @@ public class EmployeeService {
         return htmlBuilder.toString();
     }
 
+>>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
 }
