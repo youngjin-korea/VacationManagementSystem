@@ -24,11 +24,14 @@ public class Employee {
     private String position;
     @Setter
     private String authority;
+    private String authenticationCode;
+    private String verified;
 
     @Builder
-    public Employee(int id, String name, String password, Timestamp hireDate,String oauthId, String email, String phoneNumber, int vacationDays, String joinState, int deptId, String position, String authority) {
+    public Employee(int id, String name, String password,Timestamp hireDate,String oauthId, String email, String phoneNumber, int vacationDays, String joinState, int deptId, String position, String authority, String authenticationCode, String verified) {
         this.id = id;
         this.name = name;
+        this.password = password;
         this.hireDate = hireDate;
         this.email = email;
         this.oauthId = oauthId;
@@ -38,6 +41,8 @@ public class Employee {
         this.deptId = deptId;
         this.position = position;
         this.authority = authority;
+        this.authenticationCode = authenticationCode;
+        this.verified = verified;
     }
 
 }
