@@ -1,5 +1,6 @@
 package com.kcc.vacation.domain.vacationrequest.service;
 
+import com.kcc.vacation.domain.vacationrequest.dto.response.MyVacation;
 import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestDetail;
 import com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,4 +18,6 @@ public class VacationRequestService {
     public List<VacationRequestDetail> getVacationList() {
         return vacationRequestMapper.getVacationList();
     }
+
+    public List<MyVacation> getMyVacationList(int employeeId) {return vacationRequestMapper.getMyVacations(employeeId);}
 }
