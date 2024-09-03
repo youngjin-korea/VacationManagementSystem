@@ -27,7 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
->>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,11 +40,9 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-<<<<<<< HEAD
-=======
+
     private final JavaMailSender mailSender;
    // private final SpringTemplateEngine templateEngine;
->>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
 
     public void join(EmployeeCreate employeeCreate) {
         if(!employeeCreate.getPassword().equals(employeeCreate.getPasswordCheck()))
@@ -92,8 +90,6 @@ public class EmployeeService {
     public int updateMyInfo(UpdateMyInfo updateMyInfo) {
         return employeeMapper.updateMyInfo(updateMyInfo);
     }
-<<<<<<< HEAD
-=======
 
 
     /**
@@ -240,6 +236,4 @@ public class EmployeeService {
 
         return htmlBuilder.toString();
     }
-
->>>>>>> a4f4c951d95c5eb1b0a7a1186eebb374db7b1e1b
 }
