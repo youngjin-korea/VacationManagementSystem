@@ -1,10 +1,7 @@
 package com.kcc.vacation.domain.employee.mapper;
 
-import com.kcc.vacation.domain.employee.dto.request.UpdateMyInfo;
+import com.kcc.vacation.domain.employee.dto.request.*;
 import com.kcc.vacation.domain.employee.dto.response.MyInfo;
-import com.kcc.vacation.domain.employee.dto.request.EmployeeCreate;
-import com.kcc.vacation.domain.employee.dto.request.EmployeeFormLoginDataUpdate;
-import com.kcc.vacation.domain.employee.dto.request.EmployeeSocialDataUpdate;
 import com.kcc.vacation.domain.employee.dto.response.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -24,4 +21,7 @@ public interface EmployeeMapper {
     void updateFormLoginData(EmployeeFormLoginDataUpdate formLoginDataUpdate);
     MyInfo getMyInfo(int employeeId);
     int updateMyInfo(@Param("updateMyInfo") UpdateMyInfo updateMyInfo);
+
+    void updateAuthenticationCode(EmployeeAuthenticationCodeUpdate authenticationData);
+    void updateVerified(EmployeeVerifiedUpdate authenticationData);
 }

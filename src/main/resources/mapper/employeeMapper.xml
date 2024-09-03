@@ -93,4 +93,14 @@
         join_state = 'TRUE'
         where id = #{id}
     </update>
+
+    <update id="updateAuthenticationCode" parameterType="EmployeeAuthenticationCodeUpdate">
+        update employee set authentication_code = #{authenticationCode}
+        where id = #{id}
+    </update>
+
+    <update id="updateVerified" parameterType="EmployeeVerifiedUpdate">
+        update employee set verified = #{verified}
+        where email = #{email}
+    </update>
 </mapper>

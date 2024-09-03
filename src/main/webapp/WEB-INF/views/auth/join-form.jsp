@@ -114,21 +114,35 @@ pageEncoding="UTF-8"%>
 
 
     <!-- 모달 -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" style="margin-top:200px;">
         <div class="modal-content">
           <div class="modal-header">
             <h2 class="modal-title fs-5 fw-bold" id="exampleModalLabel">직원 합류</h2>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body d-flex flex-column">
+            <div class="d-flex mb-2">
+              <div class="col-2 d-flex align-items-center"><p style="margin-bottom: 0; padding-bottom: 2px;">이메일</p></div>
+              <div class="col-6 d-flex border border-2 align-items-center" style="position: relative">
+                <input id="email-input1" class= "col-6 code-input" type="text">
+                <input id="email-input2" class= "col-6 code-input" type="text">
+                <div style="position: absolute; top:3px; left:47%;"><h3 style="font-size:17px;">@</h3></div>
+              </div>
+            </div>
+            <div id="loginFailMessageByEmail" class="loginFailMessage" style="display: none">
+              등록되지 않은 이메일입니다.
+            </div>
+
             <div class="d-flex ">
               <div class="col-2 d-flex align-items-center"><p style="margin-bottom: 0; padding-bottom: 2px;">합류코드</p></div>
               <div class="col-6 d-flex border border-2 align-items-center" style="position: relative">
-                <input class= "col-6 code-input" placeholder="AAAA" maxlength="4" type="text">
-                <input class= "col-6 code-input" placeholder="AAAA" maxlength="4" type="text">
+                <input id="authentication-code-input1" class= "col-6 code-input" placeholder="AAAA" maxlength="4" type="text">
+                <input id="authentication-code-input2" class= "col-6 code-input" placeholder="AAAA" maxlength="4" type="text">
                 <div style="position: absolute; left:48%;"><h3>-</h3></div>
               </div>
+            </div>
+            <div id="loginFailMessageByCode" class="loginFailMessage" style="display: none">
+              유효하지 않은 인증코드입니다.
             </div>
             <div class="my-3 d-flex justify-content-start">
               <p class ="text-color-gray2" style="font-size: 12px;">
@@ -140,22 +154,15 @@ pageEncoding="UTF-8"%>
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button id="certificateBtn" type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-    <script type="text/javascript">
-      document.addEventListener("DOMContentLoaded", function(){
-        var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-        myModal.show();
-      });
-
-    </script>
+    <script src="/resources/js/join-form.js"></script>
   </body>
 
 
