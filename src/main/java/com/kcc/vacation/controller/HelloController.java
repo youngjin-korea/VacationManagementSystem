@@ -25,9 +25,5 @@ public class HelloController {
 	public String employeeManagement() {
 		return "admin/employee-management";
 	}
-	@GetMapping("/client/client-calender")
-	public String client_clientcalender() {
-		return "/client/client-calender";
-	}
 
 }

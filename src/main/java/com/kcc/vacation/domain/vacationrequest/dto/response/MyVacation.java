@@ -28,4 +28,17 @@ public class MyVacation {
         this.title = title;
         this.vacationDays = vacationDays;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "vacationId:" + vacationId +
+                ", start:" + start +
+                ", end:" + end +
+                ", approvedDate:" + approvedDate +
+                ", status:\"" + status + "\"" +
+                ", title:\"" + title + "\"" +
+                ", vacationDays:" + vacationDays +
+                "}";
+    }
 }

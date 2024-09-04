@@ -10,11 +10,11 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MyVacationRequest {
+public class MyVacationRequestJSP {
     // id 시퀀스로 mapper에서 주입
     private int id;
-    private Timestamp startedDate;
-    private Timestamp endedDate;
+    private String startedDate;
+    private String endedDate;
     private String filePath;
     private Timestamp approveDate;
     private String status;
@@ -23,7 +23,7 @@ public class MyVacationRequest {
     private int empId;
 
     @Builder
-    public MyVacationRequest(int id, Timestamp startedDate, Timestamp endedDate, String filePath, Timestamp approveDate, String status, String comments, int typeId, int empId) {
+    public MyVacationRequestJSP(int id, String startedDate, String endedDate, String filePath, Timestamp approveDate, String status, String comments, int typeId, int empId) {
         this.id = id;
         this.startedDate = startedDate;
         this.endedDate = endedDate;

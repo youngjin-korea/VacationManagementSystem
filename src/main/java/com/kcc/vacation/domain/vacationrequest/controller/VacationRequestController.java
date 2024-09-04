@@ -1,6 +1,8 @@
 package com.kcc.vacation.domain.vacationrequest.controller;
 
+import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationApprover;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequest;
+import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequestJSP;
 import com.kcc.vacation.domain.vacationrequest.service.VacationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,14 +26,17 @@ public class VacationRequestController {
         @GetMapping("/client/request-vacation/{employeeId}")
         public String getClientVacationList(@PathVariable int employeeId, Model model) {
             model.addAttribute("employeeId",employeeId);
-            vacationRequestService.insertVacationRequest(new MyVacationRequest());
-            return "/client/request-vacation";
+            return "client/request-vacation";
         }
 
+        @GetMapping("/client/client-calender")
+        public String client_clientcalender() {
+        return "client/client-calender";
+    }
+
         @PostMapping("/client/request-vacation")
-        public String requestMyVacation(@ModelAttribute MyVacationRequest vacationRequest) {
-             vacationRequestService.insertVacationRequest(vacationRequest);
-//             TODO:: insert 승인권자
-             return "redirect:/client/request-vacation/"+vacationRequest.getEmpId()+"?updateSuccess=true";
+        public String requestMyVacation(@ModelAttribute MyVacationRequestJSP vacationRequestJSP, @ModelAttribute MyVacationApprover vacationApprover) {
+            vacationRequestService.insertVacationRequest(vacationRequestJSP, vacationApprover);
+            return "redirect:/client/request-vacation/"+vacationRequestJSP.getEmpId()+"?updateSuccess=true";
         }
 }
