@@ -17,10 +17,10 @@ public class HelloController {
 
 
 
-	@GetMapping("/organizational-management")
-	public String organizationalManagement() {
-		return "admin/organizational-management";
-	}
+//	@GetMapping("/organizational-management")
+//	public String organizationalManagement() {
+//		return "admin/organizational-management";
+//	}
 	@GetMapping("/employee-management")
 	public String employeeManagement() {
 		return "admin/employee-management";

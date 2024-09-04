@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Getter
 public class VacationRequestDetail {
 
-    private Long id;
+    private int id;
     private Timestamp regDate;
     private Timestamp startedDate;
     private Timestamp endDate;
@@ -18,13 +18,13 @@ public class VacationRequestDetail {
     private Timestamp approveDate;
     private String status;
     private String comments;
-    private Long typeId;
-    private Long empId;
+    private int typeId;
+    private int empId;
 
     @Builder
-    public VacationRequestDetail(Long id, Timestamp regDate, Timestamp startedDate, Timestamp endDate,
+    public VacationRequestDetail(int id, Timestamp regDate, Timestamp startedDate, Timestamp endDate,
                                  String filePath, Timestamp approveDate, String status, String comments,
-                                 Long typeId, Long empId) {
+                                 int typeId, int empId) {
         this.id = id;
         this.regDate = regDate;
         this.startedDate = startedDate;

@@ -1,12 +1,14 @@
 package com.kcc.vacation.domain.vacationrequest.service;
-
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationApprover;
+import com.kcc.vacation.domain.employee.dto.response.Employee;
+import com.kcc.vacation.domain.employee.mapper.EmployeeMapper;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequest;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequestJSP;
 import com.kcc.vacation.domain.vacationrequest.dto.response.MyVacation;
-import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestDetail;
+import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestList;
 import com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +23,34 @@ import java.util.List;
 public class VacationRequestService {
 
     private final VacationRequestMapper vacationRequestMapper;
+    private final EmployeeMapper employeeMapper;
 
+    // 휴가 요청 목록 보기 - 관리자
+    // 승인 권한이 있는 목록만 출력
+    public List<VacationRequestList> getVacationRequestListByApproverId() {
 
-    public List<VacationRequestDetail> getVacationList() {
-        return vacationRequestMapper.getVacationList();
+        // 로그인한 유저 정보
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee loginUser = employeeMapper.findByEmail(username);
+
+        // 현재 임의의 인사팀 부서장인 1003 번으로 접속했다고 가정함
+//        return vacationRequestMapper.getVacationList(loginUser.getId());
+        return vacationRequestMapper.getVacationRequestListByApproverId(1003);
+    }
+
+    // 휴가 승인 - 관리자
+    public boolean approveVacation(int requestId) {
+
+        // 로그인한 유저 정보
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee loginUser = employeeMapper.findByEmail(username);
+
+        //int rowsAffected = vacationRequestMapper.updateApproverStatus(requestId, loginUser.getId());
+
+        // 현재 임의의 인사팀 부서장인 1003 번으로 접속했다고 가정함
+        int rowsAffected = vacationRequestMapper.updateApproverStatus(requestId, 1003);
+
+        return rowsAffected > 0; // 업데이트된 행의 수가 0보다 크면 true 리턴
     }
 
     public List<MyVacation> getMyVacationList(int employeeId) {return vacationRequestMapper.getMyVacations(employeeId);}

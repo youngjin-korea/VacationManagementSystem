@@ -3,9 +3,13 @@
     background-color: #073082;
 }
 
-.modal-footer button:last-child{
+#updateDepartmentBtnOfModal{
     border-radius: 2px;
     background-color: #073082;
+}
+#deleteDepartmentBtnOfModal{
+    border-radius: 2px;
+    background-color: #FF4040;
 }
 
 p {

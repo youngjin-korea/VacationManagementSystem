@@ -19,7 +19,7 @@ public class VacationRequestController {
 
         @GetMapping("/admin/request-vacation")
         public String getVacationList(Model model) {
-            model.addAttribute("vacationRequestList", vacationRequestService.getVacationList());
+            model.addAttribute("vacationRequestList", vacationRequestService.getVacationRequestListByApproverId());
             return "admin/request-vacation";
         }
 

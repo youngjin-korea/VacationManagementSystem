@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Getter
 public class VacationRequestList {
 
-    private Long id;
+    private int id;
     private Timestamp regDate;
     private Timestamp startedDate;
     private Timestamp endDate;
@@ -19,14 +19,20 @@ public class VacationRequestList {
     private Timestamp approveDate;
     private String status;
     private String comments;
-    private Long typeId;
-    private Long empId;
-    private String name;
+    private int typeId;
+    private int empId;
+
+    private String employeeName; // Employee 테이블의 name 컬럼과 매핑
+
+    private int topApprover;
+    private int firstApprover;
+    private int secondApprover;
+    private String topStatus;
+    private String firstStatus;
+    private String secondStatus;
 
     @Builder
-    public VacationRequestList(Long id, Timestamp regDate, Timestamp startedDate, Timestamp endDate,
-                                 String filePath, Timestamp approveDate, String status, String comments,
-                                 Long typeId, Long empId, String name) {
+    public VacationRequestList(int id, Timestamp regDate, Timestamp startedDate, Timestamp endDate, String filePath, Timestamp approveDate, String status, String comments, int typeId, int empId, String employeeName, int topApprover, int firstApprover, int secondApprover, String topStatus, String firstStatus, String secondStatus) {
         this.id = id;
         this.regDate = regDate;
         this.startedDate = startedDate;
@@ -37,7 +43,12 @@ public class VacationRequestList {
         this.comments = comments;
         this.typeId = typeId;
         this.empId = empId;
-        this.name = name;
+        this.employeeName = employeeName;
+        this.topApprover = topApprover;
+        this.firstApprover = firstApprover;
+        this.secondApprover = secondApprover;
+        this.topStatus = topStatus;
+        this.firstStatus = firstStatus;
+        this.secondStatus = secondStatus;
     }
-
 }
