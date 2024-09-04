@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 public class MyVacationRequest {
+    // id 시퀀스로 mapper에서 주입
     private int id;
     private Timestamp startedDate;
     private Timestamp endedDate;

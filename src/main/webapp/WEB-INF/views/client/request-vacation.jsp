@@ -178,11 +178,12 @@
     <div class="container-vac">
         <div id="calendar" style="width: 75%;"></div>
         <div class="req-vac">
-            <form action="#" method="post">
+            <form action="/client/request-vacation" method="post">
                 <h4>휴가 신청하기</h4>
                 <label for="vacation-type">휴가 유형 | <span id="myVac">보유 연차: <span
                         id="annual-days"></span> / 15</span></label>
-                <select id="vacation-type">
+                <input type="hidden" name="empId" value="${employeeId}">
+                <select id="vacation-type" name="typeId">
                     <option value="1" selected>연차</option>
                     <option value="9">오전 반차</option>
                     <option value="8">오후 반차</option>
@@ -195,25 +196,25 @@
                 </select>
 
                 <label for="start-date">시작 날짜</label>
-                <input type="date" id="start-date"/>
+                <input type="date" id="start-date" name="startedDate"/>
 
                 <label for="end-date">종료 날짜</label>
-                <input type="date" id="end-date"/>
+                <input type="date" id="end-date" name="endedDate"/>
 
                 <label for="file">첨부파일</label>
-                <input type="file" id="file"/>
+                <input type="file" id="file" name="filePath"/>
 
                 <label for="reason">휴가 사유</label>
-                <textarea id="reason"  rows="4" cols="50"></textarea>
+                <textarea id="reason" name="comments"  rows="4" cols="50"></textarea>
 
                 <label for="approve1">승인권자 1</label>
-                <select id="approve1"></select>
+                <select id="approve1" name="firstApprover" </select>
 
                 <label for="approve2">승인권자 2</label>
-                <select id="approve2"></select>
+                <select id="approve2" name="secondApprover"></select>
 
                 <label for="approve3">승인권자 3</label>
-                <select id="approve3"></select>
+                <select id="approve3" name="topApprover"></select>
 
                 <button id="submit-vacation" type="submit">신청하기</button>
             </form>

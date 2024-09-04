@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class MyVacationApprover {
+    // service에서 id 주입
     private int id;
     private int topApprover;
     private int firstApprover;
