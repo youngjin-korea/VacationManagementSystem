@@ -65,10 +65,10 @@
         VALUES (
         #{id},
         systimestamp,
-        TO_DATE(#{startedDate,jdbcType=TIMESTAMP}, 'YYYY-MM-DD'),
-        TO_DATE(#{endedDate,jdbcType=TIMESTAMP}, 'YYYY-MM-DD'),
+        #{startedDate,jdbcType=TIMESTAMP},
+        #{endedDate,jdbcType=TIMESTAMP},
         #{filePath, jdbcType=VARCHAR},
-        TO_DATE(#{approveDate,jdbcType=TIMESTAMP}, 'YYYY-MM-DD'),
+        #{approveDate,jdbcType=TIMESTAMP},
         #{status, jdbcType=VARCHAR},
         #{comments, jdbcType=VARCHAR},
         #{typeId},

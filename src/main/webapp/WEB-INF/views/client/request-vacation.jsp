@@ -19,9 +19,11 @@
         import dayGridPlugin from "@fullcalendar/daygrid";
 
         document.addEventListener("DOMContentLoaded", async function () {
-                // JSP에서 전달받은 employeeId를 JavaScript 변수로 설정
-                const employeeId = "<%= request.getAttribute("employeeId") %>";
+
                 try {
+                // JSP에서 전달받은 employeeId를 JavaScript 변수로 설정
+                    const employeeId = "<%= request.getAttribute("employeeId") %>";
+
                     // 1. 서버에서 데이터 가져오기 (GET 요청)
                     const response = await fetch(`/my-vacations/${employeeId}`, {
                         method: 'GET',
@@ -34,11 +36,16 @@
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     // 3. JSON으로 파싱
-                    // const AllVacDays = JSON.parse(myVacations).vacationDays;
-                    // console.log(AllVacDays);
-                    const myVacations = await response.json();
-                    // const days = myVacations.vacationDays;
-                    console.log("================!!",myVacations[0].vacationDays);
+                    let myVacations = await response.json();
+                    console.log("look===========",myVacations);
+
+                    if(myVacations.length == 0){
+                        myVacations = [{start:"",end:"",vacationDays:0}]
+                    }
+                    console.log("latter: ", myVacations);
+
+                    const annualDays = document.getElementById("annual-days");
+                    annualDays.innerHTML = myVacations.length;
 
                     //보유연차 표시
                     const allVacDays = document.getElementById("annual-days");
@@ -208,13 +215,19 @@
                 <textarea id="reason" name="comments"  rows="4" cols="50"></textarea>
 
                 <label for="approve1">승인권자 1</label>
-                <select id="approve1" name="firstApprover" </select>
+                <select id="approve1" name="firstApprover">
+                    <option value="1004">1</option>
+                </select>
 
                 <label for="approve2">승인권자 2</label>
-                <select id="approve2" name="secondApprover"></select>
+                <select id="approve2" name="secondApprover">
+                    <option value="1002">2</option>
+                </select>
 
                 <label for="approve3">승인권자 3</label>
-                <select id="approve3" name="topApprover"></select>
+                <select id="approve3" name="topApprover">
+                    <option value="1003">3</option>
+                </select>
 
                 <button id="submit-vacation" type="submit">신청하기</button>
             </form>
@@ -291,14 +304,6 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    const annual = 3;
-
-    const annualDays = document.getElementById("annual-days");
-    annualDays.innerHTML = annual;
-
-</script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
