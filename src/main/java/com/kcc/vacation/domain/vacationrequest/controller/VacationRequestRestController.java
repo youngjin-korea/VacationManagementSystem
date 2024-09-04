@@ -21,6 +21,13 @@ public class VacationRequestRestController {
         return success;
     }
 
+    @PostMapping("/admin/reject-vacation")
+    public boolean rejectVacation(@RequestParam("id") String id, @RequestParam("commentsOfApprover") String commentsOfApprover) {
+      boolean success = vacationRequestService.rejectVacation(Integer.parseInt(id), commentsOfApprover);
+      return success;
+    };
+
+
     @GetMapping("/my-vacations/{employeeId}")
     public List<MyVacation> getClientVacationList(@PathVariable int employeeId) {
 
