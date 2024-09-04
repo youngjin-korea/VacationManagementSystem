@@ -13,20 +13,14 @@ public class HelloController {
 		return "index";
 	}
 
-	@GetMapping("/client/request-vacation")
-	public String requestVacation() {
-		return "client/request-vacation";
-	}
 
-//	@GetMapping("/client/my-page")
-//	public String myPage() {
-//		return "client/my-page";
+
+
+
+//	@GetMapping("/organizational-management")
+//	public String organizationalManagement() {
+//		return "admin/organizational-management";
 //	}
-
-	@GetMapping("/organizational-management")
-	public String organizationalManagement() {
-		return "admin/organizational-management";
-	}
 	@GetMapping("/employee-management")
 	public String employeeManagement() {
 		return "admin/employee-management";

@@ -4,7 +4,7 @@
 <mapper namespace="com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper">
 
     <!-- 결과 매핑을 위한 resultMap 정의 -->
-    <resultMap id="VacationRequestDetailResultMap" type="VacationRequestDetail">
+    <resultMap id="VacationRequestDetailResultMap" type="VacationRequestList">
         <id column="id" property="id" />
         <result column="reg_date" property="regDate" />
         <result column="started_date" property="startedDate" />
@@ -15,13 +15,64 @@
         <result column="comments" property="comments" />
         <result column="type_id" property="typeId" />
         <result column="emp_id" property="empId" />
+        <result column="name" property="name" />
+    </resultMap>
+
+    <resultMap id="MyVacationsResultMap" type="MyVacation">
+        <id column="id" property="vacationId"/>
+        <result column="started_date" property="start"/>
+        <result column="end_date" property="end"/>
+        <result column="approve_date" property="approvedDate"/>
+        <result column="status" property="status"/>
+        <result column="name" property="title"/>
+        <result column="vacation_days" property="vacationDays"/>
     </resultMap>
 
     <!-- 모든 휴가 요청 조회 -->
     <select id="getVacationList" resultMap="VacationRequestDetailResultMap">
         SELECT
-            *
-        FROM Vacation_request
+            v.id,
+            v.reg_date,
+            v.started_date,
+            v.end_date,
+            v.file_path,
+            v.approve_date,
+            v.status,
+            v.comments,
+            v.type_id,
+            v.emp_id,
+            e.name
+        FROM Vacation_request v, Employee e
+        WHERE v.emp_id = e.id
     </select>
+
+    <select id="getMyVacations" resultMap="MyVacationsResultMap">
+        SELECT vr.id, vr.started_date, vr.end_date, vr.approve_date, vr.status, vt.name, e.vacation_days
+        FROM employee e
+                 JOIN vacation_request vr
+                      ON e.id = vr.emp_id
+                 JOIN vacation_type vt
+                      ON vr.type_id = vt.id
+        WHERE e.id = #{employeeId}
+    </select>
+
+    <insert id="insertVacationRequest" parameterType="MyVacationRequest">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            SELECT vacation_request_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO vacation_request (id, reg_date, started_date, end_date, file_path, approve_date, status, comments,
+        type_id, emp_id)
+        VALUES (
+            #{id},
+            sysdate,
+            TO_DATE(#{startedDate}, 'YYYY-MM-DD'),
+            TO_DATE(#{endedDate}, 'YYYY-MM-DD'),
+            #{filePath},
+            TO_DATE(#{approveDate}, 'YYYY-MM-DD'),
+            #{status},
+            #{comments},
+            #{typeId},
+            #{empId})
+    </insert>
 
 </mapper>

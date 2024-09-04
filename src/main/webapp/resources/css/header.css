@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   border-bottom: 1px solid #dee2e6;
-  z-index: 2000;
+  z-index: 10;
   font-weight: bold;
   font-style: italic;
   background-color: #073082;
