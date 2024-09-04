@@ -22,7 +22,6 @@ public class MyVacationRequest {
     private int empId;
 
     @Builder
-
     public MyVacationRequest(int id, Timestamp startedDate, Timestamp endedDate, String filePath, Timestamp approveDate, String status, String comments, int typeId, int empId) {
         this.id = id;
         this.startedDate = startedDate;

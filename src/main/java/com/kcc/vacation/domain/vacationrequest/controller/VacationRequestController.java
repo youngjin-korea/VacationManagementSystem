@@ -1,5 +1,6 @@
 package com.kcc.vacation.domain.vacationrequest.controller;
 
+import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationApprover;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequest;
 import com.kcc.vacation.domain.vacationrequest.service.VacationRequestService;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +25,13 @@ public class VacationRequestController {
         @GetMapping("/client/request-vacation/{employeeId}")
         public String getClientVacationList(@PathVariable int employeeId, Model model) {
             model.addAttribute("employeeId",employeeId);
-            vacationRequestService.insertVacationRequest(new MyVacationRequest());
+
             return "/client/request-vacation";
         }
 
         @PostMapping("/client/request-vacation")
-        public String requestMyVacation(@ModelAttribute MyVacationRequest vacationRequest) {
-             vacationRequestService.insertVacationRequest(vacationRequest);
+        public String requestMyVacation(@ModelAttribute MyVacationRequest vacationRequest, @ModelAttribute MyVacationApprover vacationApprover) {
+             vacationRequestService.insertVacationRequest(vacationRequest, vacationApprover);
 //             TODO:: insert 승인권자
              return "redirect:/client/request-vacation/"+vacationRequest.getEmpId()+"?updateSuccess=true";
         }

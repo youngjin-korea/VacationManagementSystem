@@ -63,16 +63,21 @@
         INSERT INTO vacation_request (id, reg_date, started_date, end_date, file_path, approve_date, status, comments,
         type_id, emp_id)
         VALUES (
-            #{id},
-            sysdate,
-            TO_DATE(#{startedDate}, 'YYYY-MM-DD'),
-            TO_DATE(#{endedDate}, 'YYYY-MM-DD'),
-            #{filePath},
-            TO_DATE(#{approveDate}, 'YYYY-MM-DD'),
-            #{status},
-            #{comments},
-            #{typeId},
-            #{empId})
+        #{id},
+        systimestamp,
+        TO_DATE(#{startedDate,jdbcType=TIMESTAMP}, 'YYYY-MM-DD'),
+        TO_DATE(#{endedDate,jdbcType=TIMESTAMP}, 'YYYY-MM-DD'),
+        #{filePath, jdbcType=VARCHAR},
+        TO_DATE(#{approveDate,jdbcType=TIMESTAMP}, 'YYYY-MM-DD'),
+        #{status, jdbcType=VARCHAR},
+        #{comments, jdbcType=VARCHAR},
+        #{typeId},
+        #{empId})
+    </insert>
+
+    <insert id="insertApprover" parameterType="MyVacationApprover">
+        INSERT INTO approver(id, top_approver, first_approver, second_approver)
+        VALUES (#{id}, #{topApprover}, #{firstApprover}, #{secondApprover})
     </insert>
 
 </mapper>
