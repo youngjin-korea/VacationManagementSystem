@@ -66,7 +66,16 @@
                            <c:set var='diffInDays' value='${diffInMillis / (1000.0 * 60 * 60 * 24)}' />
                            <fmt:formatNumber value='${diffInDays}' type='number' maxFractionDigits='1' minFractionDigits='0' /> 일"
                 data-reg-date="<fmt:formatDate value='${request.regDate}' pattern='yyyy-MM-dd'/>"
-                data-status="${request.status}">
+                data-status="${request.status}"
+                data-comments="${request.comments}"
+                data-topApprover="${request.topApprover}"
+                data-firstApprover="${request.firstApprover}"
+                data-secondApprover="${request.secondApprover}"
+                data-topStatus="${request.topStatus}"
+                data-firstStatus="${request.firstStatus}"
+                data-secondStatus="${request.secondStatus}"
+                data-isYourTurn="${request.isYourTurn}"
+            >
                 <th class="checkbox-th" scope="row">
                     <input class="form-check-input" type="checkbox" id="${request.id}">
                 </th>
@@ -107,15 +116,20 @@
 </div>
 
 <script>
+
+
+
     document.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget; // 클릭된 테이블 행
-        var requestId = button.getAttribute('data-request-id');
-        var empId = button.getAttribute('data-emp-id');
-        var name = button.getAttribute('data-name');
-        var period = button.getAttribute('data-period');
-        var days = button.getAttribute('data-days');
-        var regDate = button.getAttribute('data-reg-date');
-        var status = button.getAttribute('data-status');
+        var clickedRow = event.relatedTarget; // 클릭된 테이블 행
+        var requestId = clickedRow.getAttribute('data-request-id');
+        var empId = clickedRow.getAttribute('data-emp-id');
+        var name = clickedRow.getAttribute('data-name');
+        var period = clickedRow.getAttribute('data-period');
+        var days = clickedRow.getAttribute('data-days');
+        var regDate = clickedRow.getAttribute('data-reg-date');
+        var status = clickedRow.getAttribute('data-status');
+
+        console.log("status :: ",status);
 
         // 모달에 데이터 설정
         document.getElementById('modalReqId').textContent = requestId;
@@ -124,6 +138,8 @@
         document.getElementById('modalPeriod').textContent = period;
         document.getElementById('modalDays').textContent = days;
         document.getElementById('modalRegDate').textContent = regDate;
+        document.getElementById('modalStatus').textContent = status;
+
         var modalStatus = document.getElementById('modalStatus');
         modalStatus.textContent = status;
 
@@ -148,7 +164,10 @@
         // 승인/반려 버튼 표시 여부 결정
         var approveBtn = document.getElementById('approveBtn');
         var rejectBtn = document.getElementById('rejectBtn');
-        if (status === '승인 대기') {
+        // 로그인한 유저가 승인할 단계인지 판별
+        var isYourTurn = clickedRow.getAttribute('data-isYourTurn');
+
+        if (status === '승인 대기' && isYourTurn === 'TRUE') {
             approveBtn.style.display = 'inline-block';
             rejectBtn.style.display = 'inline-block';
         } else {

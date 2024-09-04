@@ -32,10 +32,65 @@ public class VacationRequestService {
         // 로그인한 유저 정보
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Employee loginUser = employeeMapper.findByEmail(username);
-
+//        String authority = loginUser.getAuthority();
         // 현재 임의의 인사팀 부서장인 1003 번으로 접속했다고 가정함
 //        return vacationRequestMapper.getVacationList(loginUser.getId());
-        return vacationRequestMapper.getVacationRequestListByApproverId(1003);
+
+        // basic data
+        List<VacationRequestList> vacationRequestListBase = vacationRequestMapper.getVacationRequestListByApproverId(1003);
+
+        // 1.최고관리자일 경우
+//        if(authority.equals("ROLE_TOP_APPROVAL")){
+        // 최고 관리자라고 상정
+        if(true){
+            for(VacationRequestList vacationRequestList : vacationRequestListBase){
+                if(vacationRequestList.getStatus().equals("승인 대기")) {
+                    // 1-1. 1차, 2차 승인권자가 존재하지 않을 때 (승인권자가 최고관리자뿐일 때)
+                    if(vacationRequestList.getFirstApprover() == 0 &&
+                            vacationRequestList.getSecondApprover() == 0) {
+                        vacationRequestList.setIsYourTurn("TRUE"); // 최종 승인을 위한 표시
+                    }
+
+                    // 1-2. 2차가 존재하고 승인했을 때 (1차 승인이 없는 경우)
+                    else if(vacationRequestList.getSecondStatus() !=null && vacationRequestList.getSecondStatus().equals("TRUE") &&
+                            vacationRequestList.getFirstApprover() == 0) {
+                        vacationRequestList.setIsYourTurn("TRUE"); // 최종 승인을 위한 표시
+                    }
+
+
+                    // 1-3. 1차, 2차가 모두 존재하고 승인했을 때
+                    else if(vacationRequestList.getFirstStatus() !=null && vacationRequestList.getFirstStatus().equals("TRUE") &&
+                            vacationRequestList.getSecondStatus() !=null && vacationRequestList.getSecondStatus().equals("TRUE")) {
+                        vacationRequestList.setIsYourTurn("TRUE"); // 최종 승인을 위한 표시
+                    }
+
+                }
+            }
+        // 2. 2차 관리자일 경우    
+        }else if(false){
+//        }else if(authority.equals("ROLE_SECOND_APPROVAL")){
+            for(VacationRequestList vacationRequestList : vacationRequestListBase){
+                if(vacationRequestList.getStatus().equals("승인 대기")){
+                    // 2-1. 1차 승인권자가 존재하고 승인했을 때
+                    if(vacationRequestList.getFirstStatus().equals("TRUE")){
+                        vacationRequestList.setIsYourTurn("TRUE");
+                    }
+                }
+            }
+
+
+        // 3. 1차 관리자일 경우
+//        }else if(authority.equals("ROLE_FIRST_APPROVAL")){
+        }else if(false){
+            for(VacationRequestList vacationRequestList : vacationRequestListBase){
+                // 3-1. 아직 내가 승인하지 않은 경우
+                if(vacationRequestList.getFirstStatus().equals("NULL")){
+                    vacationRequestList.setIsYourTurn("TRUE");
+                }
+            }
+        }
+
+        return vacationRequestListBase;
     }
 
     // 휴가 승인 - 관리자

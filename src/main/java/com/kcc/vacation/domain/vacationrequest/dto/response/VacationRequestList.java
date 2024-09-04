@@ -4,6 +4,7 @@ package com.kcc.vacation.domain.vacationrequest.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
@@ -31,8 +32,14 @@ public class VacationRequestList {
     private String firstStatus;
     private String secondStatus;
 
+    private String isYourTurn;
+
+    public void setIsYourTurn(String isYourTurn) {
+        this.isYourTurn = isYourTurn;
+    }
+
     @Builder
-    public VacationRequestList(int id, Timestamp regDate, Timestamp startedDate, Timestamp endDate, String filePath, Timestamp approveDate, String status, String comments, int typeId, int empId, String employeeName, int topApprover, int firstApprover, int secondApprover, String topStatus, String firstStatus, String secondStatus) {
+    public VacationRequestList(int id, Timestamp regDate, Timestamp startedDate, Timestamp endDate, String filePath, Timestamp approveDate, String status, String comments, int typeId, int empId, String employeeName, int topApprover, int firstApprover, int secondApprover, String topStatus, String firstStatus, String secondStatus, String isYourTurn) {
         this.id = id;
         this.regDate = regDate;
         this.startedDate = startedDate;
@@ -50,5 +57,6 @@ public class VacationRequestList {
         this.topStatus = topStatus;
         this.firstStatus = firstStatus;
         this.secondStatus = secondStatus;
+        this.isYourTurn = isYourTurn;
     }
 }
