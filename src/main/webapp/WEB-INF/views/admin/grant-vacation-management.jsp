@@ -115,6 +115,23 @@
                 </thead>
 
                 <tbody>
+                <c:forEach var="req" items="${vacationTypeList}">
+                    <!-- data-id : 각 행에 data-id 속성을 추가 및 행의 id 값을 저장 -->
+                    <tr data-id="${req.id}">
+                        <th scope="row">
+                            <input class="form-check-input row-checkbox" type="checkbox" data-id="${req.id}">
+                        </th>
+                        <td>${req.id}</td>
+                        <td>${req.name}</td>
+                        <fmt:formatDate value="${req.created_date}" pattern="yyyy-MM-dd" var="formattedCreatedDate"/>
+                        <td>${formattedCreatedDate}</td>
+                        <fmt:formatDate value="${req.updated_date}" pattern="yyyy-MM-dd" var="formattedCreatedDate"/>
+                        <td>${formattedCreatedDate}</td>
+                        <td>${req.max_days}</td>
+                        <td>${req.is_paid}</td>
+                    </tr>
+                </c:forEach>
+
                 <tr>
                     <th scope="row">
                         <input class="form-check-input" type="checkbox" class="row-checkbox" id="check1">
@@ -123,24 +140,6 @@
                     <td>홍길동</td>
                     <td>연차</td>
                     <td>2023-10-01</td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <input class="form-check-input" type="checkbox" class="row-checkbox" id="check2">
-                    </th>
-                    <td>인사부서</td>
-                    <td>인길동</td>
-                    <td>오후반차</td>
-                    <td>2023-11-01</td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <input class="form-check-input" type="checkbox" class="row-checkbox" id="check3">
-                    </th>
-                    <td>개발부서</td>
-                    <td>개길동</td>
-                    <td>병가</td>
-                    <td>2024-01-21</td>
                 </tr>
                 </tbody>
             </table>

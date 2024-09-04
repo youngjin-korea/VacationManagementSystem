@@ -1,5 +1,6 @@
 package com.kcc.vacation.domain.grantedvacation.controller;
 
+import ch.qos.logback.core.model.Model;
 import com.kcc.vacation.domain.grantedvacation.service.GrantedVacationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -11,5 +12,8 @@ public class GrantedVacationController {
 
     private final GrantedVacationService grantedVacationService;
 
-
+    @GetMapping("/admin/grant-vacation-management")
+    public String grantVacationManagement(Model model) {
+        return "admin/grant-vacation-management";
+    }
 }
