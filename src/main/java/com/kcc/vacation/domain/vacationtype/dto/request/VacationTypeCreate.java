@@ -3,12 +3,11 @@ package com.kcc.vacation.domain.vacationtype.dto.request;
 
 import java.sql.Timestamp;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @Getter
+@Setter
 public class VacationTypeCreate {
 
 

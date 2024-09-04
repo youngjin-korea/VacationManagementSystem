@@ -1,0 +1,22 @@
+#vacation-type-header > h3 {
+  border-bottom: 1px solid;
+  padding-bottom: 30px;
+  width: 100%;
+  color: black;
+
+
+}
+
+#vacation-type-button {
+
+    background-color: white; 
+    color: #007bff; 
+    border: 1px solid #007bff; 
+
+
+}
+#vacation-type-main {
+
+  padding: 50px;
+  border: 1px solid #dee2e6; 
+}
