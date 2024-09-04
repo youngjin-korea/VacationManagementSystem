@@ -19,9 +19,11 @@
         import dayGridPlugin from "@fullcalendar/daygrid";
 
         document.addEventListener("DOMContentLoaded", async function () {
-                // JSP에서 전달받은 employeeId를 JavaScript 변수로 설정
-                const employeeId = "<%= request.getAttribute("employeeId") %>";
+
                 try {
+                // JSP에서 전달받은 employeeId를 JavaScript 변수로 설정
+                    const employeeId = "<%= request.getAttribute("employeeId") %>";
+
                     // 1. 서버에서 데이터 가져오기 (GET 요청)
                     const response = await fetch(`/my-vacations/${employeeId}`, {
                         method: 'GET',
@@ -34,11 +36,16 @@
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     // 3. JSON으로 파싱
-                    // const AllVacDays = JSON.parse(myVacations).vacationDays;
-                    // console.log(AllVacDays);
-                    const myVacations = await response.json();
-                    // const days = myVacations.vacationDays;
-                    console.log("================!!",myVacations[0].vacationDays);
+                    let myVacations = await response.json();
+                    console.log("look===========",myVacations);
+
+                    if(myVacations.length == 0){
+                        myVacations = [{start:"",end:"",vacationDays:0}]
+                    }
+                    console.log("latter: ", myVacations);
+
+                    const annualDays = document.getElementById("annual-days");
+                    annualDays.innerHTML = myVacations.length;
 
                     //보유연차 표시
                     const allVacDays = document.getElementById("annual-days");
@@ -178,11 +185,12 @@
     <div class="container-vac">
         <div id="calendar" style="width: 75%;"></div>
         <div class="req-vac">
-            <form action="#" method="post">
+            <form action="/client/request-vacation" method="post">
                 <h4>휴가 신청하기</h4>
                 <label for="vacation-type">휴가 유형 | <span id="myVac">보유 연차: <span
                         id="annual-days"></span> / 15</span></label>
-                <select id="vacation-type">
+                <input type="hidden" name="empId" value="${employeeId}">
+                <select id="vacation-type" name="typeId">
                     <option value="1" selected>연차</option>
                     <option value="9">오전 반차</option>
                     <option value="8">오후 반차</option>
@@ -195,25 +203,31 @@
                 </select>
 
                 <label for="start-date">시작 날짜</label>
-                <input type="date" id="start-date"/>
+                <input type="date" id="start-date" name="startedDate"/>
 
                 <label for="end-date">종료 날짜</label>
-                <input type="date" id="end-date"/>
+                <input type="date" id="end-date" name="endedDate"/>
 
                 <label for="file">첨부파일</label>
-                <input type="file" id="file"/>
+                <input type="file" id="file" name="filePath"/>
 
                 <label for="reason">휴가 사유</label>
-                <textarea id="reason"  rows="4" cols="50"></textarea>
+                <textarea id="reason" name="comments"  rows="4" cols="50"></textarea>
 
                 <label for="approve1">승인권자 1</label>
-                <select id="approve1"></select>
+                <select id="approve1" name="firstApprover">
+                    <option value="1004">1</option>
+                </select>
 
                 <label for="approve2">승인권자 2</label>
-                <select id="approve2"></select>
+                <select id="approve2" name="secondApprover">
+                    <option value="1002">2</option>
+                </select>
 
                 <label for="approve3">승인권자 3</label>
-                <select id="approve3"></select>
+                <select id="approve3" name="topApprover">
+                    <option value="1003">3</option>
+                </select>
 
                 <button id="submit-vacation" type="submit">신청하기</button>
             </form>
@@ -290,14 +304,6 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    const annual = 3;
-
-    const annualDays = document.getElementById("annual-days");
-    annualDays.innerHTML = annual;
-
-</script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
