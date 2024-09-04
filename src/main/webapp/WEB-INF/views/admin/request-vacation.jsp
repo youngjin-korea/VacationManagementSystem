@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/admin-request-vacation.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
@@ -55,8 +56,9 @@
         <tbody>
         <c:forEach var="request" items="${vacationRequestList}">
             <tr data-bs-toggle="modal" data-bs-target="#showVacationRequestModal"
+                data-request-id="${request.id}"
                 data-emp-id="${request.empId}"
-                data-name="${request.name}"
+                data-name="${request.employeeName}"
                 data-period="<fmt:formatDate value='${request.startedDate}' pattern='yyyy-MM-dd'/> - <fmt:formatDate value='${request.endDate}' pattern='yyyy-MM-dd'/>"
                 data-days="<fmt:parseDate var='startDate' value='${request.startedDate}' pattern='yyyy-MM-dd' />
                            <fmt:parseDate var='endDate' value='${request.endDate}' pattern='yyyy-MM-dd' />
@@ -66,10 +68,10 @@
                 data-reg-date="<fmt:formatDate value='${request.regDate}' pattern='yyyy-MM-dd'/>"
                 data-status="${request.status}">
                 <th class="checkbox-th" scope="row">
-                    <input class="form-check-input" type="checkbox" id="check${request.id}">
+                    <input class="form-check-input" type="checkbox" id="${request.id}">
                 </th>
                 <td>${request.empId}</td>
-                <td>${request.name}</td>
+                <td>${request.employeeName}</td>
                 <td><fmt:formatDate value="${request.startedDate}" pattern="yyyy-MM-dd"/> - <fmt:formatDate value="${request.endDate}" pattern="yyyy-MM-dd"/></td>
 
                 <td>
@@ -107,6 +109,7 @@
 <script>
     document.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget; // 클릭된 테이블 행
+        var requestId = button.getAttribute('data-request-id');
         var empId = button.getAttribute('data-emp-id');
         var name = button.getAttribute('data-name');
         var period = button.getAttribute('data-period');
@@ -115,6 +118,7 @@
         var status = button.getAttribute('data-status');
 
         // 모달에 데이터 설정
+        document.getElementById('modalReqId').textContent = requestId;
         document.getElementById('modalEmpId').textContent = empId;
         document.getElementById('modalName').textContent = name;
         document.getElementById('modalPeriod').textContent = period;
@@ -140,7 +144,66 @@
             default:
                 modalStatus.classList.add('defaultSpan'); // 기본 상태 클래스 (필요시 추가)
         }
+
+        // 승인/반려 버튼 표시 여부 결정
+        var approveBtn = document.getElementById('approveBtn');
+        var rejectBtn = document.getElementById('rejectBtn');
+        if (status === '승인 대기') {
+            approveBtn.style.display = 'inline-block';
+            rejectBtn.style.display = 'inline-block';
+        } else {
+            approveBtn.style.display = 'none';
+            rejectBtn.style.display = 'none';
+        }
     });
+
+    document.getElementById('approveBtn').addEventListener('click', function() {
+
+        swal({
+            title: "정말 승인하시겠습니까?",
+            text: "승인 완료 시, 취소할 수 없습니다.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                // 승인 완료
+                if (willDelete) {
+                        var requestId = document.getElementById('modalReqId').textContent;
+                        // 여기에서 AJAX를 통해 POST 요청을 보냅니다.
+                        $.ajax({
+                            url : `/admin/approve-vacation`,
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ id: requestId }),
+                            success: function (data){
+                                console.log("Data received",data);
+                                swal("승인이 완료되었습니다!", {
+                                    icon: "success",
+                                    button: "확인",
+                                }).then(() => {
+                                    // 페이지 리로드
+                                    location.reload();
+                                });
+                            },
+                            error: function (jqXHR, testStatus, errThrown){
+                                console.error('Error', errThrown);
+                            }
+                        })
+                } else {
+                    // 승인 취소
+                    swal("승인을 취소하였습니다.");
+                }
+            });
+
+    });
+
+
+    document.getElementById('rejectBtn').addEventListener('click', function() {
+        // 반려 처리 로직 추가
+        alert('반려 처리되었습니다.');
+    });
+
 
 </script>
 

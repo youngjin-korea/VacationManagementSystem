@@ -3,13 +3,14 @@
 
 <!-- Modal HTML -->
 <div class="modal fade" id="showVacationRequestModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalLabel">상세 정보</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <p style="display: none"><span id="modalReqId"></span></p>
                 <p><strong>사번:</strong> <span id="modalEmpId"></span></p>
                 <p><strong>이름:</strong> <span id="modalName"></span></p>
                 <p><strong>휴가 신청 기간:</strong> <span id="modalPeriod"></span></p>
@@ -19,6 +20,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" id="approveBtn" class="btn btn-success" style="display: none;">승인</button>
+                <button type="button" id="rejectBtn" class="btn btn-danger" style="display: none;">반려</button>
             </div>
         </div>
     </div>
