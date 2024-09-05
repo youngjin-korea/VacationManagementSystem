@@ -13,6 +13,12 @@ public class HelloController {
 		return "index";
 	}
 
+	@GetMapping("/admin/cancel-vacation")
+	public String cancelVacation(Model model) {
+		model.addAttribute("test", "test");
+		return "admin/cancel-vacation";
+	}
+
 
 
 

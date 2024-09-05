@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -6,19 +6,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>휴가 신청 목록</title>
-    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
-    <link rel="stylesheet" type="text/css" href="/resources/css/admin-request-vacation.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/admin-request-vacation.css"/>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
-<%@ include file="/resources/components/header.jsp" %>
-<%@ include file="/resources/components/sidebar.jsp" %>
-<%@ include file="/resources/components/admin/showRequestVacation.jsp" %>
+    <%@ include file="/resources/components/header.jsp" %>
+    <%@ include file="/resources/components/sidebar.jsp" %>
+    <%@ include file="/resources/components/admin/showRequestVacation.jsp" %>
 
 <div id="mainArea">
 
@@ -27,7 +29,7 @@
             <a class="nav-link active" aria-current="page" href="#">휴가 신청 목록</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">휴가 취소 신청 목록</a>
+            <a class="nav-link" href="cancel-vacation">휴가 취소 신청 목록</a>
         </li>
     </ul>
 
@@ -81,17 +83,19 @@
                 </th>
                 <td>${request.empId}</td>
                 <td>${request.employeeName}</td>
-                <td><fmt:formatDate value="${request.startedDate}" pattern="yyyy-MM-dd"/> - <fmt:formatDate value="${request.endDate}" pattern="yyyy-MM-dd"/></td>
+                <td><fmt:formatDate value="${request.startedDate}" pattern="yyyy-MM-dd"/> - <fmt:formatDate
+                        value="${request.endDate}" pattern="yyyy-MM-dd"/></td>
 
                 <td>
-                    <fmt:parseDate var="startDate" value="${request.startedDate}" pattern="yyyy-MM-dd" />
-                    <fmt:parseDate var="endDate" value="${request.endDate}" pattern="yyyy-MM-dd" />
-                    <c:set var="diffInMillis" value="${endDate.time - startDate.time}" />
-                    <c:set var="diffInDays" value="${diffInMillis / (1000.0 * 60 * 60 * 24)}" />
-                    <fmt:formatNumber value="${diffInDays}" type="number" maxFractionDigits="1" minFractionDigits="0" /> 일
+                    <fmt:parseDate var="startDate" value="${request.startedDate}" pattern="yyyy-MM-dd"/>
+                    <fmt:parseDate var="endDate" value="${request.endDate}" pattern="yyyy-MM-dd"/>
+                    <c:set var="diffInMillis" value="${endDate.time - startDate.time}"/>
+                    <c:set var="diffInDays" value="${diffInMillis / (1000.0 * 60 * 60 * 24)}"/>
+                    <fmt:formatNumber value="${diffInDays}" type="number" maxFractionDigits="1" minFractionDigits="0"/>
+                    일
                 </td>
 
-                <td><fmt:formatDate value="${request.regDate}" pattern="yyyy-MM-dd"/> </td>
+                <td><fmt:formatDate value="${request.regDate}" pattern="yyyy-MM-dd"/></td>
                 <td>
                     <c:choose>
                         <c:when test="${request.status == '승인 완료'}">
@@ -118,9 +122,10 @@
 <script>
 
 
-
     document.addEventListener('show.bs.modal', function (event) {
         var clickedRow = event.relatedTarget; // 클릭된 테이블 행
+        if (!clickedRow) return;
+
         var requestId = clickedRow.getAttribute('data-request-id');
         var empId = clickedRow.getAttribute('data-emp-id');
         var name = clickedRow.getAttribute('data-name');
@@ -129,7 +134,8 @@
         var regDate = clickedRow.getAttribute('data-reg-date');
         var status = clickedRow.getAttribute('data-status');
 
-        console.log("status :: ",status);
+        console.log("status :: ", status);
+        console.log("clickedRow: ", clickedRow); // 클릭된 행 로그 출력
 
         // 모달에 데이터 설정
         document.getElementById('modalReqId').textContent = requestId;
@@ -164,7 +170,6 @@
         // 승인/반려 버튼 표시 여부 결정
         var approveBtn = document.getElementById('approveBtn');
         var rejectBtn = document.getElementById('rejectBtn');
-        // 로그인한 유저가 승인할 단계인지 판별
         var isYourTurn = clickedRow.getAttribute('data-isYourTurn');
 
         if (status === '승인 대기' && isYourTurn === 'TRUE') {
@@ -176,7 +181,8 @@
         }
     });
 
-    document.getElementById('approveBtn').addEventListener('click', function() {
+
+    document.getElementById('approveBtn').addEventListener('click', function () {
 
         swal({
             title: "정말 승인하시겠습니까?",
@@ -188,27 +194,27 @@
             .then((willDelete) => {
                 // 승인 완료
                 if (willDelete) {
-                        var requestId = document.getElementById('modalReqId').textContent;
-                        // 여기에서 AJAX를 통해 POST 요청을 보냅니다.
-                        $.ajax({
-                            url : `/admin/approve-vacation`,
-                            method: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({ id: requestId }),
-                            success: function (data){
-                                console.log("Data received",data);
-                                swal("승인이 완료되었습니다!", {
-                                    icon: "success",
-                                    button: "확인",
-                                }).then(() => {
-                                    // 페이지 리로드
-                                    location.reload();
-                                });
-                            },
-                            error: function (jqXHR, testStatus, errThrown){
-                                console.error('Error', errThrown);
-                            }
-                        })
+                    var requestId = document.getElementById('modalReqId').textContent;
+                    // 여기에서 AJAX를 통해 POST 요청을 보냅니다.
+                    $.ajax({
+                        url: `/admin/approve-vacation`,
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({id: requestId}),
+                        success: function (data) {
+                            console.log("Data received", data);
+                            swal("승인이 완료되었습니다!", {
+                                icon: "success",
+                                button: "확인",
+                            }).then(() => {
+                                // 페이지 리로드
+                                location.reload();
+                            });
+                        },
+                        error: function (jqXHR, testStatus, errThrown) {
+                            console.error('Error', errThrown);
+                        }
+                    })
                 } else {
                     // 승인 취소
                     swal("승인을 취소하였습니다.");
@@ -218,7 +224,7 @@
     });
 
 
-    document.getElementById('rejectBtn').addEventListener('click', function() {
+    document.getElementById('rejectBtn').addEventListener('click', function () {
         var modal = document.getElementById('showVacationRequestModal');
         $(modal).modal('hide'); // Hide the modal
 
@@ -250,7 +256,7 @@
                                 var requestId = document.getElementById('modalReqId').textContent;
 
                                 $.ajax({
-                                    url: `/admin/reject-vacation?id=`+requestId+`&commentsOfApprover=`+value,
+                                    url: `/admin/reject-vacation?id=` + requestId + `&commentsOfApprover=` + value,
                                     method: 'POST',
                                     contentType: 'application/json',
                                     success: function (data) {
@@ -278,7 +284,6 @@
                 }
             });
     });
-
 
 </script>
 
