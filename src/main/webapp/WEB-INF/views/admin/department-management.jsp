@@ -22,12 +22,6 @@
             </div>
             <div id="organization-btn-group" class="col-9 d-flex justify-content-end">
                 <div class="mx-2">
-                    <button type="button" class="btn border border-black btn-black bg-white"><p>다운로드</p></button>
-                </div>
-                <div class="mx-2">
-                    <button type="button" class="btn border border-black btn-black bg-white"><p>업로드</p></button>
-                </div>
-                <div class="mx-2">
                     <button id ="addDepartmentModalBtn" type="button" class="btn btn-primary"><p>+ 조직 추가하기</p></button>
                 </div>
 
@@ -48,7 +42,7 @@
                             <td class = "department-element" data-dept-id="${department.id}" style="padding-left: ${department.level * 25}px;">
                                 <c:choose>
                                     <c:when test="${department.level == 1}">
-                                        최상위 부서
+                                        ${department.name}
                                     </c:when>
                                     <c:otherwise>
                                         ㄴ ${department.name}

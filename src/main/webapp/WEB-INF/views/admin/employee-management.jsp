@@ -339,8 +339,7 @@
                                 <p class ="text-color-gray1" style="font-size: 15px">employees-upload.xlsx</p>
                             </div>
                             <button type="button" class="d-flex ms-2 btn btn-light border border-2 align-items-center" style="height: 27px;">
-
-                                <p class ="text-color-gray1" style="font-size: 15px;">다운로드</p>
+                                <a class ="text-color-gray1" style="font-size: 15px;" href="/fileDownload">다운로드</a><br>
                             </button>
                         </div>
                     </div>

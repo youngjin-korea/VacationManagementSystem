@@ -115,7 +115,7 @@ pageEncoding="UTF-8"%>
 
     <!-- 모달 -->
 
-    <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
       <div class="modal-dialog" style="margin-top:200px;">
         <div class="modal-content">
           <div class="modal-header">
@@ -125,12 +125,12 @@ pageEncoding="UTF-8"%>
             <div class="d-flex mb-2">
               <div class="col-2 d-flex align-items-center"><p style="margin-bottom: 0; padding-bottom: 2px;">이메일</p></div>
               <div class="col-6 d-flex border border-2 align-items-center" style="position: relative">
-                <input id="email-input1" class= "col-6 code-input" type="text">
-                <input id="email-input2" class= "col-6 code-input" type="text">
+                <input style="font-size: 14px" id="email-input1" class= "col-6 code-input" type="text">
+                <input style="font-size: 14px" id="email-input2" class= "col-6 code-input" type="text">
                 <div style="position: absolute; top:3px; left:47%;"><h3 style="font-size:17px;">@</h3></div>
               </div>
             </div>
-            <div id="loginFailMessageByEmail" class="loginFailMessage" style="display: none">
+            <div id="loginFailMessageByEmail" class="loginFailMessage" style="display: none; margin-left: 17%; margin-bottom: 5px; margin-top: 5px">
               등록되지 않은 이메일입니다.
             </div>
 
@@ -142,7 +142,7 @@ pageEncoding="UTF-8"%>
                 <div style="position: absolute; left:48%;"><h3>-</h3></div>
               </div>
             </div>
-            <div id="loginFailMessageByCode" class="loginFailMessage" style="display: none">
+            <div id="loginFailMessageByCode" class="loginFailMessage" style="display: none; margin-left: 17%; margin-bottom: 5px; margin-top: 5px">
               유효하지 않은 인증코드입니다.
             </div>
             <div class="my-3 d-flex justify-content-start">
@@ -155,7 +155,7 @@ pageEncoding="UTF-8"%>
 
           </div>
           <div class="modal-footer">
-            <button id="certificateBtn" type="button" class="btn btn-primary">Save changes</button>
+            <button id="certificateBtn" type="button" class="btn btn-primary">인증하기</button>
           </div>
         </div>
       </div>

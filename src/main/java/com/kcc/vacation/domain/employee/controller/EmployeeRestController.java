@@ -4,11 +4,13 @@ import com.kcc.vacation.domain.employee.dto.request.*;
 import com.kcc.vacation.domain.employee.dto.response.EmployeeDetail;
 import com.kcc.vacation.domain.employee.dto.response.EmployeeExcelResponse;
 import com.kcc.vacation.domain.employee.service.EmployeeService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -107,6 +112,24 @@ public class EmployeeRestController {
         }
         return employeeDetails;
     }
+    // 파일 다운로드 처리
+    @RequestMapping("/fileDownload")
+    public void fileDownload(HttpServletResponse response) throws IOException {
+        File f = new File("src/main/java/com/kcc/vacation/domain/employee/employees-upload.xlsx");
+        // file 다운로드 설정
+        response.setContentType("application/download");
+        response.setContentLength((int)f.length());
+        response.setHeader("Content-disposition", "attachment;filename=employees-upload.xlsx");
+        // response 객체를 통해서 서버로부터 파일 다운로드
+        OutputStream os = response.getOutputStream();
+        // 파일 입력 객체 생성
+        FileInputStream fis = new FileInputStream(f);
+        FileCopyUtils.copy(fis, os);
+        fis.close();
+        os.close();
+    }
+
+
     public static Timestamp handleDate(String dateString) {
 
         // SimpleDateFormat을 사용해 문자열을 Date 객체로 파싱
