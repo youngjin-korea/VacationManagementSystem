@@ -168,7 +168,36 @@
                     //     },
                     // });
                     // calendar.render();
+                    let reqsCancels = [];
+                    let reqList = [];
+                    let cancelList = [];
+                    try {
+                        // 서버에 GET 요청을 보내고 응답을 기다립니다.
+                        const response = await fetch('/clients/vacation-requests-cancels', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
 
+                        // 응답이 성공적이지 않으면 에러를 던집니다.
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        // 응답을 JSON으로 파싱합니다.
+                        reqsCancels = await response.json();
+
+                        // JSON 데이터를 사용할 수 있습니다.
+                        console.log(reqsCancels);
+                    } catch (error) {
+                        // 에러 처리
+                        console.error('Error fetching data:', error);
+                    }
+                    reqList = reqsCancels.filter((it)=> it.cancelStatus === null);
+                    cancelList = reqsCancels.filter((it)=>it.cancelStatus !== null);
+                    console.log("reqList: ",reqList);
+                    console.log("cancelList: ", cancelList);
                     // 예시 데이터 (실제로는 서버에서 데이터 조회 필요)
                     const vacations = [
                         {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
@@ -230,12 +259,12 @@
                        }); --%>
                     };
                     // 휴가신청 현황 테이블에 데이터 삽입
-                    vacations.forEach(function (vacation) {
+                    reqList.forEach(function (vacation) {
                         var row = document.createElement("tr");
                         row.innerHTML =
-                            "<td>" + vacation.type + "</td>" +
-                            "<td>" + vacation.start_date + "</td>" +
-                            "<td>" + vacation.end_date + "</td>" +
+                            "<td>" + vacation.name + "</td>" +
+                            "<td>" + vacation.startedDate.slice(0,10) + "</td>" +
+                            "<td>" + vacation.endDate.slice(0,10) + "</td>" +
                             "<td>" + vacation.status + "</td>" +
                             "<td>" +
                             "<button type=\"button\" class=\"btn btn-danger\" onclick=\"cancelVacation(" + vacation.id + ")\">취소</button>" +
@@ -244,16 +273,14 @@
                     });
 
                     // 휴가취소현황 테이블에 데이터 삽입
-                    vacations.forEach(function (vacation) {
+                    cancelList.forEach(function (vacation) {
                         var row = document.createElement("tr");
                         row.innerHTML =
-                            "<td>" + vacation.type + "</td>" +
-                            "<td>" + vacation.start_date + "</td>" +
-                            "<td>" + vacation.end_date + "</td>" +
-                            "<td>" + vacation.status + "</td>" +
-                            "<td>" +
-                            "<button type=\"button\" class=\"btn btn-danger\" onclick=\"cancelVacation(" + vacation.id + ")\">취소</button>" +
-                            "</td>";
+                            "<td>" + vacation.name + "</td>" +
+                            "<td>" + vacation.startedDate.slice(0,10) + "</td>" +
+                            "<td>" + vacation.endDate.slice(0,10) + "</td>" +
+                            "<td>" + vacation.cancelStatus + "</td>" +
+                            "<td>" + vacation.cancelApproveDate + "</td>";
                         vacationTableBody2.appendChild(row);
                     });
 
