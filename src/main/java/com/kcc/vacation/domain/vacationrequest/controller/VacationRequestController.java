@@ -38,11 +38,6 @@ public class VacationRequestController {
             return "client/request-vacation";
         }
 
-        @GetMapping("/client/client-calender")
-        public String client_clientcalender() {
-        return "client/client-calender";
-    }
-
         @PostMapping("/client/request-vacation")
         public String requestMyVacation(@ModelAttribute MyVacationRequestJSP vacationRequestJSP, @ModelAttribute MyVacationApprover vacationApprover) {
             vacationRequestService.insertVacationRequest(vacationRequestJSP, vacationApprover);

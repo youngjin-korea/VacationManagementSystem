@@ -151,5 +151,4 @@
         INSERT INTO approver(id, top_approver, first_approver, second_approver)
         VALUES (#{id}, #{topApprover, jdbcType=VARCHAR}, #{firstApprover, jdbcType=VARCHAR}, #{secondApprover, jdbcType=VARCHAR})
     </insert>
-
 </mapper>
