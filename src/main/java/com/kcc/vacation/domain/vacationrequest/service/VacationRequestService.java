@@ -5,7 +5,7 @@ import com.kcc.vacation.domain.employee.mapper.EmployeeMapper;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequest;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequestJSP;
 import com.kcc.vacation.domain.vacationrequest.dto.response.MyVacation;
-import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestList;
+import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestListDetail;
 import com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +27,7 @@ public class VacationRequestService {
 
     // 휴가 요청 목록 보기 - 관리자
     // 승인 권한이 있는 목록만 출력
-    public List<VacationRequestList> getVacationRequestListByApproverId() {
+    public List<VacationRequestListDetail> getVacationRequestListByApproverId() {
 
         // 로그인한 유저 정보
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -37,13 +37,13 @@ public class VacationRequestService {
 //        return vacationRequestMapper.getVacationList(loginUser.getId());
 
         // basic data
-        List<VacationRequestList> vacationRequestListBase = vacationRequestMapper.getVacationRequestListByApproverId(1003);
+        List<VacationRequestListDetail> vacationRequestListDetailBase = vacationRequestMapper.getVacationRequestListByApproverId(1003);
 
         // 1.최고관리자일 경우
 //        if(authority.equals("ROLE_TOP_APPROVAL")){
         // 최고 관리자라고 상정
         if(true){
-            for(VacationRequestList vacationRequestList : vacationRequestListBase){
+            for(VacationRequestListDetail vacationRequestList : vacationRequestListDetailBase){
                 if(vacationRequestList.getStatus().equals("승인 대기")) {
                     // 1-1. 1차, 2차 승인권자가 존재하지 않을 때 (승인권자가 최고관리자뿐일 때)
                     if(vacationRequestList.getFirstApprover() == 0 &&
@@ -69,7 +69,7 @@ public class VacationRequestService {
         // 2. 2차 관리자일 경우    
         }else if(false){
 //        }else if(authority.equals("ROLE_SECOND_APPROVAL")){
-            for(VacationRequestList vacationRequestList : vacationRequestListBase){
+            for(VacationRequestListDetail vacationRequestList : vacationRequestListDetailBase){
                 if(vacationRequestList.getStatus().equals("승인 대기")){
                     // 2-1. 1차 승인권자가 존재하고 승인했을 때
                     if(vacationRequestList.getFirstStatus().equals("TRUE")){
@@ -82,7 +82,7 @@ public class VacationRequestService {
         // 3. 1차 관리자일 경우
 //        }else if(authority.equals("ROLE_FIRST_APPROVAL")){
         }else if(false){
-            for(VacationRequestList vacationRequestList : vacationRequestListBase){
+            for(VacationRequestListDetail vacationRequestList : vacationRequestListDetailBase){
                 // 3-1. 아직 내가 승인하지 않은 경우
                 if(vacationRequestList.getFirstStatus().equals("NULL")){
                     vacationRequestList.setIsYourTurn("TRUE");
@@ -90,7 +90,7 @@ public class VacationRequestService {
             }
         }
 
-        return vacationRequestListBase;
+        return vacationRequestListDetailBase;
     }
 
     // 휴가 승인 - 관리자

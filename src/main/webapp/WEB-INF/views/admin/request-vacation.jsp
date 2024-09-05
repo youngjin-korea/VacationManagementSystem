@@ -77,6 +77,9 @@
                 data-firstStatus="${request.firstStatus}"
                 data-secondStatus="${request.secondStatus}"
                 data-isYourTurn="${request.isYourTurn}"
+                data-firstApproverName="${request.firstApproverName}"
+                data-secondApproverName="${request.secondApproverName}"
+                data-topApproverName="${request.topApproverName}"
             >
                 <th class="checkbox-th" scope="row">
                     <input class="form-check-input" type="checkbox" id="${request.id}">
@@ -144,6 +147,8 @@
     document.addEventListener('show.bs.modal', function (event) {
         var clickedRow = event.relatedTarget; // 클릭된 테이블 행
         if (!clickedRow) return;
+
+        console.log(clickedRow);
 
         var requestId = clickedRow.getAttribute('data-request-id');
         var empId = clickedRow.getAttribute('data-emp-id');
