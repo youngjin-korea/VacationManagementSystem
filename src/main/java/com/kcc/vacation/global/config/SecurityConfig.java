@@ -61,7 +61,7 @@ public class SecurityConfig {
                                 .userInfoEndpoint(
                                         userInfoEndpointConfig -> userInfoEndpointConfig.userService(principalOauth2UserService)
                                 )
-                                .defaultSuccessUrl("/index")
+                                .defaultSuccessUrl("/client/client-calender")
                 );
         return http.build();
     }
