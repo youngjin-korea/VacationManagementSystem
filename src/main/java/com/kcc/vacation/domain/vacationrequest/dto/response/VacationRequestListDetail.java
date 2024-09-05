@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
-public class VacationRequestList {
+public class VacationRequestListDetail {
 
     private int id;
     private Timestamp regDate;
@@ -31,8 +31,19 @@ public class VacationRequestList {
     private String firstStatus;
     private String secondStatus;
 
+    private String isYourTurn;
+
+    private String firstApproverName;
+    private String secondApproverName;
+    private String topApproverName;
+
+
+    public void setIsYourTurn(String isYourTurn) {
+        this.isYourTurn = isYourTurn;
+    }
+
     @Builder
-    public VacationRequestList(int id, Timestamp regDate, Timestamp startedDate, Timestamp endDate, String filePath, Timestamp approveDate, String status, String comments, int typeId, int empId, String employeeName, int topApprover, int firstApprover, int secondApprover, String topStatus, String firstStatus, String secondStatus) {
+    public VacationRequestListDetail(int id, Timestamp regDate, Timestamp startedDate, Timestamp endDate, String filePath, Timestamp approveDate, String status, String comments, int typeId, int empId, String employeeName, int topApprover, int firstApprover, int secondApprover, String topStatus, String firstStatus, String secondStatus, String isYourTurn, String firstApproverName, String secondApproverName, String topApproverName) {
         this.id = id;
         this.regDate = regDate;
         this.startedDate = startedDate;
@@ -50,5 +61,9 @@ public class VacationRequestList {
         this.topStatus = topStatus;
         this.firstStatus = firstStatus;
         this.secondStatus = secondStatus;
+        this.isYourTurn = isYourTurn;
+        this.firstApproverName = firstApproverName;
+        this.secondApproverName = secondApproverName;
+        this.topApproverName = topApproverName;
     }
 }

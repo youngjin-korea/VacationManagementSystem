@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper">
 
-    <resultMap id="VacationRequestDetailResultMap" type="VacationRequestList">
+    <resultMap id="VacationRequestDetailResultMap" type="VacationRequestListDetail">
         <!-- Vacation_request 테이블의 컬럼들 -->
         <id column="id" property="id"/>
         <result column="reg_date" property="regDate"/>
@@ -26,6 +26,11 @@
         <result column="top_status" property="topStatus"/>
         <result column="first_status" property="firstStatus"/>
         <result column="second_status" property="secondStatus"/>
+
+        <!-- Employee 테이블에서 승인권자의 이름을 가져옴 -->
+        <result column="first_approver_name" property="firstApproverName"/>
+        <result column="second_approver_name" property="secondApproverName"/>
+        <result column="top_approver_name" property="topApproverName"/>
     </resultMap>
 
     <resultMap id="MyVacationsResultMap" type="MyVacation">
@@ -88,11 +93,17 @@
             ap.second_approver,
             ap.top_status,
             ap.first_status,
-            ap.second_status
+            ap.second_status,
+            e_first.name AS first_approver_name,
+            e_second.name AS second_approver_name,
+            e_top.name AS top_approver_name
         FROM
             Vacation_request vr
                 JOIN Approver ap ON vr.id = ap.id
                 JOIN Employee e ON vr.emp_id = e.id
+                LEFT JOIN Employee e_first ON ap.first_approver = e_first.id
+                LEFT JOIN Employee e_second ON ap.second_approver = e_second.id
+                LEFT JOIN Employee e_top ON ap.top_approver = e_top.id
         WHERE
             (
                 (ap.first_approver = #{approverId})
@@ -106,6 +117,8 @@
 
 
 
+
+
     <!--    관리자용 휴가 승인-->
     <update id="approveVacation">
         UPDATE Approver
@@ -113,6 +126,14 @@
             top_status = CASE WHEN top_approver = #{approverId} THEN 'TRUE' ELSE top_status END,
             first_status = CASE WHEN first_approver = #{approverId} THEN 'TRUE' ELSE first_status END,
             second_status = CASE WHEN second_approver = #{approverId} THEN 'TRUE' ELSE second_status END
+        WHERE id = #{requestId}
+    </update>
+
+    <!--    최종 휴가 승인-->
+    <update id="finalApproveVacation">
+        UPDATE Vacation_request
+        SET
+            status = '승인 완료'
         WHERE id = #{requestId}
     </update>
 

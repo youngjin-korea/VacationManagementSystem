@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -6,12 +6,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>휴가 신청 목록</title>
-    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
-    <link rel="stylesheet" type="text/css" href="/resources/css/admin-request-vacation.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/admin-request-vacation.css"/>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
@@ -27,7 +29,7 @@
             <a class="nav-link active" aria-current="page" href="#">휴가 신청 목록</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">휴가 취소 신청 목록</a>
+            <a class="nav-link" href="cancel-vacation">휴가 취소 신청 목록</a>
         </li>
     </ul>
 
@@ -66,23 +68,37 @@
                            <c:set var='diffInDays' value='${diffInMillis / (1000.0 * 60 * 60 * 24)}' />
                            <fmt:formatNumber value='${diffInDays}' type='number' maxFractionDigits='1' minFractionDigits='0' /> 일"
                 data-reg-date="<fmt:formatDate value='${request.regDate}' pattern='yyyy-MM-dd'/>"
-                data-status="${request.status}">
+                data-status="${request.status}"
+                data-comments="${request.comments}"
+                data-topApprover="${request.topApprover}"
+                data-firstApprover="${request.firstApprover}"
+                data-secondApprover="${request.secondApprover}"
+                data-topStatus="${request.topStatus}"
+                data-firstStatus="${request.firstStatus}"
+                data-secondStatus="${request.secondStatus}"
+                data-isYourTurn="${request.isYourTurn}"
+                data-firstApproverName="${request.firstApproverName}"
+                data-secondApproverName="${request.secondApproverName}"
+                data-topApproverName="${request.topApproverName}"
+            >
                 <th class="checkbox-th" scope="row">
                     <input class="form-check-input" type="checkbox" id="${request.id}">
                 </th>
                 <td>${request.empId}</td>
                 <td>${request.employeeName}</td>
-                <td><fmt:formatDate value="${request.startedDate}" pattern="yyyy-MM-dd"/> - <fmt:formatDate value="${request.endDate}" pattern="yyyy-MM-dd"/></td>
+                <td><fmt:formatDate value="${request.startedDate}" pattern="yyyy-MM-dd"/> - <fmt:formatDate
+                        value="${request.endDate}" pattern="yyyy-MM-dd"/></td>
 
                 <td>
-                    <fmt:parseDate var="startDate" value="${request.startedDate}" pattern="yyyy-MM-dd" />
-                    <fmt:parseDate var="endDate" value="${request.endDate}" pattern="yyyy-MM-dd" />
-                    <c:set var="diffInMillis" value="${endDate.time - startDate.time}" />
-                    <c:set var="diffInDays" value="${diffInMillis / (1000.0 * 60 * 60 * 24)}" />
-                    <fmt:formatNumber value="${diffInDays}" type="number" maxFractionDigits="1" minFractionDigits="0" /> 일
+                    <fmt:parseDate var="startDate" value="${request.startedDate}" pattern="yyyy-MM-dd"/>
+                    <fmt:parseDate var="endDate" value="${request.endDate}" pattern="yyyy-MM-dd"/>
+                    <c:set var="diffInMillis" value="${endDate.time - startDate.time}"/>
+                    <c:set var="diffInDays" value="${diffInMillis / (1000.0 * 60 * 60 * 24)}"/>
+                    <fmt:formatNumber value="${diffInDays}" type="number" maxFractionDigits="1" minFractionDigits="0"/>
+                    일
                 </td>
 
-                <td><fmt:formatDate value="${request.regDate}" pattern="yyyy-MM-dd"/> </td>
+                <td><fmt:formatDate value="${request.regDate}" pattern="yyyy-MM-dd"/></td>
                 <td>
                     <c:choose>
                         <c:when test="${request.status == '승인 완료'}">
@@ -107,57 +123,154 @@
 </div>
 
 <script>
-    document.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget; // 클릭된 테이블 행
-        var requestId = button.getAttribute('data-request-id');
-        var empId = button.getAttribute('data-emp-id');
-        var name = button.getAttribute('data-name');
-        var period = button.getAttribute('data-period');
-        var days = button.getAttribute('data-days');
-        var regDate = button.getAttribute('data-reg-date');
-        var status = button.getAttribute('data-status');
+    // 상태에 따른 클래스 및 텍스트 설정 함수
+    function setStatus(elementId, status) {
+        const statusMap = {
+            'TRUE': { text: '확인', class: 'completeSpan' },
+            'FALSE': { text: '거절', class: 'rejectedSpan' },
+            '대기': { text: '대기', class: 'waitingSpan' }
+        };
+        const element = document.getElementById(elementId);
+        const { text, class: className } = statusMap[status] || { text: '대기', class: 'waitingSpan' };
+        element.textContent = text;
+        element.classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
+        element.classList.add(className);
+    }
 
-        // 모달에 데이터 설정
-        document.getElementById('modalReqId').textContent = requestId;
-        document.getElementById('modalEmpId').textContent = empId;
-        document.getElementById('modalName').textContent = name;
-        document.getElementById('modalPeriod').textContent = period;
-        document.getElementById('modalDays').textContent = days;
-        document.getElementById('modalRegDate').textContent = regDate;
-        var modalStatus = document.getElementById('modalStatus');
-        modalStatus.textContent = status;
+    // 진행도 설정 함수
+    // 진행도 설정 함수
+    function setProgress(firstStatus, secondStatus, topStatus, progressBar, progressText, firstApprover, secondApprover) {
+        let progress = 0;
 
-        // 기존 클래스 제거
-        modalStatus.classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
+        // 3단계 진행일 경우 (1차, 2차, 최종)
+        if (firstApprover.charAt(0) !== '0') {
+            if (topStatus === 'TRUE') {
+                progress = 100;
+            } else if (secondStatus === 'TRUE') {
+                progress = 66;
+            } else if (firstStatus === 'TRUE') {
+                progress = 33;
+            }
 
-        // 텍스트 색상 변경
-        switch (status) {
-            case '승인 완료':
-                modalStatus.classList.add('completeSpan');
-                break;
-            case '승인 대기':
-                modalStatus.classList.add('waitingSpan');
-                break;
-            case '거절':
-                modalStatus.classList.add('rejectedSpan');
-                break;
-            default:
-                modalStatus.classList.add('defaultSpan'); // 기본 상태 클래스 (필요시 추가)
+            // 2단계 진행일 경우 (2차 없이 1차와 최종 승인만 있을 때)
+        } else if (secondApprover.charAt(0) !== '0') {
+            if (topStatus === 'TRUE') {
+                progress = 100;
+            } else if (secondStatus === 'TRUE') {
+                progress = 50;
+            }
+
+            // 1단계 진행일 경우 (최종 승인만 있을 때)
+        } else {
+            if (topStatus === 'TRUE') {
+                progress = 100;
+            } else {
+                progress = 0;
+            }
         }
 
-        // 승인/반려 버튼 표시 여부 결정
-        var approveBtn = document.getElementById('approveBtn');
-        var rejectBtn = document.getElementById('rejectBtn');
-        if (status === '승인 대기') {
+        progressBar.style.width = progress + "%";
+        progressText.textContent = progress + "%";
+    }
+
+
+    // 승인 버튼 표시 여부 설정 함수
+    function toggleApprovalButtons(status, isYourTurn, approveBtn, rejectBtn) {
+        if (status === '승인 대기' && isYourTurn === 'TRUE') {
             approveBtn.style.display = 'inline-block';
             rejectBtn.style.display = 'inline-block';
         } else {
             approveBtn.style.display = 'none';
             rejectBtn.style.display = 'none';
         }
+    }
+
+    // 모달 초기화 함수
+    function initializeModal() {
+        const progressBar = document.getElementById('modalAdminRequestBar');
+        const progressText = document.getElementById('modalProgressText');
+        progressBar.style.width = '0%';
+        progressText.textContent = "0%";
+
+        ['modalFirstApproverName', 'modalSecondApproverName', 'modalTopApproverName'].forEach(id => {
+            document.getElementById(id).closest('p').style.display = 'block';
+        });
+
+        ['modalFirstStatus', 'modalSecondStatus', 'modalTopStatus'].forEach(id => {
+            document.getElementById(id).closest('p').style.display = 'block';
+        });
+    }
+
+    document.addEventListener('show.bs.modal', function (event) {
+        initializeModal();
+
+        const clickedRow = event.relatedTarget;
+        if (!clickedRow) return;
+
+        const requestId = clickedRow.getAttribute('data-request-id');
+        const empId = clickedRow.getAttribute('data-emp-id');
+        const name = clickedRow.getAttribute('data-name');
+        const period = clickedRow.getAttribute('data-period');
+        const days = clickedRow.getAttribute('data-days');
+        const regDate = clickedRow.getAttribute('data-reg-date');
+        const status = clickedRow.getAttribute('data-status');
+        const comments = clickedRow.getAttribute('data-comments');
+        const topApproverName = clickedRow.getAttribute('data-topApproverName');
+        const firstApproverName = clickedRow.getAttribute('data-firstApproverName');
+        const secondApproverName = clickedRow.getAttribute('data-secondApproverName');
+        const topStatus = clickedRow.getAttribute('data-topStatus');
+        const firstStatus = clickedRow.getAttribute('data-firstStatus');
+        const secondStatus = clickedRow.getAttribute('data-secondStatus');
+        const isYourTurn = clickedRow.getAttribute('data-isYourTurn');
+
+        // 모달 데이터 설정
+        document.getElementById('modalReqId').textContent = requestId;
+        document.getElementById('modalEmpId').textContent = empId;
+        document.getElementById('modalName').textContent = name;
+        document.getElementById('modalPeriod').textContent = period;
+        document.getElementById('modalDays').textContent = days;
+        document.getElementById('modalRegDate').textContent = regDate;
+        document.getElementById('modalStatus').textContent = status;
+        document.getElementById('modalComments').textContent = comments;
+
+        document.getElementById('modalTopApproverName').textContent = topApproverName;
+        document.getElementById('modalFirstApproverName').textContent = firstApproverName;
+        document.getElementById('modalSecondApproverName').textContent = secondApproverName;
+
+        // 상태별 처리
+        setStatus('modalTopStatus', topStatus);
+        setStatus('modalFirstStatus', firstStatus);
+        setStatus('modalSecondStatus', secondStatus);
+
+        // 승인 진행도 설정
+        const progressBar = document.getElementById('modalAdminRequestBar');
+        const progressText = document.getElementById('modalProgressText');
+        const firstApprover = clickedRow.getAttribute('data-firstApprover');
+        const secondApprover = clickedRow.getAttribute('data-secondApprover');
+
+        if (firstApprover.charAt(0) !== '0') {
+            // 3단계 진행일 경우 (1차, 2차, 최종 승인)
+            setProgress(firstStatus, secondStatus, topStatus, progressBar, progressText, firstApprover, secondApprover);
+        } else if (secondApprover.charAt(0) !== '0') {
+            // 2단계 진행일 경우 (2차 없이 1차와 최종 승인만 있을 때)
+            ['modalFirstApproverName', 'modalFirstStatus'].forEach(id => {
+                document.getElementById(id).closest('p').style.display = 'none';
+            });
+            setProgress('', secondStatus, topStatus, progressBar, progressText, firstApprover, secondApprover);
+        } else {
+            // 1단계 진행일 경우 (최종 승인만 있을 때)
+            ['modalFirstApproverName', 'modalFirstStatus', 'modalSecondApproverName', 'modalSecondStatus'].forEach(id => {
+                document.getElementById(id).closest('p').style.display = 'none';
+            });
+            setProgress('', '', topStatus, progressBar, progressText, firstApprover, secondApprover);
+        }
+
+        // 승인/반려 버튼 표시
+        toggleApprovalButtons(status, isYourTurn, document.getElementById('approveBtn'), document.getElementById('rejectBtn'));
     });
 
-    document.getElementById('approveBtn').addEventListener('click', function() {
+
+    document.getElementById('approveBtn').addEventListener('click', function () {
 
         swal({
             title: "정말 승인하시겠습니까?",
@@ -169,27 +282,27 @@
             .then((willDelete) => {
                 // 승인 완료
                 if (willDelete) {
-                        var requestId = document.getElementById('modalReqId').textContent;
-                        // 여기에서 AJAX를 통해 POST 요청을 보냅니다.
-                        $.ajax({
-                            url : `/admin/approve-vacation`,
-                            method: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({ id: requestId }),
-                            success: function (data){
-                                console.log("Data received",data);
-                                swal("승인이 완료되었습니다!", {
-                                    icon: "success",
-                                    button: "확인",
-                                }).then(() => {
-                                    // 페이지 리로드
-                                    location.reload();
-                                });
-                            },
-                            error: function (jqXHR, testStatus, errThrown){
-                                console.error('Error', errThrown);
-                            }
-                        })
+                    var requestId = document.getElementById('modalReqId').textContent;
+                    // 여기에서 AJAX를 통해 POST 요청을 보냅니다.
+                    $.ajax({
+                        url: `/admin/approve-vacation`,
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({id: requestId}),
+                        success: function (data) {
+                            console.log("Data received", data);
+                            swal("승인이 완료되었습니다!", {
+                                icon: "success",
+                                button: "확인",
+                            }).then(() => {
+                                // 페이지 리로드
+                                location.reload();
+                            });
+                        },
+                        error: function (jqXHR, testStatus, errThrown) {
+                            console.error('Error', errThrown);
+                        }
+                    })
                 } else {
                     // 승인 취소
                     swal("승인을 취소하였습니다.");
@@ -199,7 +312,7 @@
     });
 
 
-    document.getElementById('rejectBtn').addEventListener('click', function() {
+    document.getElementById('rejectBtn').addEventListener('click', function () {
         var modal = document.getElementById('showVacationRequestModal');
         $(modal).modal('hide'); // Hide the modal
 
@@ -219,7 +332,7 @@
                         content: {
                             element: "input",
                             attributes: {
-                                placeholder: "반려 사유를 입력하세요...",
+                                placeholder: "반려 사유를 입력",
                                 type: "text"
                             }
                         },
@@ -231,7 +344,7 @@
                                 var requestId = document.getElementById('modalReqId').textContent;
 
                                 $.ajax({
-                                    url: `/admin/reject-vacation?id=`+requestId+`&commentsOfApprover=`+value,
+                                    url: `/admin/reject-vacation?id=` + requestId + `&commentsOfApprover=` + value,
                                     method: 'POST',
                                     contentType: 'application/json',
                                     success: function (data) {
@@ -259,7 +372,6 @@
                 }
             });
     });
-
 
 </script>
 
