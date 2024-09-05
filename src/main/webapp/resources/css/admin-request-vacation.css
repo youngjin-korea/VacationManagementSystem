@@ -46,3 +46,38 @@
     display: inline-block;
     text-align: center;
 }
+
+.hidden-content {
+    display: none;
+}
+
+.show-content {
+    display: block;
+}
+
+.approve-step {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.approve-step > div {
+    padding: 0.5rem;
+}
+
+#adminRequestProgress {
+    height: 30px;
+}
+
+#adminRequestProgress div {
+    font-size: 1.3rem;
+}
+
+.approve-true {
+    color: white;
+    background-color: #8ED619;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}
