@@ -2,14 +2,13 @@ package com.kcc.vacation.domain.employee.service;
 
 
 import com.kcc.vacation.domain.employee.dto.request.EmployeeCreate;
-import com.kcc.vacation.domain.employee.dto.request.EmployeeEmailLogin;
 import com.kcc.vacation.domain.employee.dto.request.EmployeeFormLoginDataUpdate;
 import com.kcc.vacation.domain.employee.dto.response.Employee;
 import com.kcc.vacation.domain.employee.dto.request.UpdateMyInfo;
 
 import com.kcc.vacation.domain.employee.dto.request.*;
-import com.kcc.vacation.domain.employee.dto.response.Employee;
 
+import com.kcc.vacation.domain.employee.dto.response.EmployeeDetail;
 import com.kcc.vacation.domain.employee.dto.response.MyInfo;
 import com.kcc.vacation.domain.employee.mapper.EmployeeMapper;
 import com.kcc.vacation.global.exception.ErrorCode;
@@ -19,18 +18,15 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -57,9 +53,8 @@ public class EmployeeService {
          *  사원은 존재하지만 합류여부 'TRUE'인 상태
          *  -> 소셜회원가입을 진행한 상태
          *  -> 비밀번호 등의 계정정보를 추가로 채운다.
-         *
-         *
          */
+
         if(employee == null)
         {
             employeeCreate.setPassword(passwordEncoder.encode(employeeCreate.getPassword()));
@@ -78,8 +73,52 @@ public class EmployeeService {
 
     }
 
-    public Employee getById(int id) {
-        return employeeMapper.findById(id);
+    public void add(EmployeeCreate employeeCreate) {
+
+        String authority = "";
+        if(employeeCreate.getAuthority().equals("최고"))
+        {
+            authority = "ROLE_TOP_APPROVAL";
+        }
+        else if(employeeCreate.getAuthority().equals("1차"))
+        {
+            authority = "ROLE_FIRST_APPROVAL";
+        }
+        else if(employeeCreate.getAuthority().equals("2차")){
+            authority = "ROLE_SECOND_APPROVAL";
+        }
+        else
+            authority = "ROLE_NONE";
+
+        employeeCreate.setAuthority(authority);
+        employeeMapper.save(employeeCreate);
+
+
+    }
+
+    public void update(EmployeeUpdate employeeUpdate) {
+        String authority = "";
+        if(employeeUpdate.getAuthority().equals("최고관리자"))
+        {
+            authority = "ROLE_TOP_APPROVAL";
+        }
+        else if(employeeUpdate.getAuthority().equals("1차 승인권자"))
+        {
+            authority = "ROLE_FIRST_APPROVAL";
+        }
+        else if(employeeUpdate.getAuthority().equals("2차 승인권자")){
+            authority = "ROLE_SECOND_APPROVAL";
+        }
+        else
+            authority = "ROLE_NONE";
+
+        employeeUpdate.setAuthority(authority);
+        employeeMapper.update(employeeUpdate);
+    }
+
+
+    public EmployeeDetail getById(int id) {
+        return employeeMapper.findEmployeeDetailById(id);
     }
 
 
@@ -242,4 +281,15 @@ public class EmployeeService {
         return htmlBuilder.toString();
     }
 
+    public List<EmployeeDetail> getEmployeeList() {
+        return employeeMapper.findAll();
+    }
+
+
+    public void delete(int id) {
+        employeeMapper.delete(id);
+    }
 }
+
+
+
