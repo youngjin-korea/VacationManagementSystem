@@ -21,9 +21,4 @@ public class VacationCancelController {
         return "admin/cancel-vacation";
     }
 
-    @GetMapping("/client/client-calender")
-    public String client_clientcalender(Model model) {
-
-        return "client/client-calender";
-    }
 }
