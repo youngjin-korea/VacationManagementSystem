@@ -182,21 +182,6 @@
 <script type="text/javascript">
 
 
-    // $('#delete-vacation-button').on('click', function () {
-    //     swal({
-    //         title: "성공적으로 삭제 완료됐습니다.",
-    //         text: "",
-    //         icon: 'success',
-    //
-    //         buttons: {
-    //             confirm: {
-    //                 text: "확인",
-    //                 value: true,
-    //                 className: "swal-button"
-    //             }
-    //         }
-    //     })
-    // });
 
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -357,11 +342,14 @@
                 }),
                 success: function (response) {
                     console.log("Data updated successfully:", response);
-                    swal("성공", "데이터가 업데이트되었습니다.", "success");
+                    swal("성공", "데이터가 업데이트되었습니다.", "success").then(()=>{
+                        // 모달 닫기 및 데이터 새로고침
 
-                    // 모달 닫기 및 데이터 새로고침
+                        location.reload();
+
+                    })
                     updateVacationTypeModal.hide();
-                    location.reload();
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error('Error:', errorThrown);
