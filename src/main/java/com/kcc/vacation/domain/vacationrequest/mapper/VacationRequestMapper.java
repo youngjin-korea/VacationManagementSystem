@@ -2,9 +2,7 @@ package com.kcc.vacation.domain.vacationrequest.mapper;
 
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationApprover;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequest;
-import com.kcc.vacation.domain.vacationrequest.dto.response.MyVacation;
-import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestDetail;
-import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestList;
+import com.kcc.vacation.domain.vacationrequest.dto.response.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -24,4 +22,7 @@ public interface VacationRequestMapper {
 
     int insertApprover(MyVacationApprover myVacationApprover);
 
+    List<Approver> getMyApprover(int myDeptId);
+
+    List<Approver> getByAuthority(String authority);
 }

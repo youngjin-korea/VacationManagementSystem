@@ -12,11 +12,6 @@ public class HelloController {
 		model.addAttribute("test", "test");
 		return "index";
 	}
-
-
-
-
-
 //	@GetMapping("/organizational-management")
 //	public String organizationalManagement() {
 //		return "admin/organizational-management";

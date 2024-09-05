@@ -28,7 +28,6 @@
         <result column="second_status" property="secondStatus"/>
     </resultMap>
 
-
     <resultMap id="MyVacationsResultMap" type="MyVacation">
         <id column="id" property="vacationId"/>
         <result column="started_date" property="start"/>
@@ -38,6 +37,36 @@
         <result column="name" property="title"/>
         <result column="vacation_days" property="vacationDays"/>
     </resultMap>
+
+    <resultMap id="MyApproverResultMap" type="Approver">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="authority" property="authority"/>
+    </resultMap>
+
+    <select id="getByAuthority" resultType="Approver">
+        select id, name, authority
+        from employee
+        where authority = #{authority}
+    </select>
+
+    <select id="getMyApprover" resultMap="MyApproverResultMap">
+        select id, name, authority
+        from employee
+        where dept_id IN (select f.id
+                          from department my
+                                   JOIN department f ON my.upper_dept_id = f.id
+                          where my.id = #{myDeptId}
+                          UNION
+                          select f.upper_dept_id
+                          from department my
+                                   JOIN department f ON my.upper_dept_id = f.id
+                          where my.id = #{myDeptId}
+                          UNION
+                          select id
+                          from department
+                          where id = #{myDeptId})
+    </select>
 
     <!-- 모든 휴가 요청 조회 -->
     <!--    승인 권한이 있는 휴가 요청만 조회-->
@@ -120,7 +149,7 @@
 
     <insert id="insertApprover" parameterType="MyVacationApprover">
         INSERT INTO approver(id, top_approver, first_approver, second_approver)
-        VALUES (#{id}, #{topApprover}, #{firstApprover}, #{secondApprover})
+        VALUES (#{id}, #{topApprover, jdbcType=VARCHAR}, #{firstApprover, jdbcType=VARCHAR}, #{secondApprover, jdbcType=VARCHAR})
     </insert>
 
 </mapper>
