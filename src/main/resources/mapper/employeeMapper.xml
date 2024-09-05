@@ -167,5 +167,15 @@
         WHERE id = #{id}
     </delete>
 
+    <!-- SQL to select an employee by ID with department info -->
+    <select id="findByJoinCodeIsFail" parameterType="int" resultMap="EmployeeResultMap">
+        SELECT e.id, e.name, e.password, e.hire_date, e.email, e.phone_number,
+        e.vacation_days, e.join_state, d.name AS dept_name,
+        e.position, e.authority, e.verified
+        FROM employee e
+        JOIN department d ON e.dept_id = d.id
+        WHERE e.authentication_code = 'FAIL'
+    </select>
+
 
 </mapper>
