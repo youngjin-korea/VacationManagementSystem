@@ -1,0 +1,30 @@
+.completeSpan {
+    color: white;
+    background-color: #3391FF;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}
+
+.waitingSpan {
+    color: black;
+    background-color: #FFDA55;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}
+
+.rejectedSpan {
+    color: white;
+    background-color: #E60012;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+}
+
+#cancelVacationTable {
+    max-width: 80%;
+}

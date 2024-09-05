@@ -37,9 +37,9 @@
 
     <select class="form-select" aria-label="Default select example" style="max-width: 250px; margin: 10px">
         <option selected disabled>조건을 선택하세요.</option>
-        <option value="1">승인 대기중</option>
+        <option value="1">승인 대기</option>
         <option value="2">승인 완료</option>
-        <option value="3">반려</option>
+        <option value="3">승인 거절</option>
     </select>
 
     <table class="table table-hover">
@@ -107,7 +107,7 @@
                         <c:when test="${request.status == '승인 대기'}">
                             <span class="waitingSpan">${request.status}</span>
                         </c:when>
-                        <c:when test="${request.status == '거절'}">
+                        <c:when test="${request.status == '승인 거절'}">
                             <span class="rejectedSpan">${request.status}</span>
                         </c:when>
                         <c:otherwise>
