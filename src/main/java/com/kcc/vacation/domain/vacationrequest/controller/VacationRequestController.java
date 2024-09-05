@@ -1,6 +1,7 @@
 package com.kcc.vacation.domain.vacationrequest.controller;
 
 import com.kcc.vacation.domain.employee.dto.response.Employee;
+import com.kcc.vacation.domain.employee.dto.response.EmployeeDetail;
 import com.kcc.vacation.domain.employee.dto.response.MyInfo;
 import com.kcc.vacation.domain.employee.service.EmployeeService;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationApprover;
@@ -32,7 +33,7 @@ public class VacationRequestController {
 
         @GetMapping("/client/request-vacation/{employeeId}")
         public String getClientVacationList(@PathVariable int employeeId, Model model) {
-            Employee employee = employeeService.getById(employeeId);
+            EmployeeDetail employee = employeeService.getById(employeeId);
             model.addAttribute("employeeId",employeeId);
             model.addAttribute("myRole", employee.getAuthority());
             return "client/request-vacation";
