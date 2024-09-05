@@ -12,24 +12,4 @@ public class HelloController {
 		model.addAttribute("test", "test");
 		return "index";
 	}
-
-	@GetMapping("/admin/cancel-vacation")
-	public String cancelVacation(Model model) {
-		model.addAttribute("test", "test");
-		return "admin/cancel-vacation";
-	}
-
-
-
-
-
-//	@GetMapping("/organizational-management")
-//	public String organizationalManagement() {
-//		return "admin/organizational-management";
-//	}
-	@GetMapping("/employee-management")
-	public String employeeManagement() {
-		return "admin/employee-management";
-	}
-
 }
