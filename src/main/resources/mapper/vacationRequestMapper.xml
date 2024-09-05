@@ -87,6 +87,15 @@
         WHERE id = #{requestId}
     </update>
 
+    <!--    최종 휴가 승인-->
+    <update id="finalApproveVacation">
+        UPDATE Vacation_request
+        SET
+            commentsOfApprover = #{commentsOfApprover},
+            status = '승인 완료'
+        WHERE id = #{requestId}
+    </update>
+
     <!--    관리자용 휴가 거절-->
     <!-- Approver 테이블의 상태를 FALSE로 설정 -->
     <update id="rejectVacationFALSE">

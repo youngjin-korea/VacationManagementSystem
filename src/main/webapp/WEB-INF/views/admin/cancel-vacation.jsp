@@ -32,6 +32,21 @@
         <option value="3">반려</option>
     </select>
 
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">선택</th>
+                <th scope="col">사번</th>
+                <th scope="col">이름</th>
+                <th scope="col">휴가 신청 기간</th>
+                <th scope="col">휴가 일수</th>
+                <th scope="col">휴가 취소 요청일</th>
+            </tr>
+
+        </thead>
+
+    </table>
+
 </div>
 </body>
 </html>

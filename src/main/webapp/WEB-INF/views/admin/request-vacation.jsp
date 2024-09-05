@@ -18,9 +18,9 @@
 </head>
 
 <body>
-    <%@ include file="/resources/components/header.jsp" %>
-    <%@ include file="/resources/components/sidebar.jsp" %>
-    <%@ include file="/resources/components/admin/showRequestVacation.jsp" %>
+<%@ include file="/resources/components/header.jsp" %>
+<%@ include file="/resources/components/sidebar.jsp" %>
+<%@ include file="/resources/components/admin/showRequestVacation.jsp" %>
 
 <div id="mainArea">
 
@@ -120,7 +120,26 @@
 </div>
 
 <script>
+    // 모달을 열 때 호출하여 초기화하는 함수
+    function initializeModal() {
+        var progressBar = document.getElementById('modalAdminRequestBar');
+        var progressText = document.getElementById('modalProgressText');
 
+        // 진행도 및 텍스트를 초기화
+        progressBar.style.width = '0%';
+        progressText.textContent = "0%";
+
+        // 승인 권자 및 상태를 초기화
+        document.getElementById('modalFirstApprover').closest('p').style.display = 'block';
+        document.getElementById('modalSecondApprover').closest('p').style.display = 'block';
+        document.getElementById('modalTopApprover').closest('p').style.display = 'block';
+
+        document.getElementById('modalFirstStatus').closest('p').style.display = 'block';
+        document.getElementById('modalSecondStatus').closest('p').style.display = 'block';
+        document.getElementById('modalTopStatus').closest('p').style.display = 'block';
+
+        console.log("초기화");
+    }
 
     document.addEventListener('show.bs.modal', function (event) {
         var clickedRow = event.relatedTarget; // 클릭된 테이블 행
@@ -133,9 +152,15 @@
         var days = clickedRow.getAttribute('data-days');
         var regDate = clickedRow.getAttribute('data-reg-date');
         var status = clickedRow.getAttribute('data-status');
+        var comments = clickedRow.getAttribute('data-comments');
 
-        console.log("status :: ", status);
-        console.log("clickedRow: ", clickedRow); // 클릭된 행 로그 출력
+        var topApprover = clickedRow.getAttribute('data-topApprover');
+        var firstApprover = clickedRow.getAttribute('data-firstApprover');
+        var secondApprover = clickedRow.getAttribute('data-secondApprover');
+        var topStatus = clickedRow.getAttribute('data-topStatus');
+        var firstStatus = clickedRow.getAttribute('data-firstStatus');
+        var secondStatus = clickedRow.getAttribute('data-secondStatus');
+
 
         // 모달에 데이터 설정
         document.getElementById('modalReqId').textContent = requestId;
@@ -145,6 +170,70 @@
         document.getElementById('modalDays').textContent = days;
         document.getElementById('modalRegDate').textContent = regDate;
         document.getElementById('modalStatus').textContent = status;
+        document.getElementById('modalComments').textContent = comments;
+
+        document.getElementById('modalTopApprover').textContent = topApprover;
+        document.getElementById('modalFirstApprover').textContent = firstApprover;
+        document.getElementById('modalSecondApprover').textContent = secondApprover;
+        document.getElementById('modalTopStatus').textContent = topStatus;
+        document.getElementById('modalFirstStatus').textContent = firstStatus;
+        document.getElementById('modalSecondStatus').textContent = secondStatus;
+
+
+        initializeModal();
+
+        // 승인 진행도 설정
+        var progressBar = document.getElementById('modalAdminRequestBar');
+        var progressText = document.getElementById('modalProgressText');
+        // 3단계 진행일 경우
+        if (firstApprover.charAt(0) !== "0") {
+
+            if (topStatus === 'TRUE') {
+                progressBar.style.width = '100%';
+                progressText.textContent = "100%";
+            } else if (secondStatus === 'TRUE') {
+                progressBar.style.width = '66%';
+                progressText.textContent = "66%";
+            } else if (firstStatus === 'TRUE') {
+                progressBar.style.width = '33%';
+                progressText.textContent = "33%";
+            } else {
+                progressBar.style.width = '0%';
+                progressText.textContent = "0%";
+            }
+
+        // 2단계 진행일 경우
+        } else if (secondApprover.charAt(0) !== "0") {
+            // 1단계 승인권자 정보를 숨깁니다.
+            document.getElementById('modalFirstApprover').closest('p').style.display = 'none';
+            document.getElementById('modalFirstStatus').closest('p').style.display = 'none';
+
+            if (topStatus === 'TRUE') {
+                progressBar.style.width = '100%';
+                progressText.textContent = "100%";
+            } else if (secondStatus === 'TRUE') {
+                progressBar.style.width = '50%';
+                progressText.textContent = "50%";
+            } else {
+                progressBar.style.width = '0%';
+                progressText.textContent = "0%";
+            }
+
+        // 1단계 진행일 경우
+        } else {
+            document.getElementById('modalFirstApprover').closest('p').style.display = 'none';
+            document.getElementById('modalFirstStatus').closest('p').style.display = 'none';
+            document.getElementById('modalSecondApprover').closest('p').style.display = 'none';
+            document.getElementById('modalSecondStatus').closest('p').style.display = 'none';
+            if (topStatus === 'TRUE') {
+                progressBar.style.width = '100%';
+                progressText.textContent = "100%";
+            } else {
+                progressBar.style.width = '0%';
+                progressText.textContent = "0%";
+            }
+        }
+
 
         var modalStatus = document.getElementById('modalStatus');
         modalStatus.textContent = status;
