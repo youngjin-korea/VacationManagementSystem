@@ -4,18 +4,150 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper	namespace="com.kcc.vacation.domain.grantedvacation.mapper.GrantedVacationMapper">
 
-    <resultMap id="VacationTypeDetailMap" type="VacationTypeDetail">
+    <resultMap id="GrantedVacationListMap" type="GrantedVacationList">
         <result column="id" property="id"/>
-        <result column="vacation_days" property="vacation_days"/>
+        <result column="dept_name" property="dept_name"/>
+        <result column="emp_name" property="emp_name"/>
+        <result column="vacation_name" property="vacation_name"/>
         <result column="granted_date" property="granted_date"/>
         <result column="expiration_date" property="expiration_date"/>
-        <result column="description" property="description"/>
-        <result column="is_paid" property="is_paid"/>
     </resultMap>
 
-    <select id="getAllGrantedVacation" resultMap="VacationTypeDetailMap">
-        SELECT * FROM vacation_type
+    <select id="grantVacationSearch" resultMap="GrantedVacationListMap">
+        select
+            gv.id AS id,
+            granted_date,
+            expiration_date,
+            e.name AS emp_name,
+            vt.name AS vacation_name,
+            d.name AS dept_name
+        from
+            granted_vacation gv
+            JOIN employee e
+            ON gv.emp_id = e.id
+            JOIN vacation_type vt
+            on gv.vacation_type_id = vt.id
+            join department d
+            on e.dept_id = d.id
+        <where>
+            <if test="dept_name != null and dept_name != ''">
+                AND d.name = #{dept_name}
+            </if>
+            <if test="vacation_name != null and vacation_name != ''">
+                AND vt.name = #{vacation_name}
+            </if>
+            <if test="emp_name != null and emp_name != ''">
+                <![CDATA[
+                e.name LIKE '%' || #{emp_name} || '%'
+           ]]>
+            </if>
+        </where>
+
     </select>
+
+    <select id="grantAllVacationsList" resultMap="GrantedVacationListMap">
+        select
+            gv.id AS id,
+            granted_date,
+            expiration_date,
+            e.name AS emp_name,
+            vt.name AS vacation_name,
+            d.name AS dept_name
+        from
+            granted_vacation gv
+                JOIN employee e
+                     ON gv.emp_id = e.id
+                JOIN vacation_type vt
+                     on gv.vacation_type_id = vt.id
+                join department d
+                     on e.dept_id = d.id
+    </select>
+
+    <resultMap id="GrantedVacationResultMap" type="GrantedVacationDetail">
+        <result column="id" property="id"/>
+        <result property="vacation_days" column="vacation_days" />
+        <result property="granted_date" column="granted_date" />
+        <result property="expiration_date" column="expiration_date" />
+        <result property="description" column="description" />
+        <result property="emp_id" column="emp_id" />
+        <result property="emp_name" column="emp_name" />
+        <result property="position" column="position" />
+        <result property="email" column="email" />
+        <result property="dept_name" column="dept_name" />
+        <result property="vacation_type_name" column="vacation_type_name" />
+    </resultMap>
+
+
+    <select id="grantVacationById" resultMap="GrantedVacationResultMap">
+        SELECT
+            gv.id AS id,
+            gv.vacation_days AS vacation_days,
+            gv.granted_date AS granted_date,
+            gv.expiration_date AS expiration_date,
+            gv.description AS description,
+            e.id AS emp_id,
+            e.name AS emp_name,
+            e.position AS position,
+            e.email AS email,
+            d.name AS dept_name,
+            vt.name As vacation_type_name
+        FROM
+            granted_vacation gv
+            JOIN
+            employee e ON gv.emp_id = e.id
+            JOIN
+            vacation_type vt ON gv.vacation_type_id = vt.id
+            JOIN
+            department d ON e.dept_id = d.id
+        WHERE
+            gv.id = #{id}
+    </select>
+
+
+    <resultMap id="GrantedVacationCreateMap" type="GrantedVacationCreate">
+        <result property="id" column="id"/>
+        <result property="vacation_days" column="vacation_days"/>
+        <result property="granted_date" column="granted_date"/>
+        <result property="expiration_date" column="expiration_date"/>
+        <result property="description" column="description"/>
+        <result property="vacation_type_id" column="vacation_type_id"/>
+        <result property="emp_id" column="emp_id"/>
+        <result property="admin_id" column="admin_id"/>
+    </resultMap>
+
+
+    <insert id="insertGrantVacation" parameterType="GrantedVacationCreate">
+        INSERT INTO Granted_Vacation (id, vacation_days, granted_date, expiration_date, description, vacation_type_id, emp_id, admin_id)
+        VALUES (granted_vacation_seq.NEXTVAL
+
+                ,#{vacation_days}
+                ,sysdate
+               , #{expiration_date}
+               , #{description}
+               , #{vacation_type_id}
+               , #{emp_id}
+               , 1003
+               )
+
+    </insert>
+
+
+    <delete id="deleteGrantedVacation" parameterType="java.util.List">
+        DELETE FROM Granted_Vacation
+        WHERE id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateGrantedVacation" parameterType="GrantVacationUpdateDTO">
+        UPDATE Granted_Vacation
+        SET
+            vacation_days = #{vacation_days}
+        WHERE id = #{id}
+    </update>
+
+
 
 
 </mapper>

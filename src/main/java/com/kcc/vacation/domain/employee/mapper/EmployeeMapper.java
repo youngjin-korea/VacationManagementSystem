@@ -42,4 +42,6 @@ public interface EmployeeMapper {
     void update(EmployeeUpdate employeeUpdate);
 
     void delete(int id);
+
+    List<EmployeeDetail> findByJoinCodeIsFail();
 }
