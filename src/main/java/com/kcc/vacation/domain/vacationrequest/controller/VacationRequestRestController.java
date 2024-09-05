@@ -1,9 +1,11 @@
 package com.kcc.vacation.domain.vacationrequest.controller;
 
+import com.kcc.vacation.domain.vacationcancel.dto.request.CancelVacation;
+import com.kcc.vacation.domain.vacationcancel.service.VacationCancelService;
 import com.kcc.vacation.domain.vacationrequest.dto.response.Approver;
 import com.kcc.vacation.domain.vacationrequest.dto.response.MyVacation;
 import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestDetail;
-import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestList;
+import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestListDetail;
 import com.kcc.vacation.domain.vacationrequest.service.VacationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VacationRequestRestController {
     private final VacationRequestService vacationRequestService;
+    private final VacationCancelService vacationCancelService;
 
     @PostMapping("/admin/approve-vacation")
     public boolean approveVacation(@RequestBody VacationRequestDetail requestDetail) {
@@ -48,7 +51,14 @@ public class VacationRequestRestController {
     }
 
     @GetMapping("/clients/vacation-requests-cancels")
-    public List<VacationRequestList> getClientReqList() {
+    public List<VacationRequestListDetail> getClientReqList() {
         return vacationRequestService.getClientReqList();
     }
+
+    @PostMapping("/clients/cancel")
+    public void insertCancelReq(@RequestBody CancelVacation cancelVacation){
+        String s = vacationCancelService.insertCancelReq(cancelVacation);
+        System.out.println("s ===============================!!! " + s);
+    }
+
 }

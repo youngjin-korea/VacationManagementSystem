@@ -9,12 +9,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CancelVacation {
+    private int id;
     private String comments;
     private Integer vacationRequestId;
     private Integer cancelApproverId;
 
     @Builder
-    public CancelVacation(String comments, Integer vacationRequestId, Integer cancelApproverId) {
+    public CancelVacation(int id, String comments, Integer vacationRequestId, Integer cancelApproverId) {
+        this.id = id;
         this.comments = comments;
         this.vacationRequestId = vacationRequestId;
         this.cancelApproverId = cancelApproverId;

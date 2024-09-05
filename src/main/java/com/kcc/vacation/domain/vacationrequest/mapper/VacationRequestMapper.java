@@ -36,5 +36,5 @@ public interface VacationRequestMapper {
 
     List<Approver> getByAuthority(String authority);
 
-    List<VacationRequestList> getClientReqList(int employeeId);
+    List<VacationRequestListDetail> getClientReqList(int employeeId);
 }

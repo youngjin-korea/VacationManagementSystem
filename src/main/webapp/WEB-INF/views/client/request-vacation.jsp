@@ -194,42 +194,13 @@
                         // 에러 처리
                         console.error('Error fetching data:', error);
                     }
-                    reqList = reqsCancels.filter((it)=> it.cancelStatus === null);
-                    cancelList = reqsCancels.filter((it)=>it.cancelStatus !== null);
-                    console.log("reqList: ",reqList);
+                    reqList = reqsCancels.filter((it) => it.cancelStatus === null);
+                    cancelList = reqsCancels.filter((it) => it.cancelStatus !== null);
+                    console.log("reqList: ", reqList);
                     console.log("cancelList: ", cancelList);
-                    // 예시 데이터 (실제로는 서버에서 데이터 조회 필요)
-                    const vacations = [
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "연차", start_date: "2024-08-14", end_date: "2024-08-16", status: "승인됨", id: 1},
-                        {type: "병가", start_date: "2024-09-01", end_date: "2024-09-03", status: "대기중", id: 2}
-                    ];
 
                     // 취소 버튼 클릭 시 호출되는 함수 정의
-                    window.cancelVacation = function (vacationId) {
+                    window.cancelVacation = async function (vacationId) {
                         const result = confirm("휴가를 취소 하시겠습니까?");
                         // 서버에 취소 요청 보내기
                         if (result === false) {
@@ -237,37 +208,31 @@
                             return;
                         }
                         console.log("휴가 취소 요청 - ID:", vacationId);
-                        <%-- fetch('/cancel-vacation', {
-                           method: 'POST',
-                           headers: {
-                               'Content-Type': 'application/json'
-                           },
-                           body: JSON.stringify({ id: vacationId })
-                       })
-                       .then(response => response.json())
-                       .then(data => {
-                           if (data.success) {
-                               alert('휴가가 취소되었습니다.');
-                               location.reload(); // 페이지를 다시 로드하여 UI를 업데이트합니다.
-                           } else {
-                               alert('휴가 취소에 실패했습니다.');
-                           }
-                       })
-                       .catch(error => {
-                           console.error('Error:', error);
-                           alert('휴가 취소 중 오류가 발생했습니다.');
-                       }); --%>
+                        const btn = document.getElementById("\"" + vacationId + "\"");
+
+                        await fetch('/clients/cancel', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                comments: "개인사유",
+                                vacationRequestId: vacationId,
+                                cancelApproverId: 1042
+                                })
+                        });
+                        location.reload(true);
                     };
                     // 휴가신청 현황 테이블에 데이터 삽입
                     reqList.forEach(function (vacation) {
                         var row = document.createElement("tr");
                         row.innerHTML =
                             "<td>" + vacation.name + "</td>" +
-                            "<td>" + vacation.startedDate.slice(0,10) + "</td>" +
-                            "<td>" + vacation.endDate.slice(0,10) + "</td>" +
+                            "<td>" + vacation.startedDate.slice(0, 10) + "</td>" +
+                            "<td>" + vacation.endDate.slice(0, 10) + "</td>" +
                             "<td>" + vacation.status + "</td>" +
                             "<td>" +
-                            "<button type=\"button\" class=\"btn btn-danger\" onclick=\"cancelVacation(" + vacation.id + ")\">취소</button>" +
+                            "<button " + "id = \"" + vacation.id + "\" type=\"button\" class=\"btn btn-danger\" onclick=\"cancelVacation(" + vacation.id + ")\">취소</button>" +
                             "</td>";
                         vacationTableBody.appendChild(row);
                     });
@@ -277,8 +242,8 @@
                         var row = document.createElement("tr");
                         row.innerHTML =
                             "<td>" + vacation.name + "</td>" +
-                            "<td>" + vacation.startedDate.slice(0,10) + "</td>" +
-                            "<td>" + vacation.endDate.slice(0,10) + "</td>" +
+                            "<td>" + vacation.startedDate.slice(0, 10) + "</td>" +
+                            "<td>" + vacation.endDate.slice(0, 10) + "</td>" +
                             "<td>" + vacation.cancelStatus + "</td>" +
                             "<td>" + vacation.cancelApproveDate + "</td>";
                         vacationTableBody2.appendChild(row);

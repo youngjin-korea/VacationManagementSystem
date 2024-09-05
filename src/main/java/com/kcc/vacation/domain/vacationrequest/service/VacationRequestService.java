@@ -174,7 +174,7 @@ public class VacationRequestService {
         return vacationRequestMapper.getByAuthority(authority);
     }
 
-    public List<VacationRequestList> getClientReqList() {
+    public List<VacationRequestListDetail> getClientReqList() {
         //Employee employee = employeeMapper.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         return vacationRequestMapper.getClientReqList(1001);
     }
