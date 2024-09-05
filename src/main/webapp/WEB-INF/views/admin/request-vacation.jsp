@@ -123,54 +123,107 @@
 </div>
 
 <script>
-    // 모달을 열 때 호출하여 초기화하는 함수
-    function initializeModal() {
-        var progressBar = document.getElementById('modalAdminRequestBar');
-        var progressText = document.getElementById('modalProgressText');
+    // 상태에 따른 클래스 및 텍스트 설정 함수
+    function setStatus(elementId, status) {
+        const statusMap = {
+            'TRUE': { text: '확인', class: 'completeSpan' },
+            'FALSE': { text: '거절', class: 'rejectedSpan' },
+            '대기': { text: '대기', class: 'waitingSpan' }
+        };
+        const element = document.getElementById(elementId);
+        const { text, class: className } = statusMap[status] || { text: '대기', class: 'waitingSpan' };
+        element.textContent = text;
+        element.classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
+        element.classList.add(className);
+    }
 
-        // 진행도 및 텍스트를 초기화
+    // 진행도 설정 함수
+    // 진행도 설정 함수
+    function setProgress(firstStatus, secondStatus, topStatus, progressBar, progressText, firstApprover, secondApprover) {
+        let progress = 0;
+
+        // 3단계 진행일 경우 (1차, 2차, 최종)
+        if (firstApprover.charAt(0) !== '0') {
+            if (topStatus === 'TRUE') {
+                progress = 100;
+            } else if (secondStatus === 'TRUE') {
+                progress = 66;
+            } else if (firstStatus === 'TRUE') {
+                progress = 33;
+            }
+
+            // 2단계 진행일 경우 (2차 없이 1차와 최종 승인만 있을 때)
+        } else if (secondApprover.charAt(0) !== '0') {
+            if (topStatus === 'TRUE') {
+                progress = 100;
+            } else if (secondStatus === 'TRUE') {
+                progress = 50;
+            }
+
+            // 1단계 진행일 경우 (최종 승인만 있을 때)
+        } else {
+            if (topStatus === 'TRUE') {
+                progress = 100;
+            } else {
+                progress = 0;
+            }
+        }
+
+        progressBar.style.width = progress + "%";
+        progressText.textContent = progress + "%";
+    }
+
+
+    // 승인 버튼 표시 여부 설정 함수
+    function toggleApprovalButtons(status, isYourTurn, approveBtn, rejectBtn) {
+        if (status === '승인 대기' && isYourTurn === 'TRUE') {
+            approveBtn.style.display = 'inline-block';
+            rejectBtn.style.display = 'inline-block';
+        } else {
+            approveBtn.style.display = 'none';
+            rejectBtn.style.display = 'none';
+        }
+    }
+
+    // 모달 초기화 함수
+    function initializeModal() {
+        const progressBar = document.getElementById('modalAdminRequestBar');
+        const progressText = document.getElementById('modalProgressText');
         progressBar.style.width = '0%';
         progressText.textContent = "0%";
 
-        // 승인 권자 및 상태를 초기화
-        document.getElementById('modalFirstApproverName').closest('p').style.display = 'block';
-        document.getElementById('modalSecondApproverName').closest('p').style.display = 'block';
-        document.getElementById('modalTopApproverName').closest('p').style.display = 'block';
+        ['modalFirstApproverName', 'modalSecondApproverName', 'modalTopApproverName'].forEach(id => {
+            document.getElementById(id).closest('p').style.display = 'block';
+        });
 
-        document.getElementById('modalFirstStatus').closest('p').style.display = 'block';
-        document.getElementById('modalSecondStatus').closest('p').style.display = 'block';
-        document.getElementById('modalTopStatus').closest('p').style.display = 'block';
-
-        console.log("초기화");
+        ['modalFirstStatus', 'modalSecondStatus', 'modalTopStatus'].forEach(id => {
+            document.getElementById(id).closest('p').style.display = 'block';
+        });
     }
 
     document.addEventListener('show.bs.modal', function (event) {
-        var clickedRow = event.relatedTarget; // 클릭된 테이블 행
+        initializeModal();
+
+        const clickedRow = event.relatedTarget;
         if (!clickedRow) return;
 
-        console.log(clickedRow);
+        const requestId = clickedRow.getAttribute('data-request-id');
+        const empId = clickedRow.getAttribute('data-emp-id');
+        const name = clickedRow.getAttribute('data-name');
+        const period = clickedRow.getAttribute('data-period');
+        const days = clickedRow.getAttribute('data-days');
+        const regDate = clickedRow.getAttribute('data-reg-date');
+        const status = clickedRow.getAttribute('data-status');
+        const comments = clickedRow.getAttribute('data-comments');
+        const topApproverName = clickedRow.getAttribute('data-topApproverName');
+        const firstApproverName = clickedRow.getAttribute('data-firstApproverName');
+        const secondApproverName = clickedRow.getAttribute('data-secondApproverName');
+        const topStatus = clickedRow.getAttribute('data-topStatus');
+        const firstStatus = clickedRow.getAttribute('data-firstStatus');
+        const secondStatus = clickedRow.getAttribute('data-secondStatus');
+        const isYourTurn = clickedRow.getAttribute('data-isYourTurn');
 
-        var requestId = clickedRow.getAttribute('data-request-id');
-        var empId = clickedRow.getAttribute('data-emp-id');
-        var name = clickedRow.getAttribute('data-name');
-        var period = clickedRow.getAttribute('data-period');
-        var days = clickedRow.getAttribute('data-days');
-        var regDate = clickedRow.getAttribute('data-reg-date');
-        var status = clickedRow.getAttribute('data-status');
-        var comments = clickedRow.getAttribute('data-comments');
-
-        var topApprover = clickedRow.getAttribute('data-topApprover');
-        var firstApprover = clickedRow.getAttribute('data-firstApprover');
-        var secondApprover = clickedRow.getAttribute('data-secondApprover');
-        var topStatus = clickedRow.getAttribute('data-topStatus');
-        var firstStatus = clickedRow.getAttribute('data-firstStatus');
-        var secondStatus = clickedRow.getAttribute('data-secondStatus');
-
-        var topApproverName = clickedRow.getAttribute('data-topApproverName');
-        var firstApproverName = clickedRow.getAttribute('data-firstApproverName');
-        var secondApproverName = clickedRow.getAttribute('data-secondApproverName');
-
-        // 모달에 데이터 설정
+        // 모달 데이터 설정
         document.getElementById('modalReqId').textContent = requestId;
         document.getElementById('modalEmpId').textContent = empId;
         document.getElementById('modalName').textContent = name;
@@ -180,143 +233,40 @@
         document.getElementById('modalStatus').textContent = status;
         document.getElementById('modalComments').textContent = comments;
 
-
-        document.getElementById('modalTopStatus').classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
-        document.getElementById('modalFirstStatus').classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
-        document.getElementById('modalSecondStatus').classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
-
-        if(topStatus == 'TRUE'){
-            document.getElementById('modalTopStatus').textContent = '확인';
-            document.getElementById('modalTopStatus').classList.add('completeSpan');
-        } else if(topStatus == 'FALSE'){
-            document.getElementById('modalTopStatus').textContent = '거절';
-            document.getElementById('modalTopStatus').classList.add('rejectedSpan');
-        }
-        else{
-            document.getElementById('modalTopStatus').textContent = '대기';
-            document.getElementById('modalTopStatus').classList.add('waitingSpan');
-        }
-
-        if(firstStatus == 'TRUE'){
-            document.getElementById('modalFirstStatus').textContent = '확인';
-            document.getElementById('modalFirstStatus').classList.add('completeSpan');
-
-        }else if(firstStatus == 'FALSE'){
-            document.getElementById('modalFirstStatus').textContent = '거절';
-            document.getElementById('modalFirstStatus').classList.add('rejectedSpan');
-        } else{
-            document.getElementById('modalFirstStatus').textContent = '대기';
-            document.getElementById('modalFirstStatus').classList.add('waitingSpan');
-        }
-
-        if(secondStatus == 'TRUE'){
-            document.getElementById('modalSecondStatus').textContent = '확인';
-            document.getElementById('modalSecondStatus').classList.add('completeSpan');
-
-        }else if(secondStatus =='FALSE'){
-            document.getElementById('modalSecondStatus').textContent = '거절';
-            document.getElementById('modalSecondStatus').classList.add('rejectedSpan');
-        }
-        else{
-            document.getElementById('modalSecondStatus').textContent = '대기';
-            document.getElementById('modalSecondStatus').classList.add('waitingSpan');
-        }
-
-
         document.getElementById('modalTopApproverName').textContent = topApproverName;
         document.getElementById('modalFirstApproverName').textContent = firstApproverName;
         document.getElementById('modalSecondApproverName').textContent = secondApproverName;
 
-
-        initializeModal();
+        // 상태별 처리
+        setStatus('modalTopStatus', topStatus);
+        setStatus('modalFirstStatus', firstStatus);
+        setStatus('modalSecondStatus', secondStatus);
 
         // 승인 진행도 설정
-        var progressBar = document.getElementById('modalAdminRequestBar');
-        var progressText = document.getElementById('modalProgressText');
-        // 3단계 진행일 경우
-        if (firstApprover.charAt(0) !== "0") {
+        const progressBar = document.getElementById('modalAdminRequestBar');
+        const progressText = document.getElementById('modalProgressText');
+        const firstApprover = clickedRow.getAttribute('data-firstApprover');
+        const secondApprover = clickedRow.getAttribute('data-secondApprover');
 
-            if (topStatus === 'TRUE') {
-                progressBar.style.width = '100%';
-                progressText.textContent = "100%";
-            } else if (secondStatus === 'TRUE') {
-                progressBar.style.width = '66%';
-                progressText.textContent = "66%";
-            } else if (firstStatus === 'TRUE') {
-                progressBar.style.width = '33%';
-                progressText.textContent = "33%";
-            } else {
-                progressBar.style.width = '0%';
-                progressText.textContent = "0%";
-            }
-
-        // 2단계 진행일 경우
-        } else if (secondApprover.charAt(0) !== "0") {
-            // 1단계 승인권자 정보를 숨깁니다.
-            document.getElementById('modalFirstApproverName').closest('p').style.display = 'none';
-            document.getElementById('modalFirstStatus').closest('p').style.display = 'none';
-
-            if (topStatus === 'TRUE') {
-                progressBar.style.width = '100%';
-                progressText.textContent = "100%";
-            } else if (secondStatus === 'TRUE') {
-                progressBar.style.width = '50%';
-                progressText.textContent = "50%";
-            } else {
-                progressBar.style.width = '0%';
-                progressText.textContent = "0%";
-            }
-
-        // 1단계 진행일 경우
+        if (firstApprover.charAt(0) !== '0') {
+            // 3단계 진행일 경우 (1차, 2차, 최종 승인)
+            setProgress(firstStatus, secondStatus, topStatus, progressBar, progressText, firstApprover, secondApprover);
+        } else if (secondApprover.charAt(0) !== '0') {
+            // 2단계 진행일 경우 (2차 없이 1차와 최종 승인만 있을 때)
+            ['modalFirstApproverName', 'modalFirstStatus'].forEach(id => {
+                document.getElementById(id).closest('p').style.display = 'none';
+            });
+            setProgress('', secondStatus, topStatus, progressBar, progressText, firstApprover, secondApprover);
         } else {
-            document.getElementById('modalFirstApproverName').closest('p').style.display = 'none';
-            document.getElementById('modalFirstStatus').closest('p').style.display = 'none';
-            document.getElementById('modalSecondApproverName').closest('p').style.display = 'none';
-            document.getElementById('modalSecondStatus').closest('p').style.display = 'none';
-            if (topStatus === 'TRUE') {
-                progressBar.style.width = '100%';
-                progressText.textContent = "100%";
-            } else {
-                progressBar.style.width = '0%';
-                progressText.textContent = "0%";
-            }
+            // 1단계 진행일 경우 (최종 승인만 있을 때)
+            ['modalFirstApproverName', 'modalFirstStatus', 'modalSecondApproverName', 'modalSecondStatus'].forEach(id => {
+                document.getElementById(id).closest('p').style.display = 'none';
+            });
+            setProgress('', '', topStatus, progressBar, progressText, firstApprover, secondApprover);
         }
 
-
-        var modalStatus = document.getElementById('modalStatus');
-        modalStatus.textContent = status;
-
-        // 기존 클래스 제거
-        modalStatus.classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
-
-
-        // 텍스트 색상 변경
-        switch (status) {
-            case '승인 완료':
-                modalStatus.classList.add('completeSpan');
-                break;
-            case '승인 대기':
-                modalStatus.classList.add('waitingSpan');
-                break;
-            case '거절':
-                modalStatus.classList.add('rejectedSpan');
-                break;
-            default:
-                modalStatus.classList.add('defaultSpan'); // 기본 상태 클래스 (필요시 추가)
-        }
-
-        // 승인/반려 버튼 표시 여부 결정
-        var approveBtn = document.getElementById('approveBtn');
-        var rejectBtn = document.getElementById('rejectBtn');
-        var isYourTurn = clickedRow.getAttribute('data-isYourTurn');
-
-        if (status === '승인 대기' && isYourTurn === 'TRUE') {
-            approveBtn.style.display = 'inline-block';
-            rejectBtn.style.display = 'inline-block';
-        } else {
-            approveBtn.style.display = 'none';
-            rejectBtn.style.display = 'none';
-        }
+        // 승인/반려 버튼 표시
+        toggleApprovalButtons(status, isYourTurn, document.getElementById('approveBtn'), document.getElementById('rejectBtn'));
     });
 
 
