@@ -210,7 +210,7 @@
         UPDATE Vacation_request
         SET
             commentsOfApprover = #{commentsOfApprover},
-            status = '거절'
+            status = '승인 거절'
         WHERE id = #{requestId}
     </update>
 
