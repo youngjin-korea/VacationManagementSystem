@@ -104,7 +104,6 @@
     <update id="finalApproveVacation">
         UPDATE Vacation_request
         SET
-            commentsOfApprover = #{commentsOfApprover},
             status = '승인 완료'
         WHERE id = #{requestId}
     </update>

@@ -18,6 +18,8 @@ public interface VacationRequestMapper {
     List<VacationRequestListDetail> getVacationRequestListByApproverId(int approverId);
     // 관리자용 승인 버튼 눌렀을 때
     int approveVacation(int requestId, int approverId);
+    // 최종 관리자 승인일 때
+    int finalApproveVacation(int requestId);
     // 1. 관리자용 반려 버튼 눌렀을 때
     // 1-1. approver 테이블에 false 넣기
     int rejectVacationFALSE(int requestId, int approverId);

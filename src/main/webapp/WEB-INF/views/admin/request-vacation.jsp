@@ -133,9 +133,9 @@
         progressText.textContent = "0%";
 
         // 승인 권자 및 상태를 초기화
-        document.getElementById('modalFirstApprover').closest('p').style.display = 'block';
-        document.getElementById('modalSecondApprover').closest('p').style.display = 'block';
-        document.getElementById('modalTopApprover').closest('p').style.display = 'block';
+        document.getElementById('modalFirstApproverName').closest('p').style.display = 'block';
+        document.getElementById('modalSecondApproverName').closest('p').style.display = 'block';
+        document.getElementById('modalTopApproverName').closest('p').style.display = 'block';
 
         document.getElementById('modalFirstStatus').closest('p').style.display = 'block';
         document.getElementById('modalSecondStatus').closest('p').style.display = 'block';
@@ -166,6 +166,9 @@
         var firstStatus = clickedRow.getAttribute('data-firstStatus');
         var secondStatus = clickedRow.getAttribute('data-secondStatus');
 
+        var topApproverName = clickedRow.getAttribute('data-topApproverName');
+        var firstApproverName = clickedRow.getAttribute('data-firstApproverName');
+        var secondApproverName = clickedRow.getAttribute('data-secondApproverName');
 
         // 모달에 데이터 설정
         document.getElementById('modalReqId').textContent = requestId;
@@ -177,12 +180,52 @@
         document.getElementById('modalStatus').textContent = status;
         document.getElementById('modalComments').textContent = comments;
 
-        document.getElementById('modalTopApprover').textContent = topApprover;
-        document.getElementById('modalFirstApprover').textContent = firstApprover;
-        document.getElementById('modalSecondApprover').textContent = secondApprover;
-        document.getElementById('modalTopStatus').textContent = topStatus;
-        document.getElementById('modalFirstStatus').textContent = firstStatus;
-        document.getElementById('modalSecondStatus').textContent = secondStatus;
+
+        document.getElementById('modalTopStatus').classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
+        document.getElementById('modalFirstStatus').classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
+        document.getElementById('modalSecondStatus').classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
+
+        if(topStatus == 'TRUE'){
+            document.getElementById('modalTopStatus').textContent = '확인';
+            document.getElementById('modalTopStatus').classList.add('completeSpan');
+        } else if(topStatus == 'FALSE'){
+            document.getElementById('modalTopStatus').textContent = '거절';
+            document.getElementById('modalTopStatus').classList.add('rejectedSpan');
+        }
+        else{
+            document.getElementById('modalTopStatus').textContent = '대기';
+            document.getElementById('modalTopStatus').classList.add('waitingSpan');
+        }
+
+        if(firstStatus == 'TRUE'){
+            document.getElementById('modalFirstStatus').textContent = '확인';
+            document.getElementById('modalFirstStatus').classList.add('completeSpan');
+
+        }else if(firstStatus == 'FALSE'){
+            document.getElementById('modalFirstStatus').textContent = '거절';
+            document.getElementById('modalFirstStatus').classList.add('rejectedSpan');
+        } else{
+            document.getElementById('modalFirstStatus').textContent = '대기';
+            document.getElementById('modalFirstStatus').classList.add('waitingSpan');
+        }
+
+        if(secondStatus == 'TRUE'){
+            document.getElementById('modalSecondStatus').textContent = '확인';
+            document.getElementById('modalSecondStatus').classList.add('completeSpan');
+
+        }else if(secondStatus =='FALSE'){
+            document.getElementById('modalSecondStatus').textContent = '거절';
+            document.getElementById('modalSecondStatus').classList.add('rejectedSpan');
+        }
+        else{
+            document.getElementById('modalSecondStatus').textContent = '대기';
+            document.getElementById('modalSecondStatus').classList.add('waitingSpan');
+        }
+
+
+        document.getElementById('modalTopApproverName').textContent = topApproverName;
+        document.getElementById('modalFirstApproverName').textContent = firstApproverName;
+        document.getElementById('modalSecondApproverName').textContent = secondApproverName;
 
 
         initializeModal();
@@ -210,7 +253,7 @@
         // 2단계 진행일 경우
         } else if (secondApprover.charAt(0) !== "0") {
             // 1단계 승인권자 정보를 숨깁니다.
-            document.getElementById('modalFirstApprover').closest('p').style.display = 'none';
+            document.getElementById('modalFirstApproverName').closest('p').style.display = 'none';
             document.getElementById('modalFirstStatus').closest('p').style.display = 'none';
 
             if (topStatus === 'TRUE') {
@@ -226,9 +269,9 @@
 
         // 1단계 진행일 경우
         } else {
-            document.getElementById('modalFirstApprover').closest('p').style.display = 'none';
+            document.getElementById('modalFirstApproverName').closest('p').style.display = 'none';
             document.getElementById('modalFirstStatus').closest('p').style.display = 'none';
-            document.getElementById('modalSecondApprover').closest('p').style.display = 'none';
+            document.getElementById('modalSecondApproverName').closest('p').style.display = 'none';
             document.getElementById('modalSecondStatus').closest('p').style.display = 'none';
             if (topStatus === 'TRUE') {
                 progressBar.style.width = '100%';
@@ -245,6 +288,7 @@
 
         // 기존 클래스 제거
         modalStatus.classList.remove('completeSpan', 'waitingSpan', 'rejectedSpan');
+
 
         // 텍스트 색상 변경
         switch (status) {
@@ -338,7 +382,7 @@
                         content: {
                             element: "input",
                             attributes: {
-                                placeholder: "반려 사유를 입력하세요...",
+                                placeholder: "반려 사유를 입력",
                                 type: "text"
                             }
                         },

@@ -105,6 +105,9 @@ public class VacationRequestService {
         // 현재 임의의 인사팀 부서장인 1003 번으로 접속했다고 가정함
         int rowsAffected = vacationRequestMapper.approveVacation(requestId, 1003);
 
+        // 만약 최종 관리자라면
+        vacationRequestMapper.finalApproveVacation(requestId);
+
         return rowsAffected > 0; // 업데이트된 행의 수가 0보다 크면 true 리턴
     }
 
