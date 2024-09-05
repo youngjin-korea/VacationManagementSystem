@@ -71,3 +71,8 @@ p {
 .s-excel-table-container > table{
     border-collapse: collapse;
 }
+
+#deleteEmployeeBtnOfModal{
+    border-radius: 2px;
+    background-color: #FF4040;
+}

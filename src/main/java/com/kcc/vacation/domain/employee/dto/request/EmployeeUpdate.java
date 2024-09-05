@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EmployeeCreate {
+public class EmployeeUpdate {
 
 
     private int id;
@@ -32,7 +32,7 @@ public class EmployeeCreate {
     private String authority;
 
     @Builder
-    public EmployeeCreate(int id, String name, String password, String oauthId, String passwordCheck, Timestamp hireDate, String email, String phoneNumber, int vacationDays, String joinState, int deptId, String position, String authority) {
+    public EmployeeUpdate(int id, String name, String password, String oauthId, String passwordCheck, Timestamp hireDate, String email, String phoneNumber, int vacationDays, String joinState, int deptId, String position, String authority) {
         this.id = id;
         this.name = name;
         this.hireDate = hireDate;
@@ -48,9 +48,9 @@ public class EmployeeCreate {
         this.authority = authority;
     }
 
-    public static EmployeeCreate of(EmployeeCreateRequest employeeCreateRequest) {
-        return EmployeeCreate.builder()
-                .id(employeeCreateRequest.getId())
+    public static EmployeeUpdate of(EmployeeUpdateRequest employeeCreateRequest, int id) {
+        return EmployeeUpdate.builder()
+                .id(id)
                 .name(employeeCreateRequest.getName())
                 .password(employeeCreateRequest.getPassword())
                 .passwordCheck(employeeCreateRequest.getPasswordCheck())
@@ -70,7 +70,7 @@ public class EmployeeCreate {
     public static Timestamp handleDate(String dateString) {
 
         // SimpleDateFormat을 사용해 문자열을 Date 객체로 파싱
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date parsedDate = dateFormat.parse(dateString); // Date 객체로 변환
             return new Timestamp(parsedDate.getTime()); // Timestamp로 변환

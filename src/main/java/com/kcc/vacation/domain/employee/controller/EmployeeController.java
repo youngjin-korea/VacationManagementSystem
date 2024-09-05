@@ -3,12 +3,15 @@ package com.kcc.vacation.domain.employee.controller;
 import com.kcc.vacation.domain.employee.dto.request.EmployeeCreate;
 import com.kcc.vacation.domain.employee.dto.request.EmployeeEmailLogin;
 import com.kcc.vacation.domain.employee.dto.request.UpdateMyInfo;
+import com.kcc.vacation.domain.employee.dto.response.EmployeeDetail;
 import com.kcc.vacation.domain.employee.dto.response.MyInfo;
 import com.kcc.vacation.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -63,5 +66,14 @@ public class EmployeeController {
         employeeService.updateMyInfo(updateMyInfo);
         return "redirect:/client/my-page/"+updateMyInfo.getId()+"?updateSuccess=true";
     }
+    @GetMapping("admin/employee-management")
+    public String employeeManagement(Model model) {
+        List<EmployeeDetail> employees =  employeeService.getEmployeeList();
 
+        employees.forEach(EmployeeDetail::convertStatusAndAuthority);
+
+        model.addAttribute("employees", employees);
+
+        return "admin/employee-management";
+    }
 }
