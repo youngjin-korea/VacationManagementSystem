@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -60,7 +61,7 @@ public class SecurityConfig {
                                 .userInfoEndpoint(
                                         userInfoEndpointConfig -> userInfoEndpointConfig.userService(principalOauth2UserService)
                                 )
-                                .defaultSuccessUrl("/index")
+                                .defaultSuccessUrl("/client/client-calender")
                 );
         return http.build();
     }
@@ -80,12 +81,12 @@ public class SecurityConfig {
             }
 
             private String getExceptionMessage(AuthenticationException exception) {
-                if (exception.getMessage().equals("UserNotFound")) {
-                    return  "계정정보가 없습니다.";
-                } else if (exception instanceof BadCredentialsException) {
-                    return "아이디 또는 비밀번호가 일치하지 않습니다.";
+                if (exception instanceof BadCredentialsException)  {
+                    return  "아이디 또는 비밀번호가 일치하지 않습니다.";
+                } else if (exception instanceof UsernameNotFoundException){
+                    return "계정정보가 없습니다.";
                 } else {
-                    return "잘못된 로그인 시도입니다. 아이디를 확인해 주세요.";
+                    return "잘못된 로그인 시도입니다. 아이디 또는 비밀번호를 확인해 주세요.";
                 }
             }
         };

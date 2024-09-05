@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8" />
 
-    <title>회원가입</title>
+    <title>로그인</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/signup.css" />
 </head>

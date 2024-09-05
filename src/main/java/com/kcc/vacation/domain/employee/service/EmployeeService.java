@@ -21,10 +21,19 @@ import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.compress.compressors.FileNameUtil;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -73,15 +82,15 @@ public class EmployeeService {
     public void add(EmployeeCreate employeeCreate) {
 
         String authority = "";
-        if(employeeCreate.getAuthority().equals("최고"))
+        if(employeeCreate.getAuthority().contains("최고"))
         {
             authority = "ROLE_TOP_APPROVAL";
         }
-        else if(employeeCreate.getAuthority().equals("1차"))
+        else if(employeeCreate.getAuthority().contains("1차"))
         {
             authority = "ROLE_FIRST_APPROVAL";
         }
-        else if(employeeCreate.getAuthority().equals("2차")){
+        else if(employeeCreate.getAuthority().contains("2차")){
             authority = "ROLE_SECOND_APPROVAL";
         }
         else
@@ -200,6 +209,7 @@ public class EmployeeService {
         List<Integer> list = employeeMapper.findByJoinCodeIsFail().stream().map(EmployeeDetail::getId).toList();
         handleSendMail(list);
     }
+
 }
 
 
