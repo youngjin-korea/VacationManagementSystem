@@ -8,8 +8,8 @@
         <selectKey keyProperty="id" resultType="int" order="BEFORE">
             SELECT vacation_cancel_seq.nextval FROM dual
         </selectKey>
-        INSERT INTO vacation_cancel(id, cancel_date, comments, vacation_request_id, cancel_approver_id)
-        VALUES (#{id}, systimestamp, #{comments}, #{vacationRequestId}, #{cancelApproverId});
+        INSERT INTO vacation_cancel(id, status, cancel_date, comments, vacation_request_id, cancel_approver_id)
+        VALUES (#{id}, '취소 대기', systimestamp, #{comments}, #{vacationRequestId}, #{cancelApproverId})
     </insert>
 
 </mapper>
