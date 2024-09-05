@@ -44,7 +44,7 @@ public class GrantedVacationRestController {
     }
 
     @GetMapping("/admin/grant-vacation-management/typeList")
-    public String grantVacationTypeList(@RequestParam String dept_name,@RequestParam String vacation_name ,Model model) {
+    public List<GrantedVacationList> grantVacationTypeList(@RequestParam String dept_name, @RequestParam String vacation_name) {
 
         System.out.println("grantVacationTypeList");
         List<GrantedVacationList> grantedVacationSearchList = grantedVacationService.grantedVacationSearchList(dept_name,vacation_name);
@@ -53,9 +53,7 @@ public class GrantedVacationRestController {
             System.out.println(grantedVacationList.getVacation_name());
         }
 
-        model.addAttribute("grantedVacationSearchList", grantedVacationSearchList);
-
-        return "admin/grant-vacation-management";
+        return grantedVacationSearchList;
     }
 
     @PostMapping("admin/grant-vacation-management/update")

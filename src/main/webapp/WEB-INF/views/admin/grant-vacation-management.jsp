@@ -80,13 +80,13 @@
                 <div class="col-md-12">
                     <div class="search-container">
                         <div class="search-container-left">
-                            <select id="department-dropdown" class="form-control">
+                            <select id="department-dropdown" class="form-control" >
                                 <option>부서 선택</option>
 
                             </select>
 
                             <select id="vacation-type-dropdown" class="form-control">
-                                <option>휴가 유형 선택</option>
+                                <option value="default">휴가 유형 선택</option>
 
 
                             </select>
@@ -171,7 +171,7 @@
                     <div class="form-group">
                         <label for="departmentSelect">부서 선택</label>
                         <select class="form-control" id="departmentSelect" name="departmentSelect" required>
-                            <option value="">부서를 선택하세요</option>
+                            <option value="">부서 선택</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -354,7 +354,7 @@
                 var departmentDropdown = $('#department-dropdown');
                 departmentDropdown.empty();
 
-                departmentDropdown.append('<option value="">부서를 선택</option>');
+                departmentDropdown.append('<option value="0">부서 선택</option>');
                 data.forEach(function (department) {
                     departmentDropdown.append('<option value="' + department.departmentId + '">' + department.departmentName + '</option>');
                 });
@@ -367,13 +367,25 @@
             success: function (data) {
                 var vacationTypeDropdown = $('#vacation-type-dropdown');
                 vacationTypeDropdown.empty();
-                vacationTypeDropdown.append('<option value="">휴가 유형을 선택하세요</option>');
+                vacationTypeDropdown.append('<option value="0">휴가 유형</option>');
                 data.forEach(function (vacationType) {
                     vacationTypeDropdown.append('<option value="' + vacationType.vacationTypeId + '">' + vacationType.vacationTypeName + '</option>');
                 });
             }
         });
 
+        document.getElementById('searchVacationBtn').addEventListener('click', function () {
+
+                // 입력 필드의 값 가져오기
+            var searchText = $('#name-search').val();
+
+            // 콘솔에 입력된 텍스트도 출력
+            console.log('검색한 이름:', searchText);
+
+
+
+
+        });
 
         document.getElementById('addGrantVacationModalBtn').addEventListener('click', function () {
             alert("클릭됐습니다.");
@@ -391,6 +403,10 @@
 
         // 수정시 클릭한 해당 grantvacation 테이블의 Id가 필요
         var grantVacationId = '';
+
+        var dept_name_selectedText = '';
+
+        var vacation_name_selectedText = '';
 
         // 성공 alert
         function successAlert() {
@@ -479,48 +495,66 @@
         }
 
 
+        // 검색 테이블 변경 함수
+        function searchTypeTable(dept_name_selectedText,vacation_name_selectedText){
+            $.ajax({
+                url: '/admin/grant-vacation-management/typeList',
+                method: 'GET',
+                data : ({
+                    dept_name: dept_name_selectedText,
+                    vacation_name: vacation_name_selectedText
+                }),
+                success: function (data) {
+
+                    console.log(data);
+                    var newBody = $('<tbody id="grantVacationTable">');
+
+                    data.forEach( function (item) {
+                        var row = $('<tr>')
+                            .append($('<th>').append($('<input class="form-check-input row-checkbox" type="checkbox">')))
+                            .append($('<td>').text(item.emp_name))
+                            .append($('<td>').text(item.dept_name))
+                            .append($('<td>').text(item.vacation_name))
+                            .append($('<td>').text(item.granted_date))
+                            .append($('<td>').text(item.expiration_date));
+
+                        newBody.append(row);
+                    });
+
+                    $('#grantVacationTable').replaceWith(newBody);
+
+                }
+            });
+        }
 
         $(document).on('change', '#department-dropdown', function() {
             var selectedValue = $(this).val();
             var dept_name_selectedText = $('#department-dropdown option:selected').text();
-            alert('선택된 부서: ' + selectedText + ' (값: ' + selectedValue + ')');
 
-            //
-            // $.ajax({
-            //     url: '/admin/grant-vacation-management/typeList',
-            //     method: 'GET',
-            //     data : ({
-            //         dept_name: dept_name_selectedText,
-            //         vacation_name: vacation_name_selectedText
-            //     }),
-            //     success: function (data) {
-            //         var newBody = $('<tbody id="grantVacationTable">');
-            //
-            //         data.forEach( function (item) {
-            //             var row = $('<tr>')
-            //                 .append($('<td>').text(item.emp_name))
-            //                 .append($('<td>').text(item.dept_name))
-            //                 .append($('<td>').text(item.vacation_name))
-            //                 .append($('<td>').text(item.granted_date))
-            //                 .append($('<td>').text(item.expiration_date));
-            //
-            //             newBody.append(row);
-            //         });
-            //
-            //         $('#grantVacationTable').replaceWith(newBody);
-            //
-            //     }
-            // });
-            //
-
+            searchTypeTable(dept_name_selectedText,vacation_name_selectedText);
         });
 
 
 
-        // document.getElementById('vacation-type-dropdown').addEventListener('click', function () {
-        //
-        //
-        // });
+
+        $(document).on('change', '#department-dropdown', function() {
+            $('#vacation-type-dropdown').val('0');
+            var selectedValue = $(this).val();
+            var dept_name_selectedText = $('#department-dropdown option:selected').text();
+            vacation_name_selectedText = '';
+
+            searchTypeTable(dept_name_selectedText,vacation_name_selectedText);
+        });
+
+        document.getElementById('vacation-type-dropdown').addEventListener('click', function () {
+            $('#department-dropdown').val('0');
+            var selectedValue = $(this).val();
+            var vacation_name_selectedText = $('#vacation-type-dropdown option:selected').text();
+            dept_name_selectedText = '';
+
+            searchTypeTable(dept_name_selectedText,vacation_name_selectedText);
+
+        });
 
 
 

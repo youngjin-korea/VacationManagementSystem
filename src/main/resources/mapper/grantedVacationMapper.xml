@@ -30,10 +30,10 @@
             join department d
             on e.dept_id = d.id
         <where>
-            <if test="department != null and department != ''">
+            <if test="dept_name != null and dept_name != ''">
                 AND d.name = #{dept_name}
             </if>
-            <if test="vacationName != null and vacationName != ''">
+            <if test="vacation_name != null and vacation_name != ''">
                 AND vt.name = #{vacation_name}
             </if>
         </where>
@@ -141,7 +141,6 @@
             vacation_days = #{vacation_days}
         WHERE id = #{id}
     </update>
-
 
 
 
