@@ -14,18 +14,31 @@
           }
         }
     </script>
+
     <script type="module">
         import {Calendar} from "@fullcalendar/core";
         import dayGridPlugin from "@fullcalendar/daygrid";
 
         document.addEventListener("DOMContentLoaded", async function () {
+                // JSP에서 전달받은 employeeId를 JavaScript 변수로 설정
+                const employeeId = "<%= request.getAttribute("employeeId") %>";
+                const myRole = "<%= request.getAttribute("myRole") %>";
 
                 try {
-                // JSP에서 전달받은 employeeId를 JavaScript 변수로 설정
-                    const employeeId = "<%= request.getAttribute("employeeId") %>";
-
                     // 1. 서버에서 데이터 가져오기 (GET 요청)
                     const response = await fetch(`/my-vacations/${employeeId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const approver = await fetch(`/approvers/${employeeId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const topApprover = await fetch('/appreovers/top-approver', {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json'
@@ -37,12 +50,63 @@
                     }
                     // 3. JSON으로 파싱
                     let myVacations = await response.json();
-                    console.log("look===========",myVacations);
+                    let approvers = await approver.json();
+                    let topApprovers = await topApprover.json();
 
-                    if(myVacations.length == 0){
-                        myVacations = [{start:"",end:"",vacationDays:0}]
+                    const f_input = document.getElementById("approve1");
+                    const s_input = document.getElementById("approve2");
+                    const t_input = document.getElementById("approve3");
+                    const l_approve1 = document.getElementById("l-approve1");
+                    const l_approve2 = document.getElementById("l-approve2");
+                    topApprovers.map((it) => {
+                        const optionElement = document.createElement("option");
+                        optionElement.value = it.id;
+                        optionElement.textContent = "부서번호: "+it.id+", 이름: "+it.name;
+                        t_input.appendChild(optionElement);
+                    })
+
+                    switch (myRole) {
+                        case "ROLE_NONE":
+                            approvers.map((it) => {
+                                if (it.authority === "ROLE_FIRST_APPROVAL") {
+                                    const optionElement = document.createElement("option");
+                                    optionElement.value = it.id;
+                                    optionElement.textContent = "부서번호: "+it.id+", 이름: "+it.name;
+                                    f_input.appendChild(optionElement);
+                                } else if (it.authority === "ROLE_SECOND_APPROVAL") {
+                                    const optionElement = document.createElement("option");
+                                    optionElement.value = it.id;
+                                    optionElement.textContent = "부서번호: "+it.id+", 이름: "+it.name;
+                                    s_input.appendChild(optionElement);
+                                }
+                            })
+                            break;
+                        case "ROLE_FIRST_APPROVAL":
+                            approvers.map((it) => {
+                                if (it.authority === "ROLE_SECOND_APPROVAL") {
+                                    const optionElement = document.createElement("option");
+                                    optionElement.value = it.id;
+                                    optionElement.textContent = "부서번호: "+it.id+", 이름: "+it.name;
+                                    f_input.appendChild(optionElement);
+                                }
+                            })
+                            s_input.style.display = "none";
+                            l_approve1.style.display = "none";
+                            break;
+                        case "ROLE_SECOND_APPROVAL":
+                        case "ROLE_TOP_APPROVAL":
+                            f_input.style.display = "none";
+                            s_input.style.display = "none";
+                            l_approve1.style.display = "none";
+                            l_approve2.style.display = "none";
+                            break;
                     }
-                    console.log("latter: ", myVacations);
+                    if (myVacations.length == 0) {
+                        myVacations = [{start: "", end: "", vacationDays: 0}]
+                    }
+                    const first = approvers.filter((it) => it.authority === "ROLE_FIRST_APPROVAL");
+                    const second = approvers.filter((it) => it.authority === "ROLE_SECOND_APPROVAL");
+                    const last = approvers.filter((it) => it.authority === "ROLE_TOP_APPROVAL");
 
                     const annualDays = document.getElementById("annual-days");
                     annualDays.innerHTML = myVacations.length;
@@ -65,8 +129,8 @@
                         var myModal = new bootstrap.Modal(document.getElementById('addEmployeeModal'));
                         // 값 넣기
                         vacType.value = obj.title;
-                        start.value = String(obj.start).slice(0,15);
-                        end.value = String(obj.end).slice(0,15);
+                        start.value = String(obj.start).slice(0, 15);
+                        end.value = String(obj.end).slice(0, 15);
                         status.value = obj.status;
                         approvedate.value = obj.approvedDate.split("T")[0];
                         myModal.show();
@@ -90,19 +154,18 @@
                         ],
                         eventClick: function (info) {
                             const obj = {
-                                id : info.event.extendedProps.vacationId,
-                                title : info.event.title,
-                                start : info.event.start,
-                                end : info.event.end,
-                                approvedDate : info.event.extendedProps.approvedDate,
-                                status : info.event.extendedProps.status,
+                                id: info.event.extendedProps.vacationId,
+                                title: info.event.title,
+                                start: info.event.start,
+                                end: info.event.end,
+                                approvedDate: info.event.extendedProps.approvedDate,
+                                status: info.event.extendedProps.status,
                             }
 
                             addEmployeeBtnClickHandler(obj);
                         },
                     });
                     calendar.render();
-
 
 
                 } catch (error) {
@@ -212,21 +275,21 @@
                 <input type="file" id="file" name="filePath"/>
 
                 <label for="reason">휴가 사유</label>
-                <textarea id="reason" name="comments"  rows="4" cols="50"></textarea>
+                <textarea id="reason" name="comments" rows="4" cols="50" style="resize: none;"></textarea>
 
-                <label for="approve1">승인권자 1</label>
+                <label id="l-approve1" for="approve1">승인권자 1</label>
                 <select id="approve1" name="firstApprover">
-                    <option value="1004">1</option>
+                    <option value="null" disabled selected>승인권자 선택하기</option>
                 </select>
 
-                <label for="approve2">승인권자 2</label>
+                <label id="l-approve2" for="approve2">승인권자 2</label>
                 <select id="approve2" name="secondApprover">
-                    <option value="1002">2</option>
+                    <option value="null" disabled selected>승인권자 선택하기</option>
                 </select>
 
                 <label for="approve3">승인권자 3</label>
                 <select id="approve3" name="topApprover">
-                    <option value="1003">3</option>
+                    <option value="null" disabled selected>승인권자 선택하기</option>
                 </select>
 
                 <button id="submit-vacation" type="submit">신청하기</button>
@@ -278,7 +341,8 @@
                         날짜</p>
                     </div>
                     <div class="col-6 d-flex align-items-center" style="position: relative">
-                        <input id="m-vac-approvedate" type="text" class="form-control" style="border-radius: 2px;" readonly>
+                        <input id="m-vac-approvedate" type="text" class="form-control" style="border-radius: 2px;"
+                               readonly>
                     </div>
                 </div>
                 <div class="d-flex  mb-3">
@@ -296,7 +360,8 @@
             </div>
             <div class="modal-footer">
                 <button id="modalCloseBtn" type="button" data-bs-dismiss="modal"
-                        class="btn border border-black btn-black bg-white" style="border-radius: 2px; height: 36px;"><p>닫기</p>
+                        class="btn border border-black btn-black bg-white" style="border-radius: 2px; height: 36px;"><p>
+                    닫기</p>
                 </button>
                 <button id="addEmployeeBtnOfModal" type="button" data-bs-dismiss="modal" class="btn btn-primary">취소 신청
                 </button>

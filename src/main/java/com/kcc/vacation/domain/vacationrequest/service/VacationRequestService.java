@@ -4,6 +4,7 @@ import com.kcc.vacation.domain.employee.dto.response.Employee;
 import com.kcc.vacation.domain.employee.mapper.EmployeeMapper;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequest;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequestJSP;
+import com.kcc.vacation.domain.vacationrequest.dto.response.Approver;
 import com.kcc.vacation.domain.vacationrequest.dto.response.MyVacation;
 import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestList;
 import com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper;
@@ -105,5 +106,14 @@ public class VacationRequestService {
         }
     }
 
+    public List<Approver> getMyApprover(int employeeId) {
+        Employee employee = employeeMapper.findById(employeeId);
+
+        return vacationRequestMapper.getMyApprover(employee.getDeptId());
+    }
+
+    public List<Approver> getByAuthority(String authority) {
+        return vacationRequestMapper.getByAuthority(authority);
+    }
 
 }

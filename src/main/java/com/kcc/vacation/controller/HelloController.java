@@ -12,9 +12,4 @@ public class HelloController {
 		model.addAttribute("test", "test");
 		return "index";
 	}
-	@GetMapping("/client/client-calender")
-	public String client_clientcalender() {
-		return "/client/client-calender";
-	}
-
 }

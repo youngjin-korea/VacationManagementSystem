@@ -4,6 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper	namespace="com.kcc.vacation.domain.vacationcancel.mapper.VacationCancelMapper">
 
+    <insert id="insertCancelReq" parameterType="CancelVacation">
+        <selectKey keyProperty="id" resultType="int" order="BEFORE">
+            SELECT vacation_cancel_seq.nextval FROM dual
+        </selectKey>
+        INSERT INTO vacation_cancel(id, cancel_date, comments, vacation_request_id, cancel_approver_id)
+        VALUES (#{id}, systimestamp, #{comments}, #{vacationRequestId}, #{cancelApproverId});
+    </insert>
 
 </mapper>
 
