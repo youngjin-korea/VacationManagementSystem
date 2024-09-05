@@ -40,6 +40,9 @@
         oauth_id,
         email,
         password,
+        dept_id,
+        position,
+        authority,
         phone_number,
         vacation_days,
         join_state
@@ -51,12 +54,31 @@
         #{oauthId, jdbcType=VARCHAR},
         #{email, jdbcType=VARCHAR},
         #{password, jdbcType=VARCHAR},
+        #{deptId, jdbcType=INTEGER},
+        #{position, jdbcType=VARCHAR},
+        #{authority, jdbcType=VARCHAR},
         #{phoneNumber, jdbcType=VARCHAR},
         #{vacationDays, jdbcType=INTEGER},
         'FALSE'
         )
 
     </insert>
+
+    <update id="update" parameterType="EmployeeUpdate">
+
+        UPDATE Employee
+        SET
+        name = #{name, jdbcType=VARCHAR},
+        hire_date = #{hireDate},
+        email = #{email},
+        dept_id = #{deptId},
+        position = #{position},
+        authority = #{authority}
+        where id = #{id}
+
+    </update>
+
+
     <resultMap id="myInfoResultMap" type="com.kcc.vacation.domain.employee.dto.response.MyInfo">
         <id column="id" property="id"/>
         <result column="empName" property="empName"/>
@@ -104,5 +126,46 @@
         update employee set verified = #{verified}
         where email = #{email}
     </update>
+
+    <resultMap id="EmployeeResultMap" type="EmployeeDetail">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="hireDate" column="hire_date"/>
+        <result property="email" column="email"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="vacationDays" column="vacation_days"/>
+        <result property="joinState" column="join_state"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="position" column="position"/>
+        <result property="authority" column="authority"/>
+        <result property="verified" column="verified"/>
+    </resultMap>
+
+    <!-- SQL to select an employee by ID with department info -->
+    <select id="findAll" parameterType="int" resultMap="EmployeeResultMap">
+        SELECT e.id, e.name, e.password, e.hire_date, e.email, e.phone_number,
+        e.vacation_days, e.join_state, d.name AS dept_name,
+        e.position, e.authority, e.verified
+        FROM employee e
+        JOIN department d ON e.dept_id = d.id
+    </select>
+
+    <!-- SQL to select an employee by ID with department info -->
+    <select id="findEmployeeDetailById" parameterType="int" resultMap="EmployeeResultMap">
+        SELECT e.id, e.name, e.password, e.hire_date, e.email, e.phone_number,
+        e.vacation_days, e.join_state, d.name AS dept_name,
+        e.position, e.authority, e.verified
+        FROM employee e
+        JOIN department d ON e.dept_id = d.id
+        WHERE e.id = #{id}
+    </select>
+
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM employee
+        WHERE id = #{id}
+    </delete>
+
 
 </mapper>

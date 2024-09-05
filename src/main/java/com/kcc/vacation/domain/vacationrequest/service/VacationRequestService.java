@@ -49,9 +49,19 @@ public class VacationRequestService {
         //int rowsAffected = vacationRequestMapper.updateApproverStatus(requestId, loginUser.getId());
 
         // 현재 임의의 인사팀 부서장인 1003 번으로 접속했다고 가정함
-        int rowsAffected = vacationRequestMapper.updateApproverStatus(requestId, 1003);
+        int rowsAffected = vacationRequestMapper.approveVacation(requestId, 1003);
 
         return rowsAffected > 0; // 업데이트된 행의 수가 0보다 크면 true 리턴
+    }
+
+    public boolean rejectVacation(int id, String commentsOfApprover) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee loginUser = employeeMapper.findByEmail(username);
+        // 현재 임의의 인사팀 부서장인 1003 번으로 접속했다고 가정함
+        int rowsAffectedFALSE = vacationRequestMapper.rejectVacationFALSE(id, 1003);
+        int rowsAffectedTRUE = vacationRequestMapper.rejectVacationSTATUS(id, commentsOfApprover);
+        // 예외처리 추가 예정
+        return rowsAffectedFALSE + rowsAffectedTRUE > 1;
     }
 
     public List<MyVacation> getMyVacationList(int employeeId) {return vacationRequestMapper.getMyVacations(employeeId);}

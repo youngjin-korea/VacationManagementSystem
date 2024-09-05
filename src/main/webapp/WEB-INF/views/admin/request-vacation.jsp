@@ -200,8 +200,64 @@
 
 
     document.getElementById('rejectBtn').addEventListener('click', function() {
-        // 반려 처리 로직 추가
-        alert('반려 처리되었습니다.');
+        var modal = document.getElementById('showVacationRequestModal');
+        $(modal).modal('hide'); // Hide the modal
+
+        swal({
+            title: "정말로 반려하시겠습니까?",
+            text: "거절 완료 시, 취소할 수 없습니다.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    // 거절 확인
+                    swal({
+                        title: "반려 사유를 작성해 주세요.",
+                        text: "사유를 입력하지 않으면, 거절 처리할 수 없습니다.",
+                        content: {
+                            element: "input",
+                            attributes: {
+                                placeholder: "반려 사유를 입력하세요...",
+                                type: "text"
+                            }
+                        },
+                        buttons: ["취소", "확인"],
+                        dangerMode: true,
+                    })
+                        .then((value) => {
+                            if (value) {
+                                var requestId = document.getElementById('modalReqId').textContent;
+
+                                $.ajax({
+                                    url: `/admin/reject-vacation?id=`+requestId+`&commentsOfApprover=`+value,
+                                    method: 'POST',
+                                    contentType: 'application/json',
+                                    success: function (data) {
+                                        console.log("Data received", data);
+                                        swal("반려 처리가 완료되었습니다!", {
+                                            icon: "success",
+                                            button: "확인",
+                                        }).then(() => {
+                                            // 페이지 리로드
+                                            location.reload();
+                                        });
+                                    },
+                                    error: function (jqXHR, testStatus, errThrown) {
+                                        console.error('Error', errThrown);
+                                    }
+                                });
+                            } else {
+                                // 입력 취소
+                                swal("반려를 취소하였습니다!");
+                            }
+                        });
+                } else {
+                    // 반려 취소
+                    swal("반려를 취소하였습니다!");
+                }
+            });
     });
 
 

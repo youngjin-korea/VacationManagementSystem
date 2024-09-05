@@ -95,11 +95,11 @@
                 JOIN Employee e ON vr.emp_id = e.id
         WHERE
             (
-                (ap.first_approver = #{approverId} AND ap.first_status IS NULL)
+                (ap.first_approver = #{approverId})
                     OR
-                (ap.second_approver = #{approverId} AND (ap.first_status = 'TRUE' OR ap.first_approver IS NULL) AND ap.second_status IS NULL)
+                (ap.second_approver = #{approverId})
                     OR
-                (ap.top_approver = #{approverId} AND (ap.first_status = 'TRUE' AND ap.second_status = 'TRUE' OR ap.first_approver IS NULL AND ap.second_status = 'TRUE' OR ap.first_approver IS NULL AND ap.second_approver IS NULL) AND ap.top_status IS NULL)
+                (ap.top_approver = #{approverId})
                 )
     </select>
 
@@ -107,7 +107,7 @@
 
 
     <!--    관리자용 휴가 승인-->
-    <update id="updateApproverStatus">
+    <update id="approveVacation">
         UPDATE Approver
         SET
             top_status = CASE WHEN top_approver = #{approverId} THEN 'TRUE' ELSE top_status END,
@@ -115,6 +115,28 @@
             second_status = CASE WHEN second_approver = #{approverId} THEN 'TRUE' ELSE second_status END
         WHERE id = #{requestId}
     </update>
+
+    <!--    관리자용 휴가 거절-->
+    <!-- Approver 테이블의 상태를 FALSE로 설정 -->
+    <update id="rejectVacationFALSE">
+        UPDATE Approver
+        SET
+            top_status = CASE WHEN top_approver = #{approverId} THEN 'FALSE' ELSE top_status END,
+            first_status = CASE WHEN first_approver = #{approverId} THEN 'FALSE' ELSE first_status END,
+            second_status = CASE WHEN second_approver = #{approverId} THEN 'FALSE' ELSE second_status END
+        WHERE id = #{requestId}
+    </update>
+
+    <!-- Vacation_request 테이블에서 commentsOfApprover와 status를 업데이트 -->
+    <update id="rejectVacationSTATUS">
+        UPDATE Vacation_request
+        SET
+            commentsOfApprover = #{commentsOfApprover},
+            status = '거절'
+        WHERE id = #{requestId}
+    </update>
+
+
 
 
 
