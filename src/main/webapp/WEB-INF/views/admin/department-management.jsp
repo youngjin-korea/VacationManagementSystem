@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8" />
 
-    <title>Insert title here</title>
+    <title>부서관리</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/department-management.css" />
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
@@ -18,7 +18,7 @@
     <div id="mainArea">
         <div class="d-flex justify-content-between m-5">
             <div class="col-3">
-                <h3 class="fw-bold">조직관리</h3>
+                <h3 class="fw-bold">부서관리</h3>
             </div>
             <div id="organization-btn-group" class="col-9 d-flex justify-content-end">
                 <div class="mx-2">

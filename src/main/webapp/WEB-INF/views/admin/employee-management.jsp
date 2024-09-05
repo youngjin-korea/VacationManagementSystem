@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8" />
 
-    <title>Insert title here</title>
+    <title>직원관리</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/employee-management.css" />
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
