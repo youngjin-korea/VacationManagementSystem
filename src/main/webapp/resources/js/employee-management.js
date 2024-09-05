@@ -31,7 +31,27 @@ document.addEventListener("DOMContentLoaded", function(){
             });
         }
     }
-    console.log('11');
+    if(resend != null){
+        $.ajax({
+            url: '/api/employees/mail-resend', // 서버 URL
+            method: 'PATCH', // HTTP 메소드
+            success: function(response) {
+                console.log('Success:', response);
+                swal({
+                    title: "전송 완료!",
+                    text: "메일이 성공적으로 전송되었습니다.",
+                    icon: "success",
+                    button: "닫기",
+                });
+
+            },
+            error: function(error) {
+            }
+        });
+    }
+
+
+
 
     $('.employee-element').on('click',
         employeeElementClickHandler
@@ -408,3 +428,58 @@ function formatDate(isoString) {
 
 // 사용 예시
 
+$('#sendJoinCodeBtnOfModal').click(sendJoinCodeBtnOfModalClickHandler);
+
+function sendJoinCodeBtnOfModalClickHandler(){
+
+    var filteredElements = $('.employee-element').filter(function() {
+
+        var isJoinStateX = $(this).find('.joinState').text().trim() === 'X';
+        var isImageSrcActive = $(this).find('img').attr('src') === '/resources/assets/checkbox-active.png';
+
+        // 두 조건 모두 만족하는지 확인
+        return isJoinStateX && isImageSrcActive;
+    });
+
+    // filteredElements는 선택된 요소들의 배열
+        var numberArray = [];
+
+    // 각 요소의 .data('emp-id') 값을 가져와 numberArray에 추가
+        filteredElements.each(function(index, element) {
+            // jQuery 객체로 변환하여 data('emp-id') 값을 가져옴
+            var empId = $(element).data('emp-id');
+            numberArray.push(empId);
+        });
+
+    // 배열을 확인
+
+    console.log(numberArray);
+    $.ajax({
+        url: '/api/employees/mail-send', // 서버 URL
+        method: 'POST', // HTTP 메소드
+        data: { empIds: numberArray }, // 넘길 데이터
+        success: function(response) {
+            console.log('Success:', response);
+            swal({
+                title: "전송 완료!",
+                text: "메일이 성공적으로 전송되었습니다.",
+                icon: "success",
+                button: "닫기",
+            });
+
+            $('#sendJoinCodeModal').modal('hide');
+
+        },
+        error: function(error) {
+            console.log('Error:', error);
+            swal({
+                title: "전송 실패!",
+                text: "메일 전송에 실패했습니다.",
+                icon: "fail",
+                button: "닫기",
+            });
+
+            $('#sendJoinCodeModal').modal('hide');
+        }
+    });
+}

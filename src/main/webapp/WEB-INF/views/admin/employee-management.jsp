@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
     <link rel="stylesheet" type="text/css" href="/resources/css/employee-management.css" />
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </head>
 
@@ -281,11 +281,12 @@
                         <input class="form-check-input" name="joinCodeRadioForm" type="radio" id="joinCodeRadio1">
                         <span class="ms-2">즉시전송</span>
                     </label>
-                    <label class="ms-4 form-check py-4 d-flex align-items-center" for="joinCodeRadio2">
+<%--                    <label class="ms-4 form-check py-4 d-flex align-items-center" for="joinCodeRadio2">
                         <input class="form-check-input" name="joinCodeRadioForm" type="radio" id="joinCodeRadio2">
                         <span class="ms-2">예약전송</span>
-                    </label>
+                    </label>--%>
                 </div>
+<%--
 
                 <div class="d-flex">
                     <div class="col-6">
@@ -296,6 +297,7 @@
                     </div>
                 </div>
 
+--%>
 
 
                 <div class="mb-3 d-flex justify-content-start">
@@ -310,7 +312,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" data-bs-dismiss="modal" class="btn border border-black btn-black bg-white" style="border-radius: 2px;"><p>닫기</p></button>
-                <button id="sendJoinCodeBtnOfModal" type="button" data-bs-dismiss="modal"  class="btn btn-primary">전송하기</button>
+                <button id="sendJoinCodeBtnOfModal" type="button"  class="btn btn-primary">전송하기</button>
             </div>
         </div>
     </div>
@@ -547,9 +549,8 @@
 
 <script>
     const urlParams = new URL(location.href).searchParams;
-    const name = urlParams.get('addedEmployeeId');
-
-    const addedEmployeeId = name;
+    const addedEmployeeId = urlParams.get('addedEmployeeId');
+    const resend = urlParams.get('resend');
 </script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

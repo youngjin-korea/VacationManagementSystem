@@ -14,31 +14,28 @@ import com.kcc.vacation.domain.employee.mapper.EmployeeMapper;
 import com.kcc.vacation.global.exception.ErrorCode;
 import com.kcc.vacation.global.exception.custom_exception.BadRequestException;
 import com.kcc.vacation.global.exception.custom_exception.NotFoundException;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import com.kcc.vacation.global.mail.MailService;
+import com.kcc.vacation.global.scheduler.CustomSchedulerRunner;
+import com.kcc.vacation.global.util.RandomCodeUtils;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmployeeService {
 
     private final EmployeeMapper employeeMapper;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
-    private final JavaMailSender mailSender;
-   // private final SpringTemplateEngine templateEngine;
+    private final MailService mailService;
+    private final CustomSchedulerRunner schedulerRunner;
 
     public void join(EmployeeCreate employeeCreate) {
         if(!employeeCreate.getPassword().equals(employeeCreate.getPasswordCheck()))
@@ -135,40 +132,40 @@ public class EmployeeService {
     /**
      * 1. 랜덤 코드 생성
      * 2. 회원테이블의 인증코드 업데이트
-     * 3. 이메일 전송
+     * 3. 이메일 전송(비동기 처리)
+     *          -> 실패 시 관리자에게 전송실패 메일 전송
+     *          -> 이것도 실패 시 스케줄러를 돌려 이후에 처리되도록 무한루프
      */
-    public void handleSendMail(int id) {
-        Employee employee = employeeMapper.findById(id);
-        String authenticationCode = generateRandomString();
+    public void handleSendMail(List<Integer> ids) {
+        ids.stream().forEach(id -> {
 
+            Employee employee = employeeMapper.findById(id);
+            String authenticationCode = RandomCodeUtils.generateRandomString();
 
+            CompletableFuture<String> completableFuture = mailService.sendMail(employee.getEmail(), authenticationCode);
+            completableFuture
+                    .thenApply(result -> {
+                        log.info("메일전송 성공");
+                        updateCode(employee, authenticationCode);
+                        return "메일전송 성공 Return";
+                    })
+                    .exceptionally(e -> {
+                        log.info("메일전송 실패");
+                        updateCode(employee, "FAIL");
+                        schedulerRunner.runResendScheduler();
+                        return "예외 발생 Return";
+                    });
+
+        });
+    }
+
+    private void updateCode(Employee employee, String authenticationCode) {
         employeeMapper.updateAuthenticationCode(EmployeeAuthenticationCodeUpdate
                 .builder()
                 .id(employee.getId())
                 .authenticationCode(authenticationCode)
                 .build());
-
-        sendMail(employee.getEmail(), authenticationCode);
-
-    }
-
-    private void sendMail(String email, String authenticationCode) {
-        MimeMessage message = mailSender.createMimeMessage();
-
-        try {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-
-            messageHelper.setSubject("NeoJumper팀의 휴가관리 시스템에 초대되었습니다.");
-            messageHelper.setTo(email);
-
-            String html = generateEmailContent(authenticationCode.substring(0,4), authenticationCode.substring(4,8));
-            messageHelper.setText(html, true);
-            mailSender.send(message);
-
-        } catch (MessagingException e) {
-            throw new IllegalArgumentException("Failed to send email");
-        }
-
+        System.out.println("코드 정보 업데이트");
     }
 
     public void certificate(String email, String authenticationCode) {
@@ -187,99 +184,8 @@ public class EmployeeService {
 
     }
 
-    public String generateRandomString() {
-            String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder result = new StringBuilder();
-            Random random = new Random();
 
-            for (int i = 0; i < 8; i++) {
-                int randomIndex = random.nextInt(characters.length());
-                result.append(characters.charAt(randomIndex));
-            }
 
-            return result.toString();
-    }
-
-    public String generateEmailContent(String joinCodePart1, String joinCodePart2) {
-        StringBuilder htmlBuilder = new StringBuilder();
-
-        htmlBuilder.append("<!DOCTYPE html>\n")
-                .append("<html xmlns:th=\"http://www.thymeleaf.org\">\n")
-                .append("<head>\n")
-                .append("  <meta charset=\"UTF-8\">\n")
-                .append("  <title>상권 분석 업데이트</title>\n")
-                .append("  <style>\n")
-                .append("    p {\n")
-                .append("      font-size: 18px;\n")
-                .append("    }\n")
-                .append("    .blue-button {\n")
-                .append("      background-color: #007BFF;\n")
-                .append("      /* 파란색 */\n")
-                .append("      color: white;\n")
-                .append("      /* 글자색 흰색 */\n")
-                .append("      border: none;\n")
-                .append("      /* 테두리 없음 */\n")
-                .append("      padding: 10px 20px;\n")
-                .append("      /* 여백 */\n")
-                .append("      text-align: center;\n")
-                .append("      /* 텍스트 가운데 정렬 */\n")
-                .append("      text-decoration: none;\n")
-                .append("      /* 밑줄 없음 */\n")
-                .append("      display: inline-block;\n")
-                .append("      /* 인라인 블록으로 배치 */\n")
-                .append("      font-size: 16px;\n")
-                .append("      /* 글자 크기 */\n")
-                .append("      margin: 4px 2px;\n")
-                .append("      /* 마진 */\n")
-                .append("      cursor: pointer;\n")
-                .append("      /* 커서가 손가락 모양으로 변경 */\n")
-                .append("      border-radius: 4px;\n")
-                .append("      /* 둥근 모서리 */\n")
-                .append("      transition: background-color 0.3s;\n")
-                .append("      /* 배경색 변화 애니메이션 */\n")
-                .append("    }\n")
-                .append("    .blue-button:hover {\n")
-                .append("      background-color: #0056b3;\n")
-                .append("      /* 버튼에 마우스를 올렸을 때 색상 */\n")
-                .append("    }\n")
-                .append("  </style>\n")
-                .append("  <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\"\n")
-                .append("    integrity=\"sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC\" crossorigin=\"anonymous\">\n")
-                .append("</head>\n")
-                .append("<body style=\"font-family: Arial, sans-serif;\">\n")
-                .append("  <div class=\"header\" style=\"background-color: #004aad; color: white; padding: 10px; text-align: center;\">\n")
-                .append("    <h2>NeoJumper 팀 휴가관리 솔루션에 초대되었습니다.</h2>\n")
-                .append("  </div>\n")
-                .append("  <div class=\"content\" style=\"margin: 20px; padding: 10px; text-align: center;\">\n")
-                .append("    <p>안녕하세요, NeoJumper 팀입니다.</p>\n")
-                .append("    <p>NeoJumper 팀에서는 직원분들의 편리한 휴가관리를 위한 솔루션을 제공합니다.</p>\n")
-                .append("    <p>저희 팀에 합류하기 위한 인증코드를 보내드립니다.</p>\n")
-                .append("    <hr>\n")
-                .append("    <h4 style=\"font-weight: bold; color: #828282;\">합류 코드</h4>\n")
-                .append("    <h1 style=\"color: #0575E6;\">\n")
-                .append("      <strong>")
-                .append(joinCodePart1)
-                .append("       </strong> - <strong>")
-                .append(joinCodePart2)
-                .append("      </strong>\n")
-                .append("    </h1>\n")
-                .append("    <hr>\n")
-                .append("    <a href=\"http://localhost:8085/auth/join-form\" style=\"list-style: none;\">\n")
-                .append("    <button class=\"blue-button\"> 합류하기</button>\n")
-                .append("    </a>\n")
-                .append("  </div>\n")
-                .append("  <div class=\"footer\" style=\"padding: 10px; text-align: center;\">\n")
-                .append("    감사합니다.<br>\n")
-                .append("    NeoJumber 인사팀 드림\n")
-                .append("  </div>\n")
-                .append("  <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js\"\n")
-                .append("    integrity=\"sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL\"\n")
-                .append("    crossorigin=\"anonymous\"></script>\n")
-                .append("</body>\n")
-                .append("</html>");
-
-        return htmlBuilder.toString();
-    }
 
     public List<EmployeeDetail> getEmployeeList() {
         return employeeMapper.findAll();
@@ -288,6 +194,11 @@ public class EmployeeService {
 
     public void delete(int id) {
         employeeMapper.delete(id);
+    }
+
+    public void resendMail() {
+        List<Integer> list = employeeMapper.findByJoinCodeIsFail().stream().map(EmployeeDetail::getId).toList();
+        handleSendMail(list);
     }
 }
 

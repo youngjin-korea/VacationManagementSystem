@@ -1,10 +1,6 @@
 package com.kcc.vacation.domain.employee.controller;
 
-import com.kcc.vacation.domain.employee.dto.request.EmployeeCreate;
-import com.kcc.vacation.domain.employee.dto.request.EmployeeCreateRequest;
-import com.kcc.vacation.domain.employee.dto.request.EmployeeUpdate;
-import com.kcc.vacation.domain.employee.dto.request.EmployeeUpdateRequest;
-import com.kcc.vacation.domain.employee.dto.response.Employee;
+import com.kcc.vacation.domain.employee.dto.request.*;
 import com.kcc.vacation.domain.employee.dto.response.EmployeeDetail;
 import com.kcc.vacation.domain.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.apache.coyote.BadRequestException;
-import org.apache.ibatis.javassist.NotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -33,10 +28,16 @@ public class EmployeeRestController {
         return employeeDetail;
     }
 
-    @PatchMapping("api/employees/{id}/mail-send")
-    public void sendEmail(@PathVariable(value = "id") int id) {
-        employeeService.handleSendMail(id);
+    @PostMapping("api/employees/mail-send")
+    public void sendEmail(MailRequest mailRequest) {
+        List<Integer> empIds = mailRequest.getEmpIds();
+        employeeService.handleSendMail(empIds);
     }
+    @PatchMapping("api/employees/mail-resend")
+    public void sendEmail() {
+        employeeService.resendMail();
+    }
+
     @PatchMapping("api/employees/certificate")
     public void certificate(@RequestParam(value = "email") String email, @RequestParam(value = "authenticationCode")String authenticationCode) {
         employeeService.certificate(email, authenticationCode);
