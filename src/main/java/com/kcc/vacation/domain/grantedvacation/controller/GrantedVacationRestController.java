@@ -44,10 +44,10 @@ public class GrantedVacationRestController {
     }
 
     @GetMapping("/admin/grant-vacation-management/typeList")
-    public List<GrantedVacationList> grantVacationTypeList(@RequestParam String dept_name, @RequestParam String vacation_name) {
+    public List<GrantedVacationList> grantVacationTypeList(@RequestParam String dept_name, @RequestParam String vacation_name,  @RequestParam String emp_name) {
 
         System.out.println("grantVacationTypeList");
-        List<GrantedVacationList> grantedVacationSearchList = grantedVacationService.grantedVacationSearchList(dept_name,vacation_name);
+        List<GrantedVacationList> grantedVacationSearchList = grantedVacationService.grantedVacationSearchList(dept_name,vacation_name, emp_name);
 
         for (GrantedVacationList grantedVacationList : grantedVacationSearchList) {
             System.out.println(grantedVacationList.getVacation_name());

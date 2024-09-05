@@ -36,6 +36,11 @@
             <if test="vacation_name != null and vacation_name != ''">
                 AND vt.name = #{vacation_name}
             </if>
+            <if test="emp_name != null and emp_name != ''">
+                <![CDATA[
+                e.name LIKE '%' || #{emp_name} || '%'
+           ]]>
+            </if>
         </where>
 
     </select>
@@ -141,6 +146,7 @@
             vacation_days = #{vacation_days}
         WHERE id = #{id}
     </update>
+
 
 
 

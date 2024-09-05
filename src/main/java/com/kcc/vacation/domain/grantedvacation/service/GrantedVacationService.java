@@ -22,8 +22,8 @@ public class GrantedVacationService {
     private final GrantedVacationMapper grantedVacationMapper;
     private final GrantedVacationAddModalMapper grantedVacationAddModalMapper;
 
-    public List<GrantedVacationList> grantedVacationSearchList(String dept, String type){
-        return grantedVacationMapper.grantVacationSearch(dept,type);
+    public List<GrantedVacationList> grantedVacationSearchList(String dept, String type, String empname){
+        return grantedVacationMapper.grantVacationSearch(dept,type, empname);
     }
 
     public List<GrantedVacationList> grantedVacationList(){

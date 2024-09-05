@@ -17,5 +17,5 @@ public interface GrantedVacationMapper {
     void deleteGrantedVacation(List<Integer> ids);
     void updateGrantedVacation(GrantVacationUpdateDTO grantedDto);
 
-    List<GrantedVacationList> grantVacationSearch(String dept_name,String vacation_name);
+    List<GrantedVacationList> grantVacationSearch(String dept_name,String vacation_name,String emp_name);
 }

@@ -96,14 +96,14 @@
                             <input type="text" id="name-search" class="form-control" placeholder="이름 검색">
 
                             <!-- 임의 휴가 검색 버튼 -->
-                            <button class="btn btn-primary" id="searchVacationBtn" type="button">휴가 검색</button>
+                            <button class="btn btn-primary" id="searchVacationBtn" type="button" style="background-color : darkgreen; border: none;">휴가 검색</button>
 
                             <!-- 임의 휴가 부여 버튼 -->
-                            <button class="btn btn-primary" id="addGrantVacationModalBtn" type="button">임의 휴가 추가
+                            <button class="btn btn-primary" id="addGrantVacationModalBtn" type="button" style="background-color : #073082; border: none;">임의 휴가 추가
                             </button>
 
                             <!-- 임의 휴가 삭제 버튼 -->
-                            <button class="btn btn-primary me-md-2" id="deleteVacationModalBtn" type="button">휴가 삭제
+                            <button class="btn btn-primary me-md-2" id="deleteVacationModalBtn" type="button" style="background-color: #FFD700; border: none;">휴가 삭제
                             </button>
 
                         </div>
@@ -344,6 +344,10 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<!-- date format js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -374,18 +378,6 @@
             }
         });
 
-        document.getElementById('searchVacationBtn').addEventListener('click', function () {
-
-                // 입력 필드의 값 가져오기
-            var searchText = $('#name-search').val();
-
-            // 콘솔에 입력된 텍스트도 출력
-            console.log('검색한 이름:', searchText);
-
-
-
-
-        });
 
         document.getElementById('addGrantVacationModalBtn').addEventListener('click', function () {
             alert("클릭됐습니다.");
@@ -401,6 +393,10 @@
             return date.toLocaleDateString('ko-KR'); // 한국어 날짜 형식
         }
 
+        function formatDateWithMoment(date) {
+            return moment(date).format('YYYY-MM-DD'); // 원하는 형식으로 조정 가능
+        }
+
         // 수정시 클릭한 해당 grantvacation 테이블의 Id가 필요
         var grantVacationId = '';
 
@@ -408,6 +404,7 @@
 
         var vacation_name_selectedText = '';
 
+        var emp_name_selectedText ='';
         // 성공 alert
         function successAlert() {
             return new Promise((resolve) => {
@@ -502,7 +499,8 @@
                 method: 'GET',
                 data : ({
                     dept_name: dept_name_selectedText,
-                    vacation_name: vacation_name_selectedText
+                    vacation_name: vacation_name_selectedText,
+                    emp_name: emp_name_selectedText
                 }),
                 success: function (data) {
 
@@ -515,8 +513,9 @@
                             .append($('<td>').text(item.emp_name))
                             .append($('<td>').text(item.dept_name))
                             .append($('<td>').text(item.vacation_name))
-                            .append($('<td>').text(item.granted_date))
-                            .append($('<td>').text(item.expiration_date));
+
+                            .append($('<td>').text(formatDateWithMoment(item.granted_date)))
+                            .append($('<td>').text(formatDateWithMoment(item.expiration_date)));
 
                         newBody.append(row);
                     });
@@ -527,38 +526,44 @@
             });
         }
 
-        $(document).on('change', '#department-dropdown', function() {
-            var selectedValue = $(this).val();
-            var dept_name_selectedText = $('#department-dropdown option:selected').text();
-
-            searchTypeTable(dept_name_selectedText,vacation_name_selectedText);
-        });
-
-
 
 
         $(document).on('change', '#department-dropdown', function() {
             $('#vacation-type-dropdown').val('0');
             var selectedValue = $(this).val();
-            var dept_name_selectedText = $('#department-dropdown option:selected').text();
+            dept_name_selectedText = $('#department-dropdown option:selected').text();
             vacation_name_selectedText = '';
+            emp_name_selectedText ='';
 
-            searchTypeTable(dept_name_selectedText,vacation_name_selectedText);
+            searchTypeTable(dept_name_selectedText,vacation_name_selectedText,emp_name_selectedText);
         });
 
         document.getElementById('vacation-type-dropdown').addEventListener('click', function () {
             $('#department-dropdown').val('0');
             var selectedValue = $(this).val();
-            var vacation_name_selectedText = $('#vacation-type-dropdown option:selected').text();
+            vacation_name_selectedText = $('#vacation-type-dropdown option:selected').text();
             dept_name_selectedText = '';
+            emp_name_selectedText ='';
 
-            searchTypeTable(dept_name_selectedText,vacation_name_selectedText);
+            searchTypeTable(dept_name_selectedText,vacation_name_selectedText,emp_name_selectedText);
 
         });
 
 
 
-        // data pick
+        document.getElementById('searchVacationBtn').addEventListener('click', function () {
+            vacation_name_selectedText = '';
+            dept_name_selectedText = '';
+            // 입력 필드의 값 가져오기
+            var searchText = $('#name-search').val();
+            // 콘솔에 입력된 텍스트도 출력
+            console.log('검색한 이름:', searchText,dept_name_selectedText,vacation_name_selectedText);
+            emp_name_selectedText = searchText;
+            searchTypeTable(dept_name_selectedText,vacation_name_selectedText,emp_name_selectedText);
+        });
+
+
+            // data pick
         $(function () {
             //input을 datepicker로 선언
             $("#addEmployeeDatepicker").datepicker({
@@ -768,6 +773,7 @@
             });
 
         });
+
 
     });
 </script>
