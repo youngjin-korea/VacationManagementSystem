@@ -8,6 +8,7 @@ import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationApprover;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequest;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequestJSP;
 import com.kcc.vacation.domain.vacationrequest.dto.response.Approver;
+import com.kcc.vacation.domain.vacationrequest.dto.response.VacationReqNCancel;
 import com.kcc.vacation.domain.vacationrequest.service.VacationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,11 @@ public class VacationRequestController {
             model.addAttribute("employeeId",employeeId);
             model.addAttribute("myRole", employee.getAuthority());
             return "client/request-vacation";
+        }
+
+        @GetMapping("/client/client-calender")
+        public String clientCalender() {
+            return "client/client-calender";
         }
 
         @PostMapping("/client/request-vacation")

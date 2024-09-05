@@ -61,6 +61,41 @@
         <result column="cancel_approver_id" property="cancelApproverId"/>
     </resultMap>
 
+    <resultMap id="ReqCancelAllResultMap" type="VacationReqNCancelAll">
+        <id column="id" property="id"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="empName" property="empName"/>
+        <result column="started_date" property="startedDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="vr_status" property="status"/>
+        <result column="vtName" property="vtName"/>
+        <result column="vc_status" property="cancelStatus"/>
+        <result column="comments" property="cancelComments"/>
+        <result column="cancel_approve_date" property="cancelApproveDate"/>
+        <result column="cancel_approver_id" property="cancelApproverId"/>
+    </resultMap>
+
+    <select id="getClientReqAllList" resultMap="ReqCancelAllResultMap">
+        SELECT e.dept_id,
+               e.name as empName,
+               vr.id,
+               vr.started_date,
+               vr.end_date,
+               vr.status as vr_status,
+               vt.name as vtName,
+               vc.status as vc_status,
+               vc.comments,
+               vc.cancel_approve_date,
+               vc.cancel_approver_id
+        FROM vacation_request vr
+                 LEFT JOIN employee e
+                           ON vr.emp_id = e.id
+                 LEFT JOIN vacation_type vt
+                           ON vr.type_id = vt.id
+                 LEFT JOIN vacation_cancel vc
+                           ON vr.id = vc.vacation_request_id
+    </select>
+
     <!--  client 휴가신청 및 취소신청 리스트   -->
     <select id="getClientReqList" resultMap="ReqCancelResultMap">
         SELECT vr.id, vr.started_date, vr.end_date, vr.status as vr_status, vt.name, vc.status as vc_status, vc.comments, vc.cancel_approve_date, vc.cancel_approver_id

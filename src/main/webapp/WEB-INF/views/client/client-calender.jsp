@@ -6,6 +6,7 @@
     <meta charset="UTF-8"/>
     <title>캘린더</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="importmap">
         {
           "imports": {
@@ -18,40 +19,58 @@
         import {Calendar} from "@fullcalendar/core";
         import dayGridPlugin from "@fullcalendar/daygrid";
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const calendarEl = document.getElementById("calendar");
-            const vacationTableBody = document.getElementById("vacation-table-body");
+        document.addEventListener("DOMContentLoaded", async function () {
+            function clickCalendar(title){
+                swal(title);
+            }
 
-            const calendar = new Calendar(calendarEl, {
-                plugins: [dayGridPlugin],
-                headerToolbar: {
-                    left: "prev,next today",
-                    center: "title",
-                    right: "",
-                },
-                fixedWeekCount: false,
-                height: 840,
-                eventSources: [
-                    {
-                        events: [
-                            // 여기에 실제 데이터로 대체될 예정
-                            {title: "연차", start: "2024-08-14", end: "2024-08-16"},
-                            {title: "병가", start: "2024-09-01", end: "2024-09-03", status: "true"}
-                        ],
-                        color: "blue",
-                        textColor: "white",
+            const calendarEl = document.getElementById("calendar");
+
+            try {
+                const response = await fetch('/clients/calender', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const result = await response.json();
+
+                const result2 = result.map((it) => {
+                    return {
+                        start: it.startedDate.slice(0, 10),
+                        end: it.endDate.slice(0, 10),
+                        title: "부서번호: "+it.deptId+" 이름: "+it.empName+
+                            "\n휴가 종류: "+ it.vtName+
+                            "\n휴가시작: "+it.startedDate.slice(0, 10)+
+                            "\n휴가 종료: "+it.endDate.slice(0, 10),
+                    };
+                })
+                const calendar = new Calendar(calendarEl, {
+                    plugins: [dayGridPlugin],
+                    headerToolbar: {
+                        left: "prev,next today",
+                        center: "title",
+                        right: "",
                     },
-                ],
-                eventClick: function (info) {
-                    // 클릭된 이벤트의 세부 정보 표시
-                    console.log(info.event);
-                    console.log(info.event.startStr);
-                    console.log(info.event.endStr);
-                    console.log(info.event.title);
-                    console.log(info.event.extendedProps.status);
-                },
-            });
-            calendar.render();
+                    fixedWeekCount: false,
+                    height: 840,
+                    eventSources: [
+                        {
+                            events:result2,
+                            color: "blue",
+                            textColor: "white",
+                        },
+                    ],
+                    eventClick: function (info) {
+                        clickCalendar(info.event.title);
+                    },
+                });
+                calendar.render();
+            } catch (e) {
+                console.error(e);
+            }
+
+
         })
     </script>
 </head>
@@ -63,6 +82,5 @@
 <div id="mainArea">
     <div id="calendar" style="width: 95%;"></div>
 </div>
-
 </body>
 </html>
