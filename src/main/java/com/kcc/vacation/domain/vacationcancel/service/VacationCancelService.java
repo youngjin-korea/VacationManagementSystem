@@ -43,4 +43,14 @@ public class VacationCancelService {
     }
 
 
+    public boolean cancelRejectVacation(int cancelId, String commentsOfApprover) {
+        //String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        //Employee loginUser = employeeMapper.findByEmail(username);
+
+        // 임시 관리자 로그인 1003
+        int rowsStatus = vacationCancelMapper.rejectVacation(cancelId, 1003);
+        int rowsComments = vacationCancelMapper.UpdateApproverComments(cancelId, commentsOfApprover);
+
+        return rowsStatus == 1 && rowsComments > 0;
+    }
 }
