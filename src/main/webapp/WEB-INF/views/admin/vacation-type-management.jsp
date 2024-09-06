@@ -22,12 +22,12 @@
 <div id="mainArea">
     <div id="vacation-type-main">
         <div id="vacation-type-header">
-            <h3>휴가유형관리</h3>
+            <h3 style="font-weight: bold">휴가유형관리</h3>
 
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-top:5%; margin-bottom:3%">
-                <button class="btn btn-primary me-md-2" id="addVacationTypeModalBtn" type="button">휴가유형추가</button>
-                <button class="btn btn-primary" id="delete-vacation-button" type="button">휴가유형삭제</button>
+                <button class="btn btn-primary me-md-2" id="addVacationTypeModalBtn" type="button" style="background-color: #073082; border-style: none">휴가유형추가</button>
+                <button class="btn btn-primary" id="delete-vacation-button" type="button" style="background: #FFD700; border-style: none">휴가유형삭제</button>
             </div>
         </div>
 
@@ -64,7 +64,17 @@
                         <fmt:formatDate value="${req.updated_date}" pattern="yyyy-MM-dd" var="formattedCreatedDate"/>
                         <td>${formattedCreatedDate}</td>
                         <td>${req.max_days}</td>
-                        <td>${req.is_paid}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${req.is_paid == 'TRUE'}">
+                                    <span style="display: inline-block; padding: 5px; background-color: green; color: white; border-radius: 5px;" title="지급가능">지급가능</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span style="display: inline-block; padding: 5px; background-color: red; color: white; border-radius: 5px;" title="지급불가능">지급불가능</span>
+                                </c:otherwise>
+                            </c:choose>
+
+                        </td>
                     </tr>
                 </c:forEach>
 
@@ -216,7 +226,8 @@
 
             // 데이터 유효성 검사
             if (!vacationTypeName || !maxDays || !isPaid) {
-                alert('모든 필드를 입력해 주세요.');
+                swal("오류", "모든 필드를 입력해 주세요.", "warning");
+
                 return;
             }
 
@@ -369,7 +380,8 @@
             });
 
             if (selectedIds.length === 0) {
-                alert('삭제할 항목을 선택해 주세요.');
+                swal("오류", "삭제할 항목을 선택해 주세요.", "warning");
+
                 return;
             }
 

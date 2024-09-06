@@ -4,9 +4,7 @@ import com.kcc.vacation.domain.employee.dto.response.Employee;
 import com.kcc.vacation.domain.employee.mapper.EmployeeMapper;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequest;
 import com.kcc.vacation.domain.vacationrequest.dto.request.MyVacationRequestJSP;
-import com.kcc.vacation.domain.vacationrequest.dto.response.Approver;
-import com.kcc.vacation.domain.vacationrequest.dto.response.MyVacation;
-import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestListDetail;
+import com.kcc.vacation.domain.vacationrequest.dto.response.*;
 import com.kcc.vacation.domain.vacationrequest.mapper.VacationRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -179,4 +177,7 @@ public class VacationRequestService {
         return vacationRequestMapper.getClientReqList(1001);
     }
 
+    public List<VacationReqNCancelAll>getClientReqAllList(){
+        return vacationRequestMapper.getClientReqAllList();
+    }
 }

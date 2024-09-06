@@ -1,5 +1,7 @@
 let departments = [];
 let selectedEmpId = null;
+let employeeDataForUpload = [];
+
 /**
  * 페이지 로딩 시
  */
@@ -48,9 +50,32 @@ document.addEventListener("DOMContentLoaded", function(){
             error: function(error) {
             }
         });
+
     }
 
+    $.ajax({
+        type: "GET",
+        url: "/api/departments",
+        success: function (data) {
+            departments = data;
+            console.log(departments);
+            var selectElement = $('#addDepartmentSelect'); // #departmentSelect는 <select> 요소의 ID로 가정합니다.
 
+            selectElement.empty();
+
+            // 각 부서 옵션 추가
+            departments.forEach(function(department) {
+                var indent = '&nbsp;'.repeat((department.level - 1) * 4); // 들여쓰기
+                selectElement.append('<option value="' + department.id + '">' + indent + department.name + '</option>');
+            });
+
+
+        },
+        error: function(data){
+            console.log("실패");
+
+        }
+    });
 
 
     $('.employee-element').on('click',
@@ -170,10 +195,10 @@ function addEmployeeBtnClickHandler(){
 
             selectElement.empty();
 
-            // 각 부서 옵션 추가
-            departments.forEach(function(department) {
+            departments.forEach(function(department, index) {
                 var indent = '&nbsp;'.repeat((department.level - 1) * 4); // 들여쓰기
-                selectElement.append('<option value="' + department.id + '">' + indent + department.name + '</option>');
+                var selected = (index === 0) ? ' selected' : ''; // 첫 번째 항목에 selected 추가
+                selectElement.append('<option value="' + department.id + '"' + selected + '>' + indent + department.name + '</option>');
             });
 
 
@@ -192,20 +217,24 @@ function addEmployeeBtnClickHandler(){
 $('#addEmployeeBtnOfModal').click(addEmployeeBtnOfModalClickHandler);
 
 function addEmployeeBtnOfModalClickHandler(){
-    console.log("직원추가요청");
 
     var data = {
         name: $('#addEmployeeNameInput').val(),
         email: $('#addEmployeeEmailInput').val(),
-        deptId:$('#updateDepartmentSelect option:selected').val(),
+        deptId:$('#addDepartmentSelect option:selected').val(),
         position: $('#addEmployeePositionInput').val(),
-        authority: $('#addEmployeeIdAuthoritySelect').val(),
+        authority: $('#addEmployeeIdAuthoritySelect option:selected').val(),
         hireDate: $('#addEmployeeDatepicker').val(),
 
     };
-    console.log($('#addEmployeeDepartmentIdSelect').val());
+    console.log($('#addDepartmentSelect option:selected').val());
 
+    saveEmployee(data);
+}
 
+function saveEmployee(data){
+    console.log("직원추가요청");
+    console.log(data);
     $.ajax({
         type: "POST",
         url: "/api/employees",
@@ -358,15 +387,104 @@ $('#uploadEmployeeBtn').click(uploadEmployeeBtnClickHandler);
 function uploadEmployeeBtnClickHandler(){
     var myModal = new bootstrap.Modal(document.getElementById('uploadEmployeeModal'));
     myModal.show();
+
 }
 
+$('#uploadEmployeeCompleteBtnOfModal').click(uploadEmployeeCompleteBtnOfModalHandler);
 
+function uploadEmployeeCompleteBtnOfModalHandler(){
+
+
+    employeeDataForUpload.forEach(e => {
+            console.log(e);
+            saveEmployee(e);
+        }
+    );
+}
 
 $('#uploadEmployeePreviewBtnOfModal').click(uploadEmployeePreviewBtnOfModalClickHandler);
 
 function uploadEmployeePreviewBtnOfModalClickHandler(){
     var myModal = new bootstrap.Modal(document.getElementById('uploadEmployeePreviewModal'));
     myModal.show();
+
+    var fileInput = document.getElementById('excelInput');
+    var file = fileInput.files[0];
+
+    var formData = new FormData();
+    formData.append('file', file);
+
+
+
+    // Send AJAX request
+    $.ajax({
+        url: '/api/employees/excel', // API endpoint
+        type: 'POST',
+        data: formData,
+        processData: false, // Prevent jQuery from automatically transforming the data into a query string
+        contentType: false, // Set content type to false to let the browser set the correct value
+        success: function(employees) {
+
+
+            var tbody = $('#employeeTablePreviewBody');
+            tbody.empty(); // 기존 내용을 비웁니다.
+
+            // 서버에서 받은 데이터를 기반으로 테이블 생성
+            $.each(employees, function(index, employee) {
+
+
+                //employeeDataForUpload.push(employee);
+
+                var department = departments.find(function(dept) {
+                    return dept.name === employee.deptName;
+                });
+
+
+
+                var row = $('<tr>').addClass('employee-element').attr('data-emp-id', employee.id);
+
+                row.append($('<td>').text(employee.id));
+                row.append($('<td>').text(employee.name));
+                row.append($('<td>').text(employee.authority));
+                row.append($('<td>').text(employee.deptName));
+                row.append($('<td>').text(employee.position));
+
+                // 입사일 날짜 형식 변경
+                var hireDate = new Date(employee.hireDate);
+                var formattedDate = hireDate.getFullYear() + '-' +
+                    ('0' + (hireDate.getMonth() + 1)).slice(-2) + '-' +
+                    ('0' + hireDate.getDate()).slice(-2);
+                row.append($('<td>').text(formattedDate));
+
+                row.append($('<td>').text(employee.email));
+                row.append($('<td>').addClass('joinState text-center').text(employee.joinState));
+
+                tbody.append(row);
+
+
+                employeeDataForUpload.push(
+                    {
+                        id : employee.id,
+                        name: employee.name,
+                        email: employee.email,
+                        deptId: department== null ? 0 : department.id,
+                        position: employee.position,
+                        authority: employee.authority,
+                        hireDate: employee.hireDate,
+                    }
+                );
+
+            });
+
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Upload failed!');
+            console.error(error); // Handle errors
+        }
+    });
+
+
 }
 
 

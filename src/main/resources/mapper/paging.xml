@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="com.kcc.vacation.domain.grantedvacation.mapper.GrantedPagingMapper">
+
+    <resultMap id="GrantedVacationListPagingMap" type="GrantedVacationList">
+        <result column="id" property="id"/>
+        <result column="dept_name" property="dept_name"/>
+        <result column="emp_name" property="emp_name"/>
+        <result column="vacation_name" property="vacation_name"/>
+        <result column="granted_date" property="granted_date"/>
+        <result column="expiration_date" property="expiration_date"/>
+    </resultMap>
+
+    <select id="getGrantVacationListPaging" parameterType="GrantSavePagingInfo" resultMap="GrantedVacationListPagingMap">
+     <![CDATA[
+        SELECT id, granted_date , expiration_date , emp_name , vacation_name , dept_name
+        FROM (
+                 SELECT
+                     gv.id AS id,
+                     gv.granted_date AS granted_date,
+                     gv.expiration_date AS expiration_date,
+                     e.name AS emp_name,
+                     vt.name AS vacation_name,
+                     d.name AS dept_name,
+                     ROWNUM rn
+                 FROM granted_vacation gv
+                          JOIN employee e ON gv.emp_id = e.id
+                          JOIN vacation_type vt ON gv.vacation_type_id = vt.id
+                          JOIN department d ON e.dept_id = d.id
+                 WHERE ROWNUM <= #{pageNum} * #{amount}
+             )
+        WHERE rn > (#{pageNum} - 1) * #{amount}
+        ]]>
+    </select>
+
+
+    <select id="getTotalGrantedVacationCount" resultType="int">
+        SELECT COUNT(*)
+        FROM granted_vacation
+    </select>
+
+</mapper>
+

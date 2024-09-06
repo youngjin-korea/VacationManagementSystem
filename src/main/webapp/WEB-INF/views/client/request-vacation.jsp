@@ -6,6 +6,7 @@
     <meta charset="UTF-8"/>
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="importmap">
         {
           "imports": {
@@ -14,7 +15,6 @@
           }
         }
     </script>
-
     <script type="module">
         import {Calendar} from "@fullcalendar/core";
         import dayGridPlugin from "@fullcalendar/daygrid";
@@ -232,7 +232,7 @@
                             "<td>" + vacation.endDate.slice(0, 10) + "</td>" +
                             "<td>" + vacation.status + "</td>" +
                             "<td>" +
-                            "<button " + "id = \"" + vacation.id + "\" type=\"button\" class=\"btn btn-danger\" onclick=\"cancelVacation(" + vacation.id + ")\">취소</button>" +
+                            "<button style='width:100%;' " + "id = \"" + vacation.id + "\" type=\"button\" class=\"btn btn-danger\" onclick=\"cancelVacation(" + vacation.id + ")\">취소</button>" +
                             "</td>";
                         vacationTableBody.appendChild(row);
                     });

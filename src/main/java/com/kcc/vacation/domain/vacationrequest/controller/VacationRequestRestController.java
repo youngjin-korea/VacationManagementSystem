@@ -2,10 +2,7 @@ package com.kcc.vacation.domain.vacationrequest.controller;
 
 import com.kcc.vacation.domain.vacationcancel.dto.request.CancelVacation;
 import com.kcc.vacation.domain.vacationcancel.service.VacationCancelService;
-import com.kcc.vacation.domain.vacationrequest.dto.response.Approver;
-import com.kcc.vacation.domain.vacationrequest.dto.response.MyVacation;
-import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestDetail;
-import com.kcc.vacation.domain.vacationrequest.dto.response.VacationRequestListDetail;
+import com.kcc.vacation.domain.vacationrequest.dto.response.*;
 import com.kcc.vacation.domain.vacationrequest.service.VacationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +26,6 @@ public class VacationRequestRestController {
         boolean success = vacationRequestService.rejectVacation(Integer.parseInt(id), commentsOfApprover);
         return success;
     }
-
-    ;
-
 
     @GetMapping("/my-vacations/{employeeId}")
     public List<MyVacation> getClientVacationList(@PathVariable int employeeId) {
@@ -58,7 +52,11 @@ public class VacationRequestRestController {
     @PostMapping("/clients/cancel")
     public void insertCancelReq(@RequestBody CancelVacation cancelVacation){
         String s = vacationCancelService.insertCancelReq(cancelVacation);
-        System.out.println("s ===============================!!! " + s);
     }
 
+    // 캘린더 전체 조회
+    @GetMapping("/clients/calender")
+    public List<VacationReqNCancelAll> getClientReqNList() {
+        return vacationRequestService.getClientReqAllList();
+    }
 }
