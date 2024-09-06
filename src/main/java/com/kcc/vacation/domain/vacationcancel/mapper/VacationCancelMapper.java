@@ -15,4 +15,8 @@ public interface VacationCancelMapper {
 
     // 관리자용 취소 휴가 승인
     int approveVacation(int cancelId, int approverId);
+
+    int rejectVacation(int cancelId, int approverId);
+
+    int UpdateApproverComments(int cancelId, String commentsOfApprover);
 }

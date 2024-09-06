@@ -56,5 +56,14 @@
         update vacation_cancel set status='취소 완료'where id = #{cancelId}
     </update>
 
+    <update id="rejectVacation">
+        update vacation_cancel set status='취소 거절' where id = #{cancelId}
+    </update>
+
+    <update id="UpdateApproverComments">
+        update vacation_cancel set commentsOfApprover = #{commentsOfApprover} where id = #{cancelId}
+    </update>
+
+
 </mapper>
 
