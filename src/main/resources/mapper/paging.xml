@@ -2,38 +2,44 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper	namespace="com.kcc.vacation.domain.grantedvacation.mapper.GrantedVacationAddModalMapper">
+<mapper	namespace="com.kcc.vacation.domain.grantedvacation.mapper.GrantedPagingMapper">
 
-    <resultMap id="GrantedVacationEmpInfoMap" type="GrantedVacationEmpInfo">
-        <result column="grantedvacation_id" property="grantedVacationId"/>
-        <result column="emp_id" property="empId"/>
-        <result column="emp_name" property="empName"/>
-        <result column="department_id" property="departmentId"/>
-        <result column="department_name" property="departmentName"/>
-        <result column="vacationtype_id" property="vacationTypeId"/>
-        <result column="vacationtype_name" property="vacationTypeName"/>
+    <resultMap id="GrantedVacationListPagingMap" type="GrantedVacationList">
+        <result column="id" property="id"/>
+        <result column="dept_name" property="dept_name"/>
+        <result column="emp_name" property="emp_name"/>
+        <result column="vacation_name" property="vacation_name"/>
+        <result column="granted_date" property="granted_date"/>
+        <result column="expiration_date" property="expiration_date"/>
     </resultMap>
 
-    <select id="getDepartmentByDepartmentId" resultMap="GrantedVacationEmpInfoMap">
-        select id as department_id, name as department_name
-        from department
+    <select id="getGrantVacationListPaging" parameterType="GrantSavePagingInfo" resultMap="GrantedVacationListPagingMap">
+     <![CDATA[
+        SELECT id, granted_date , expiration_date , emp_name , vacation_name , dept_name
+        FROM (
+                 SELECT
+                     gv.id AS id,
+                     gv.granted_date AS granted_date,
+                     gv.expiration_date AS expiration_date,
+                     e.name AS emp_name,
+                     vt.name AS vacation_name,
+                     d.name AS dept_name,
+                     ROWNUM rn
+                 FROM granted_vacation gv
+                          JOIN employee e ON gv.emp_id = e.id
+                          JOIN vacation_type vt ON gv.vacation_type_id = vt.id
+                          JOIN department d ON e.dept_id = d.id
+                 WHERE ROWNUM <= #{pageNum} * #{amount}
+             )
+        WHERE rn > (#{pageNum} - 1) * #{amount}
+        ]]>
     </select>
-    <!-- 부서번호-> 사원 정보 찾기 -->
-    <select id="getEmployeesByDepartment" parameterType="int" resultMap="GrantedVacationEmpInfoMap">
-        SELECT id as emp_id, name as emp_name
-        FROM employee
-        WHERE dept_id = #{departmentId}
+
+
+    <select id="getTotalGrantedVacationCount" resultType="int">
+        SELECT COUNT(*)
+        FROM granted_vacation
     </select>
-
-
-    <select id="getVacationTypes" resultMap="GrantedVacationEmpInfoMap">
-
-        select id as vacationtype_id, name as vacationtype_name
-        from vacation_type
-    </select>
-
-
-
 
 </mapper>
 
