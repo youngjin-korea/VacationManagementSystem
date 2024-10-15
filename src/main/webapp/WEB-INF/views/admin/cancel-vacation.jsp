@@ -156,10 +156,9 @@
                     var cancelId = document.getElementById('modalRequestId').textContent;
                     // 여기에서 AJAX를 통해 POST 요청을 보냅니다.
                     $.ajax({
-                        url: `/admin/cancel-approve-vacation`,
+                        url: `/admin/cancel-approve-vacation?id=` + cancelId,
                         method: 'POST',
                         contentType: 'application/json',
-                        data: JSON.stringify({id: cancelId}),
                         success: function (data) {
                             console.log("Data received", data);
                             swal("승인이 완료되었습니다!", {
@@ -184,7 +183,7 @@
 
 
     document.getElementById('rejectBtn').addEventListener('click', function () {
-        var modal = document.getElementById('showVacationRequestModal');
+        var modal = document.getElementById('showVacationCancelModal');
         $(modal).modal('hide'); // Hide the modal
 
         swal({
@@ -212,10 +211,10 @@
                     })
                         .then((value) => {
                             if (value) {
-                                var requestId = document.getElementById('modalReqId').textContent;
+                                var cancelId = document.getElementById('modalRequestId').textContent;
 
                                 $.ajax({
-                                    url: `/admin/cancel-reject-vacation?id=` + requestId + `&commentsOfApprover=` + value,
+                                    url: `/admin/cancel-reject-vacation?id=` + cancelId + `&commentsOfApprover=` + value,
                                     method: 'POST',
                                     contentType: 'application/json',
                                     success: function (data) {

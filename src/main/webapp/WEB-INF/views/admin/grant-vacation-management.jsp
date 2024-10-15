@@ -63,6 +63,51 @@
             /* 버튼의 크기를 동일하게 설정 */
             width: 200px; /* 원하는 너비로 설정 */
         }
+
+        /*------------------------ 페이지 처리 css ------------------------*/
+        /* 페이지 네비게이션 스타일 */
+        .pageInfo {
+            list-style: none;
+            display: inline-block;
+            margin: 50px 0 0 100px;
+            padding: 0;
+        }
+
+        .pageInfo li {
+            float: left;
+            font-size: 20px;
+            margin-left: 18px;
+            padding: 7px;
+            font-weight: 500;
+        }
+
+        .pageInfo a {
+            display: inline-block;
+            padding: 7px 12px;
+            color: black;
+            text-decoration: none;
+            border: 1px solid #ddd; /* 기본 테두리 색상 */
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pageInfo a:hover {
+            background-color: #f0f0f0;
+            color: black;
+            text-decoration: underline;
+        }
+
+        .pageInfo a.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .pageInfo a.disabled {
+            color: #d6d6d6;
+            border-color: #d6d6d6;
+            cursor: not-allowed;
+        }
     </style>
 
 </head>
@@ -75,7 +120,7 @@
 <div id="mainArea">
     <div id="vacation-type-main">
         <div id="vacation-type-header">
-            <h3>휴가 부여 관리</h3>
+            <h3 style="font-weight: bold">휴가 부여 관리</h3>
             <div class="row">
                 <div class="col-md-12">
                     <div class="search-container">
@@ -133,7 +178,7 @@
                 </thead>
 
                 <tbody id="grantVacationTable">
-                <c:forEach var="Greq" items="${GrantedVacationList}">
+                <c:forEach var="Greq" items="${gpageDTO.grantedVacationList}">
                     <!-- data-id : 각 행에 data-id 속성을 추가 및 행의 id 값을 저장 -->
                     <tr data-id="${Greq.id}">
                         <th scope="row">
@@ -152,6 +197,28 @@
 
                 </tbody>
             </table>
+        </div>
+
+        <div id="pageInfo" class="pageInfo" >
+
+
+            <!-- 이전 페이지 링크 -->
+            <c:if test="${gpageDTO.prev}">
+                <li><a id="prevPage" class="paginate_button" href="?pageNum=${gpageDTO.gpi.pageNum - 1}&amount=${gpageDTO.gpi.amount}">Previous</a></li>
+            </c:if>
+            <!-- 페이지 링크 -->
+            <c:forEach var="num" begin="${gpageDTO.startPage}" end="${gpageDTO.endPage}">
+                <li class="paginate_button ${gpageDTO.gpi.pageNum == num ? 'active' : ''}">
+
+                    <a href="?pageNum=${num}&amount=${gpageDTO.gpi.amount}">${num}</a>
+                </li>
+            </c:forEach>
+
+            <!-- 다음 페이지 링크 -->
+            <c:if test="${gpageDTO.next}">
+                <li><a id="nextPage" class="paginate_button" href="?pageNum=${gpageDTO.gpi.pageNum + 1}&amount=${gpageDTO.gpi.amount}">Next</a></li>
+            </c:if>
+
         </div>
 
     </div>
@@ -186,8 +253,8 @@
                             <option value="">휴가 유형을 선택하세요</option>
                         </select>
                     </div>
-                    <div>
-                        <label for="addDescription"></label>
+                    <div class="form-group">
+                        <label for="addDescription">휴가 설명</label>
                         <input type="text" class="form-control" id="addDescription" name="addDescription"
                                placeholder="설명을 입력하세요" required>
                     </div>
@@ -225,10 +292,10 @@
             <div class="modal-body">
                 <!-- 휴가 정보 섹션 -->
                 <div class="mb-4">
-                    <h6 class="mb-3">휴가 상세 정보</h6>
+                    <h3 style =" border-bottom: 2px solid #dee2e6" class="mb-3">휴가 상세 정보</h3>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <strong>휴가 일수:</strong>
+                            <strong>휴가 유형 정보:</strong>
                             <p id="grantVacationTypeName" class="form-text">휴가 유형 정보</p>
                         </div>
 
@@ -255,7 +322,7 @@
 
                 <!-- 직원 정보 섹션 -->
                 <div class="mb-4">
-                    <h6 class="mb-3">직원 정보</h6>
+                    <h3 class="mb-3" style =" border-bottom: 2px solid #dee2e6">직원 정보</h3>
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <strong>사원 이름:</strong>
@@ -274,7 +341,7 @@
 
                 <!-- 부서 정보 섹션 -->
                 <div>
-                    <h6 class="mb-3">부서 정보</h6>
+                    <h3 class="mb-3" style =" border-bottom: 2px solid #dee2e6">부서 정보</h3>
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <strong>부서:</strong>
@@ -380,7 +447,6 @@
 
 
         document.getElementById('addGrantVacationModalBtn').addEventListener('click', function () {
-            alert("클릭됐습니다.");
 
             loadoptionData();
             var addGrantVacationModal = new bootstrap.Modal(document.getElementById('addGrantVacationModal'));

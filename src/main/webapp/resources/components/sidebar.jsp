@@ -82,8 +82,8 @@
           ><i class="bi bi-calendar-range"></i> 휴가 관리</a
           >
           <ul class="submenu sidebar-submenu collapse list-unstyled">
-            <li><a href="#">캘린더</a></li>
-            <li><a href="#">휴가 신청 / 취소</a></li>
+            <li><a href="/client/client-calender">캘린더</a></li>
+            <li><a href="/client/request-vacation">휴가 신청 / 취소</a></li>
           </ul>
         </li>
         <hr class="sidebarHr"/>
@@ -112,8 +112,10 @@
           ><i class="bi bi-pencil-square"></i> 결재 관리</a
           >
           <ul class="submenu sidebar-submenu collapse list-unstyled" id="approvalSubmenu">
-            <li><a href="#">휴가 신청 확인</a></li>
-            <li><a href="#">휴가 취소 신청 확인</a></li>
+            <li><a href="/admin/request-vacation">휴가 신청 확인</a></li>
+            <li><a href="/admin/cancel-vacation">휴가 취소 신청 확인</a></li>
+            <li><a href="/admin/vacation-type-management">휴가 유형 관리</a></li>
+            <li><a href="/admin/grant-vacation-management">휴가 부여 관리</a></li>
           </ul>
         </li>
         <hr class="sidebarHr"/>
@@ -127,7 +129,7 @@
           ><i class="bi bi-person-fill"></i> 프로필</a
           >
           <ul class="submenu sidebar-submenu collapse list-unstyled" id="profileSubmenu">
-            <li><a href="#">내 정보 수정</a></li>
+            <li><a href="/client/my-page">내 정보 수정</a></li>
           </ul>
         </li>
         <hr class="sidebarHr"/>
